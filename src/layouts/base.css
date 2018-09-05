@@ -1,13 +1,29 @@
 @font-face {
-  font-family: "Avenir";
-  font-weight: 400;
+  font-family: "Branding";
+  font-weight: normal;
   font-style: normal;
-  src: url("/avenir-400.woff2") format("woff2");
+  src: url("/branding-medium.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Branding";
+  font-weight: bold;
+  font-style: normal;
+  src: url("/branding-semibold.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Branding";
+  font-weight: 100;
+  font-style: normal;
+  src: url("/branding-semilight.otf") format("opentype");
   font-display: swap;
 }
 
 body {
-  font-family: "Avenir", Tahoma, Arial, Helvetica, sans-serif;
+  font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif;
   font-size: 1em;
   line-height: 1.65;
   color: #373F49;
