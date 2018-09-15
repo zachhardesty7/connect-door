@@ -47,36 +47,34 @@ class RootIndex extends React.Component {
             <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
               <Grid relaxed columns={3} divided padded>
                 <Grid.Column item xs={4}>
-                  <Blurb>
-                    <MdHeadset />
-                    <Header as='h4'>Customer Service</Header>
-                    <Header.Content>
+                  <Blurb
+                    icon={<MdHeadset />}
+                    header='Customer Service'
+                    headerAs='h4'
+                  >
                     Our mission is your mission. We understand that the search process can be
                     tough, but as market professionals, we cater to your needs and help you
                     avoid unnecessary hurdles while finding a new home.
-                    </Header.Content>
                   </Blurb>
                 </Grid.Column>
                 <Grid.Column column item xs={4}>
-                  <Blurb>
-                    <FaHandshake />
-                    <Header as='h4' textAlign='center'>Commitment</Header>
-                    <Header.Content>
-                      We are committed to you. Your needs are at the forefront of our priorities.
-                      We listen, we plan, we execute, and we deliver results. Allow us to prove
-                      our worth to you.
-                    </Header.Content>
+                  <Blurb
+                    icon={<FaHandshake />}
+                    header='Commitment'
+                  >
+                    We are committed to you. Your needs are at the forefront of our priorities.
+                    We listen, we plan, we execute, and we deliver results. Allow us to prove
+                    our worth to you.
                   </Blurb>
                 </Grid.Column>
                 <Grid.Column column item xs={4}>
-                  <Blurb>
-                    <FaUserClock />
-                    <Header as='h4' textAlign='center'>Reliability</Header>
-                    <Header.Content>
-                      The search process requires organization and efficiency to ensure a smooth
-                      and easy search experience. Utilizing our in-house resources, we realiably
-                      improve the user experience and execution.
-                    </Header.Content>
+                  <Blurb
+                    icon={<FaUserClock />}
+                    header='Reliability'
+                  >
+                    The search process requires organization and efficiency to ensure a smooth
+                    and easy search experience. Utilizing our in-house resources, we realiably
+                    improve the user experience and execution.
                   </Blurb>
                 </Grid.Column>
               </Grid>
