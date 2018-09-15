@@ -1,0 +1,18 @@
+$import-google-fonts: false;
+$font-name: 'Branding';
+$font-family: $font-name, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+$icons-font-path: '~semantic-ui-sass/icons';
+$flags-image-path: '~semantic-ui-sass/images';
+
+$blue:   #3B5998;
+$orange: #CA6914;
+$teal:   #749AD3;
+
+$primaryColor:   #3B5998;
+$secondaryColor: #749AD3;
+$success:        #28a745;
+$info:           #749AD3;
+$warning:        #ffc107;
+$danger:         #dc3545;
+$light:          #D2D7DB;
+$dark:           #343C42;
