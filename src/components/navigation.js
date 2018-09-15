@@ -1,11 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'gatsby'
 import {
   Container,
   Input,
   Menu
 } from 'semantic-ui-react'
-import { Logo } from '.'
 
 export default class Navigation extends React.Component {
   state = { activeItem: 'home' }
@@ -14,45 +14,30 @@ export default class Navigation extends React.Component {
 
   render() {
     const { activeItem } = this.state
+    const { pages, logo } = this.props
     return (
       <Container>
         <Menu id='nav' text secondary>
-          <Menu.Item
-            as={Link}
-            to='/'
-            name=''
-            onClick={this.handleItemClick}
-          >
-            <Logo />
-          </Menu.Item>
-          <Menu.Item
-            as={Link}
-            name='About'
-            to='/about/'
-            active={activeItem === 'About'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            as={Link}
-            name='Process'
-            to='/process/'
-            active={activeItem === 'Process'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            as={Link}
-            name='Careers'
-            to='/careers/'
-            active={activeItem === 'Careers'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            as={Link}
-            name='Contact'
-            to='/contact/'
-            active={activeItem === 'Contact'}
-            onClick={this.handleItemClick}
-          />
+          {logo && (
+            <Menu.Item
+              as={Link}
+              to='/'
+              name=''
+              onClick={this.handleItemClick}
+            >
+              {logo}
+            </Menu.Item>
+          )}
+
+          {pages.map(page => (
+            <Menu.Item
+              as={Link}
+              name={page}
+              to={`/${page.toLowerCase()}/`}
+              active={activeItem === page}
+              onClick={this.handleItemClick}
+            />
+          ))}
           <Menu.Menu position='right'>
             <Menu.Item>
               <Input icon='search' placeholder='Search Properties...' />
@@ -62,4 +47,16 @@ export default class Navigation extends React.Component {
       </Container>
     )
   }
+}
+
+Navigation.propTypes = {
+  logo: PropTypes.oneOfType([
+    PropTypes.element, PropTypes.object
+  ]),
+  pages: PropTypes.arrayOf(PropTypes.string)
+}
+
+Navigation.defaultProps = {
+  logo: {},
+  pages: []
 }

@@ -18,7 +18,7 @@ import {
 import './index.scss'
 
 import {
-  Blurb, Navigation, Hero, Footer
+  Blurb, Navigation, Logo, Hero, Footer
 } from '../components'
 
 class RootIndex extends React.Component {
@@ -32,7 +32,7 @@ class RootIndex extends React.Component {
       <React.Fragment>
 
         <Helmet title={siteTitle} />
-        <Navigation />
+        <Navigation logo={<Logo />} pages={['About', 'Process', 'Careers', 'Contact']} />
         <Hero />
         <Segment id='home' vertical>
           <Container text>
