@@ -1,0 +1,44 @@
+@import '../theme/variables';
+
+// TODO: https://next.gatsbyjs.org/docs/actions/#setWebpackConfig
+// https://next.gatsbyjs.org/docs/add-custom-webpack-config
+// https://next.gatsbyjs.org/docs/migrating-from-v1-to-v2/#change-modifywebpackconfig-to-oncreatewebpackconfig
+
+#hero {
+  padding-top: 10em;
+  padding-bottom: 3em;
+  &::before {
+    content: "";
+    height: 100%;
+    width: 100.5%;
+    background: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+                url(../../static/hero.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center +45%;
+    top: 0;
+    left: -0.5%;
+    position: absolute;
+    z-index: -1;
+  }
+
+  h1,
+  h2 {
+    color: white;
+    font-weight: normal;
+  }
+
+  h1 {
+    font-size: 4em;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: 1.7em;
+    margin-top: 1.5em;
+  }
+
+  button {
+    background-color: $primaryColor;
+  }
+}
