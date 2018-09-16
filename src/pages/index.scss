@@ -53,55 +53,40 @@ a {
 }
 
 #home {
-  padding: 5em 0em;
+  padding: 3em 0em;
 
-  .container {
-    padding: 2em 0em;
+  &>.segment {
+    padding-top: 5em;
+    padding-bottom: 5em;
+  }
+
+  #process {
+    h3 {
+      margin-bottom: 1em;
+    }
+
+    .process-label {
+      background-color: $secondaryColor;
+      color: white;
+
+      &.right::after {
+        border-top-color: $secondaryColor;
+      }
+      &:not(.right)::after {
+        border-right-color: $secondaryColor;
+      }
+    }
   }
 
   #blurbs {
     text-align: center;
   }
-
+  
   h3 {
     font-size: 3em;
   }
 
   h4 {
     font-size: 2em;
-  }
-}
-
-/**
- * article grid
- */
-.article-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 5vmin;
-}
-
-/**
- *
- */
-.section-headline {
-  padding: 0 0 0.4em 0;
-  margin: 0 0 5vmin 0;
-  border-bottom: 1px solid #ddd;
-}
-
-/**
- *
- */
-.list-inline {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: inline-block;
   }
 }

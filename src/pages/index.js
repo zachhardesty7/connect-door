@@ -11,26 +11,32 @@ import {
   Container,
   Grid,
   Segment,
-  Header
+  Header,
+  Image,
+  Card,
+  Label,
+  Message
 } from 'semantic-ui-react'
 // import 'semantic-ui/dist/semantic.min.css'
 
 import './index.scss'
 
 import {
-  Blurb, Navigation, Logo, Hero, Footer
+  Blurb,
+  Navigation,
+  Logo,
+  Hero,
+  Footer,
+  Form
 } from '../components'
 
 class RootIndex extends React.Component {
   render() {
-    // const { classes } = this.props
-
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
     // const posts = get(this, 'props.data.allContentfulBlogPost.edges')
     // const [author] = get(this, 'props.data.allContentfulPerson.edges')
     return (
       <React.Fragment>
-
         <Helmet title={siteTitle} />
         <Navigation
           logo={<Logo />}
@@ -42,13 +48,94 @@ class RootIndex extends React.Component {
           buttonText='Search Properties'
           buttonProps={{ basic: true, inverted: true, size: 'huge' }}
         />
-        <Segment id='home' vertical>
-          <Container id='blurbHeader' text>
-            <Header as='h3' textAlign='center'>Let&#39;s Talk What We Do.</Header>
+        {/* REVIEW: use a Segment.Group? */}
+        <Segment id='home' vertical basic>
+
+          <Segment id='process' textAlign='center' vertical basic>
+            <Container>
+              <Header as='h3'>The Proccess</Header>
+              <Card.Group centered>
+                <Card>
+                  <Image
+                    src='https://via.placeholder.com/650x650'
+                    label={{
+                      content: '#1', ribbon: true, className: 'process-label', size: 'huge'
+                    }}
+                  />
+                  <Card.Content>
+                    <Card.Header>
+                      Connect with one of our leasing agents so that we can understand your needs
+                      in regards to timing, location(s), desired size, budget, etc.
+                    </Card.Header>
+                  </Card.Content>
+                </Card>
+                <Card>
+                  <Image
+                    src='https://via.placeholder.com/650x650'
+                    label={{
+                      content: '#2', ribbon: 'right', className: 'process-label', size: 'huge'
+                    }}
+                  />
+                  <Card.Content>
+                    <Card.Header>
+                      Allow us to do the heavy-lifting with arranging and organizing a tour.
+                    </Card.Header>
+                  </Card.Content>
+                </Card>
+              </Card.Group>
+              <Card.Group centered>
+                <Card>
+                  <Image
+                    src='https://via.placeholder.com/650x650'
+                    label={{
+                      content: '#3', ribbon: true, className: 'process-label', size: 'huge'
+                    }}
+                  />
+                  <Card.Content>
+                    <Card.Header>
+                      You let us know which you like best and checks all of the boxes.
+                    </Card.Header>
+                  </Card.Content>
+                </Card>
+                <Card>
+                  <Image
+                    src='https://via.placeholder.com/650x650'
+                    label={{
+                      content: '#4', ribbon: 'right', className: 'process-label', size: 'huge'
+                    }}
+                  />
+                  <Card.Content>
+                    <Card.Header>
+                      We&#39;ll arrange getting the lease and forms signed and
+                      processed with the landlord.
+                    </Card.Header>
+                  </Card.Content>
+                </Card>
+              </Card.Group>
+              <Message compact floating size='huge'>
+                <Message.Header>
+                  <Label
+                    content='#5'
+                    horizontal
+                    className='process-label'
+                    size='huge'
+                  />
+                  You&#39;re all done, it&#39;s that easy!
+                </Message.Header>
+              </Message>
+            </Container>
+
+          </Segment>
+
+          <Segment id='mission' vertical secondary basic>
+            <Container text>
+              <Header as='h3' textAlign='center'>Our Mission</Header>
             <Header.Content>
-              Connect Door is a residential leasing service serving students, young professionals,
-              and all others in search for their new home. We pride ourselves on service,
-              reliability, and commitment. Allow us to show you!
+                Connect Door was founded in 2018 with the goal and mission of serving others in
+                their residential real estate needs. We are a free service to our clients.
+                We only get compensated once we successfully locate and secure your next home.
+                We are committed to first-class service and representation to our clients in
+                order to ensure the experience is not only successful, but enjoyable.
             </Header.Content>
           </Container>
           <Container id='blurbs'>
@@ -86,39 +173,7 @@ class RootIndex extends React.Component {
                   </Blurb>
                 </Grid.Column>
               </Grid>
-              <Grid container>
-                <Grid>
-                  Connect Door is a residential leasing company that assists those in search of
-                  their new home. Please fill out the form below to connect with one of our
-                  leasing agents. We&#39;ll be in touch within 24 hours. Same drill - full name,
-                  phone number, email address, and comment box where we could say
-                  &quot;Tell us more about what you&#39;re looking for!
-                </Grid>
-                <Grid>
-                  Form
-                </Grid>
-              </Grid>
-              {/* <div className='wrapper'>
-              <h2 className='section-headline'>Recent articles</h2>
-              <ul className='article-list'>
-                {posts.map(({ node }) => (
-                <li key={node.slug}>
-                  <ArticlePreview article={node} />
-                </li>
-              ))}
-              </ul>
-            </div> */}
             </IconContext.Provider>
-          </Container>
-          <Container id='process'>
-            <Grid relaxed columns={3} divided padded>
-              <Grid.Row width={4}>
-              </Grid.Row>
-              <Grid.Row width={4}>
-              </Grid.Row>
-              <Grid.Row width={4}>
-              </Grid.Row>
-            </Grid>
           </Container>
         </Segment>
         <Footer />
