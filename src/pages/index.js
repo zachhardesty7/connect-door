@@ -130,55 +130,88 @@ class RootIndex extends React.Component {
           <Segment id='mission' vertical secondary basic>
             <Container text>
               <Header as='h3' textAlign='center'>Our Mission</Header>
-            <Header.Content>
+              <Header.Content>
                 Connect Door was founded in 2018 with the goal and mission of serving others in
                 their residential real estate needs. We are a free service to our clients.
                 We only get compensated once we successfully locate and secure your next home.
                 We are committed to first-class service and representation to our clients in
                 order to ensure the experience is not only successful, but enjoyable.
-            </Header.Content>
-          </Container>
-          <Container id='blurbs'>
-            <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
-              <Grid relaxed columns={3} divided padded>
-                <Grid.Column>
-                  <Blurb
-                    icon={<MdHeadset />}
-                    header='Customer Service'
-                    headerAs='h4'
-                  >
+              </Header.Content>
+            </Container>
+            <Container id='blurbs'>
+              <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
+                <Grid relaxed columns={3} divided padded>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<MdHeadset />}
+                      header='Customer Service'
+                      headerAs='h4'
+                    >
                     Our mission is your mission. We understand that the search process can be
                     tough, but as market professionals, we cater to your needs and help you
                     avoid unnecessary hurdles while finding a new home.
-                  </Blurb>
-                </Grid.Column>
-                <Grid.Column>
-                  <Blurb
-                    icon={<FaHandshake />}
-                    header='Commitment'
-                  >
+                    </Blurb>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<FaHandshake />}
+                      header='Commitment'
+                    >
                     We are committed to you. Your needs are at the forefront of our priorities.
                     We listen, we plan, we execute, and we deliver results. Allow us to prove
                     our worth to you.
-                  </Blurb>
-                </Grid.Column>
-                <Grid.Column>
-                  <Blurb
-                    icon={<FaUserClock />}
-                    header='Reliability'
-                  >
+                    </Blurb>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<FaUserClock />}
+                      header='Reliability'
+                    >
                     The search process requires organization and efficiency to ensure a smooth
                     and easy search experience. Utilizing our in-house resources, we realiably
                     improve the user experience and execution.
-                  </Blurb>
-                </Grid.Column>
-              </Grid>
-            </IconContext.Provider>
-          </Container>
+                    </Blurb>
+                  </Grid.Column>
+                </Grid>
+              </IconContext.Provider>
+            </Container>
+          </Segment>
+
+          <Segment id='tour' vertical basic>
+            <Form
+              header='Request a Property Tour'
+              fields={[
+                ['First name', 'Last name'],
+                ['Email', 'Phone number']
+              ]}
+              textArea={'Tell us more about what you\'re looking for'}
+              button='Connect with team'
+            >
+              Connect Door is a residential leasing company that assists those in search of
+              their new home. Please fill out the form below to connect with one of our
+              leasing agents. We&#39;ll be in touch within 24 hours.
+            </Form>
+          </Segment>
+
+          <Segment id='contact' vertical basic>
+            <Form
+              header='Get in Contact With Us'
+              fields={[
+                ['First name', 'Last name'],
+                ['Email', 'Phone number']
+              ]}
+              textArea='Your Message'
+              button='Submit'
+            >
+              We would love to hear from you! Whether it&#39;s recommendation on something
+              that we can do better, something we should add to our services, or simply
+              stopping in to say hi - please give us a shout and we&#39;d love to connect.
+            </Form>
+          </Segment>
+
         </Segment>
         <Footer />
       </React.Fragment>
-
     )
   }
 }
