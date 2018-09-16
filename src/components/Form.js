@@ -16,12 +16,14 @@ const CustomForm = ({
   textArea,
   button
 }) => (
-  <Container text>
-    <Header id='blurbHeader' as={headerAs} textAlign='center'>{header}</Header>
-    <Header.Content>
-      {children}
-    </Header.Content>
-    <Form id='requestForm'>
+  <Container className='customForm' text>
+    <Container text>
+      <Header as={headerAs} textAlign='center'>{header}</Header>
+      <Header.Content>
+        {children}
+      </Header.Content>
+    </Container>
+    <Form>
       {fields.map(fieldGroup => (
         <Form.Group widths='equal'>
           {fieldGroup.map(field => (

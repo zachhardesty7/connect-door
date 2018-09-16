@@ -7,14 +7,12 @@ import {
   List
 } from 'semantic-ui-react'
 
-import { IconContext } from 'react-icons'
-import { FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa'
-
+import SocialMediaIcons from './SocialMediaIcons'
 import './Footer.scss'
 
 const Footer = () => (
   <>
-    <Segment inverted vertical style={{ padding: '5em 0em' }}>
+    <Segment inverted vertical id='footer'>
       <Container>
         <Grid divided inverted stackable>
           <Grid.Row>
@@ -48,7 +46,7 @@ const Footer = () => (
         </Grid>
       </Container>
     </Segment>
-    <Segment inverted vertical>
+    <Segment inverted vertical id='bottom-bar'>
       <Container>
         <Grid colums={2}>
           <Grid.Column id='attribution' width={8}>
@@ -57,16 +55,7 @@ const Footer = () => (
             <a href='https://zachhardesty.com'>Zach Hardesty</a>
           </Grid.Column>
           <Grid.Column width={8} floated='right' textAlign='right'>
-            <IconContext.Provider
-              value={{
-                size: '1.5em',
-                className: 'footerIcons'
-              }}
-            >
-              <a href='https://instagram.com'><FaInstagram /></a>
-              <a href='https://twitter.com'><FaTwitter /></a>
-              <a href='https://facebook.com'><FaFacebook /></a>
-            </IconContext.Provider>
+            <SocialMediaIcons inverted />
           </Grid.Column>
         </Grid>
       </Container>

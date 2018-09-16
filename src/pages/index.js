@@ -5,7 +5,9 @@ import Helmet from 'react-helmet'
 // import Hero from '../components/hero'
 // import ArticlePreview from '../components/article-preview'
 import { IconContext } from 'react-icons'
-import { FaHandshake, FaUserClock } from 'react-icons/fa'
+import {
+  FaHandshake, FaUserClock, FaMoneyBillWave, FaUser, FaChartLine
+} from 'react-icons/fa'
 import { MdHeadset } from 'react-icons/md'
 import {
   Container,
@@ -17,16 +19,15 @@ import {
   Label,
   Message
 } from 'semantic-ui-react'
-// import 'semantic-ui/dist/semantic.min.css'
 
 import './index.scss'
-
 import {
   Blurb,
   Navigation,
   Logo,
   Hero,
   Footer,
+  SocialMediaIcons,
   Form
 } from '../components'
 
@@ -40,7 +41,8 @@ class RootIndex extends React.Component {
         <Helmet title={siteTitle} />
         <Navigation
           logo={<Logo />}
-          pages={['About', 'Process', 'Careers', 'Contact']}
+          pages={['About', 'Property Search', 'Process', 'Careers', 'Contact']}
+          centered
         />
         <Hero
           title='CONNECT DOOR'
@@ -50,6 +52,72 @@ class RootIndex extends React.Component {
         />
         {/* REVIEW: use a Segment.Group? */}
         <Segment id='home' vertical basic>
+
+          <Segment id='about' vertical basic>
+            <Container text>
+              <Header as='h3' textAlign='center'>Our Mission</Header>
+              <Header.Content>
+                Connect Door was founded in 2018 with the goal and mission of serving others in
+                their residential real estate needs. We are a free service to our clients.
+                We only get compensated once we successfully locate and secure your next home.
+                We are committed to first-class service and representation to our clients in
+                order to ensure the experience is not only successful, but enjoyable.
+              </Header.Content>
+            </Container>
+            <Container className='blurbs'>
+              <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
+                <Grid relaxed columns={3} divided padded>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<MdHeadset />}
+                      header='Customer Service'
+                      headerAs='h4'
+                    >
+                    Our mission is your mission. We understand that the search process can be
+                    tough, but as market professionals, we cater to your needs and help you
+                    avoid unnecessary hurdles while finding a new home.
+                    </Blurb>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<FaHandshake />}
+                      header='Commitment'
+                    >
+                    We are committed to you. Your needs are at the forefront of our priorities.
+                    We listen, we plan, we execute, and we deliver results. Allow us to prove
+                    our worth to you.
+                    </Blurb>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <Blurb
+                      icon={<FaUserClock />}
+                      header='Reliability'
+                    >
+                    The search process requires organization and efficiency to ensure a smooth
+                    and easy search experience. Utilizing our in-house resources, we realiably
+                    improve the user experience and execution.
+                    </Blurb>
+                  </Grid.Column>
+                </Grid>
+              </IconContext.Provider>
+            </Container>
+          </Segment>
+
+          <Segment id='property-search' vertical secondary basic>
+            <Form
+              header='Request a Property Tour'
+              fields={[
+                ['First name', 'Last name'],
+                ['Email', 'Phone number']
+              ]}
+              textArea={'Tell us more about what you\'re looking for'}
+              button='Connect with team'
+            >
+              Connect Door is a residential leasing company that assists those in search of
+              their new home. Please fill out the form below to connect with one of our
+              leasing agents. We&#39;ll be in touch within 24 hours.
+            </Form>
+          </Segment>
 
           <Segment id='process' textAlign='center' vertical basic>
             <Container>
@@ -127,9 +195,9 @@ class RootIndex extends React.Component {
 
           </Segment>
 
-          <Segment id='mission' vertical secondary basic>
+          <Segment id='careers' vertical basic secondary>
             <Container text>
-              <Header as='h3' textAlign='center'>Our Mission</Header>
+              <Header as='h3' textAlign='center'>Interested in Working for Us?</Header>
               <Header.Content>
                 Connect Door was founded in 2018 with the goal and mission of serving others in
                 their residential real estate needs. We are a free service to our clients.
@@ -138,59 +206,49 @@ class RootIndex extends React.Component {
                 order to ensure the experience is not only successful, but enjoyable.
               </Header.Content>
             </Container>
-            <Container id='blurbs'>
+            <Container className='blurbs'>
               <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
                 <Grid relaxed columns={3} divided padded>
                   <Grid.Column>
                     <Blurb
-                      icon={<MdHeadset />}
-                      header='Customer Service'
+                      icon={<FaMoneyBillWave />}
+                      header='Potential for High Income'
                       headerAs='h4'
                     >
-                    Our mission is your mission. We understand that the search process can be
-                    tough, but as market professionals, we cater to your needs and help you
-                    avoid unnecessary hurdles while finding a new home.
+                      Our leasing agents benefit from a healthy income as a product of living
+                      and practicing out our core mission and values by executing for our clients.
+                      Compensation can vary in large sums, but ultimately can net a considerable
+                      amount of money for those committed to helping.
                     </Blurb>
                   </Grid.Column>
                   <Grid.Column>
                     <Blurb
-                      icon={<FaHandshake />}
-                      header='Commitment'
+                      icon={<FaUser />}
+                      header='Personal & Professional Enrichment'
                     >
-                    We are committed to you. Your needs are at the forefront of our priorities.
-                    We listen, we plan, we execute, and we deliver results. Allow us to prove
-                    our worth to you.
+                      The Connect Door management team is committed to investing in each of our
+                      leasing agents in a variety of ways outside of the residential leasing arena.
+                      Personal and professional development is a complement to the monetary
+                      compensation that our leasing agents generate. Ultimately, this provides
+                      additional tools and resources outside of the leasing space.
                     </Blurb>
                   </Grid.Column>
                   <Grid.Column>
                     <Blurb
-                      icon={<FaUserClock />}
-                      header='Reliability'
+                      icon={<FaChartLine />}
+                      header='Autonomy & Growth'
                     >
-                    The search process requires organization and efficiency to ensure a smooth
-                    and easy search experience. Utilizing our in-house resources, we realiably
-                    improve the user experience and execution.
+                      We believe that our leasing agents are equipped and prepared to handle
+                      more than most with the tools, training, and resources that we provide,
+                      but ultimately what we provide is autonomy. This is an entrepreneurial
+                      business - we hire, train, and ultimately trust individuals that we feel
+                      are equipped to assist their clients in a fun, and successful manner, that
+                      could do so with our without us.
                     </Blurb>
                   </Grid.Column>
                 </Grid>
               </IconContext.Provider>
             </Container>
-          </Segment>
-
-          <Segment id='tour' vertical basic>
-            <Form
-              header='Request a Property Tour'
-              fields={[
-                ['First name', 'Last name'],
-                ['Email', 'Phone number']
-              ]}
-              textArea={'Tell us more about what you\'re looking for'}
-              button='Connect with team'
-            >
-              Connect Door is a residential leasing company that assists those in search of
-              their new home. Please fill out the form below to connect with one of our
-              leasing agents. We&#39;ll be in touch within 24 hours.
-            </Form>
           </Segment>
 
           <Segment id='contact' vertical basic>
@@ -203,9 +261,11 @@ class RootIndex extends React.Component {
               textArea='Your Message'
               button='Submit'
             >
-              We would love to hear from you! Whether it&#39;s recommendation on something
-              that we can do better, something we should add to our services, or simply
-              stopping in to say hi - please give us a shout and we&#39;d love to connect.
+              <Container textAlign='center'><SocialMediaIcons /></Container>
+              We would love to hear from you! Whether it&#39;s interest in a job with us,
+              a recommendation on something that we can do better, something we should add
+              to our services, or simply stopping in to say hi - please give us a shout and
+              we&#39;d love to connect.
             </Form>
           </Segment>
 

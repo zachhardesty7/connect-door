@@ -1,14 +1,14 @@
 @import '../theme/variables.scss';
 
-#attribution {
-  color: rgba(255, 255, 255, 0.5);
+#footer {
+  padding: 5em 0em;
+  background-color: $primaryColor;
 }
 
-.footerIcons {
-  color: #749AD3;
-  margin: 0 0.5em;
+#bottom-bar {
+  background-color: $primaryColor;  
+}
 
-  &:hover {
-    color: #ffffff;
-  }
+#attribution {
+  color: rgba(255, 255, 255, 0.5);
 }

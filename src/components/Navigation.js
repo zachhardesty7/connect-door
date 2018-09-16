@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'gatsby'
 import {
   Container,
   Input,
   Menu
 } from 'semantic-ui-react'
+
+import './Navigation.scss'
 
 export default class Navigation extends React.Component {
   state = { activeItem: 'home' }
@@ -14,14 +15,16 @@ export default class Navigation extends React.Component {
 
   render() {
     const { activeItem } = this.state
-    const { pages, logo } = this.props
+    const {
+      pages, logo, search, centered
+    } = this.props
     return (
-      <Container>
-        <Menu id='nav' text secondary>
+      <Container textAlign={centered && 'center'}>
+        <Menu id='nav' compact text secondary>
           {logo && (
             <Menu.Item
-              as={Link}
-              to='/'
+              as='a'
+              href='#'
               name=''
               onClick={this.handleItemClick}
             >
@@ -31,18 +34,21 @@ export default class Navigation extends React.Component {
 
           {pages.map(page => (
             <Menu.Item
-              as={Link}
+              as='a'
               name={page}
-              to={`/${page.toLowerCase()}/`}
+              href={`#${page.toLowerCase().replace(' ', '-')}`}
               active={activeItem === page}
               onClick={this.handleItemClick}
             />
           ))}
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Input icon='search' placeholder='Search Properties...' />
-            </Menu.Item>
-          </Menu.Menu>
+
+          {search && (
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <Input icon='search' placeholder='Search Properties...' />
+              </Menu.Item>
+            </Menu.Menu>
+          )}
         </Menu>
       </Container>
     )
@@ -53,10 +59,14 @@ Navigation.propTypes = {
   logo: PropTypes.oneOfType([
     PropTypes.element, PropTypes.object
   ]),
+  search: PropTypes.bool,
+  centered: PropTypes.bool,
   pages: PropTypes.arrayOf(PropTypes.string)
 }
 
 Navigation.defaultProps = {
   logo: {},
+  search: false,
+  centered: false,
   pages: []
 }

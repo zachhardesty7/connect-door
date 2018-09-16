@@ -78,7 +78,12 @@ a {
     }
   }
 
-  #blurbs {
+  #about > .container:not(.blurbs),
+  #careers > .container:not(.blurbs) {
+    padding-bottom: 3em;
+  }
+
+  .blurbs {
     text-align: center;
   }
   

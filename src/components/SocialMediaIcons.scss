@@ -1,0 +1,19 @@
+@import '../theme/variables';
+
+.socialMediaIcons {
+  color: $primaryColor;
+  margin: 0 0.5em;
+
+  &:hover {
+    color: $secondaryColor;
+  }
+
+  &.inverted {
+    color: $secondaryColor;
+    margin: 0 0.5em;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}
