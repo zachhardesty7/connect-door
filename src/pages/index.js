@@ -32,7 +32,10 @@ class RootIndex extends React.Component {
       <React.Fragment>
 
         <Helmet title={siteTitle} />
-        <Navigation logo={<Logo />} pages={['About', 'Process', 'Careers', 'Contact']} />
+        <Navigation
+          logo={<Logo />}
+          pages={['About', 'Process', 'Careers', 'Contact']}
+        />
         <Hero
           title='CONNECT DOOR'
           subtitle='Allow us to connect you to your dream home.'
@@ -40,7 +43,7 @@ class RootIndex extends React.Component {
           buttonProps={{ basic: true, inverted: true, size: 'huge' }}
         />
         <Segment id='home' vertical>
-          <Container text>
+          <Container id='blurbHeader' text>
             <Header as='h3' textAlign='center'>Let&#39;s Talk What We Do.</Header>
             <Header.Content>
               Connect Door is a residential leasing service serving students, young professionals,
@@ -51,7 +54,7 @@ class RootIndex extends React.Component {
           <Container id='blurbs'>
             <IconContext.Provider value={{ color: '#749AD3', size: '4em' }}>
               <Grid relaxed columns={3} divided padded>
-                <Grid.Column item xs={4}>
+                <Grid.Column>
                   <Blurb
                     icon={<MdHeadset />}
                     header='Customer Service'
@@ -62,7 +65,7 @@ class RootIndex extends React.Component {
                     avoid unnecessary hurdles while finding a new home.
                   </Blurb>
                 </Grid.Column>
-                <Grid.Column column item xs={4}>
+                <Grid.Column>
                   <Blurb
                     icon={<FaHandshake />}
                     header='Commitment'
@@ -72,7 +75,7 @@ class RootIndex extends React.Component {
                     our worth to you.
                   </Blurb>
                 </Grid.Column>
-                <Grid.Column column item xs={4}>
+                <Grid.Column>
                   <Blurb
                     icon={<FaUserClock />}
                     header='Reliability'
@@ -83,15 +86,15 @@ class RootIndex extends React.Component {
                   </Blurb>
                 </Grid.Column>
               </Grid>
-              <Grid container spacing={24}>
-                <Grid item xs={6}>
+              <Grid container>
+                <Grid>
                   Connect Door is a residential leasing company that assists those in search of
                   their new home. Please fill out the form below to connect with one of our
                   leasing agents. We&#39;ll be in touch within 24 hours. Same drill - full name,
                   phone number, email address, and comment box where we could say
                   &quot;Tell us more about what you&#39;re looking for!
                 </Grid>
-                <Grid item xs={6}>
+                <Grid>
                   Form
                 </Grid>
               </Grid>
@@ -106,6 +109,16 @@ class RootIndex extends React.Component {
               </ul>
             </div> */}
             </IconContext.Provider>
+          </Container>
+          <Container id='process'>
+            <Grid relaxed columns={3} divided padded>
+              <Grid.Row width={4}>
+              </Grid.Row>
+              <Grid.Row width={4}>
+              </Grid.Row>
+              <Grid.Row width={4}>
+              </Grid.Row>
+            </Grid>
           </Container>
         </Segment>
         <Footer />

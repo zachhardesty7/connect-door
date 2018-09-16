@@ -7,6 +7,9 @@ import {
   List
 } from 'semantic-ui-react'
 
+import { IconContext } from 'react-icons'
+import { FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa'
+
 import './Footer.scss'
 
 const Footer = () => (
@@ -47,15 +50,25 @@ const Footer = () => (
     </Segment>
     <Segment inverted vertical>
       <Container>
-        <Grid.Row>
-          <Grid.Column width={12}>
-            <p id='attribution'>
-              designed and developed by
-              {' '}
-              <a href='https://zachhardesty.com'>Zach Hardesty</a>
-            </p>
+        <Grid colums={2}>
+          <Grid.Column id='attribution' width={8}>
+            copyright &#169; 2018 connectdoor | designed and developed by
+            {' '}
+            <a href='https://zachhardesty.com'>Zach Hardesty</a>
           </Grid.Column>
-        </Grid.Row>
+          <Grid.Column width={8} floated='right' textAlign='right'>
+            <IconContext.Provider
+              value={{
+                size: '1.5em',
+                className: 'footerIcons'
+              }}
+            >
+              <a href='https://instagram.com'><FaInstagram /></a>
+              <a href='https://twitter.com'><FaTwitter /></a>
+              <a href='https://facebook.com'><FaFacebook /></a>
+            </IconContext.Provider>
+          </Grid.Column>
+        </Grid>
       </Container>
     </Segment>
   </>
