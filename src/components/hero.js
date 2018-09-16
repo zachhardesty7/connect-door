@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import {
   Button,
   Container,
@@ -9,7 +11,12 @@ import {
 
 import './Hero.scss'
 
-export default () => (
+const Hero = ({
+  title,
+  subtitle,
+  buttonText,
+  buttonProps
+}) => (
   <Segment
     vertical
     id='hero'
@@ -17,17 +24,37 @@ export default () => (
     <Container>
       <Header
         as='h1'
-        content='CONNECT DOOR'
+        content={title}
       />
       <Header
         as='h2'
-        content='Allow us to connect you to your dream home.'
+        content={subtitle}
       />
-      <Button basic inverted size='huge'>
-        Search Properties
-        <Icon name='right arrow' />
+      <Button {...buttonProps}>
+        {buttonText}
+        {/* TODO: update to react-icons FaAngleRight */}
+        <Icon name='angle right' />
       </Button>
     </Container>
-
   </Segment>
 )
+
+Hero.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  buttonText: PropTypes.string,
+  buttonProps: PropTypes.shape({
+    basic: PropTypes.bool,
+    inverted: PropTypes.bool,
+    size: PropTypes.string
+  })
+}
+
+Hero.defaultProps = {
+  title: '',
+  subtitle: '',
+  buttonText: 'Click Here',
+  buttonProps: {}
+}
+
+export default Hero

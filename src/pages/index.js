@@ -33,7 +33,12 @@ class RootIndex extends React.Component {
 
         <Helmet title={siteTitle} />
         <Navigation logo={<Logo />} pages={['About', 'Process', 'Careers', 'Contact']} />
-        <Hero />
+        <Hero
+          title='CONNECT DOOR'
+          subtitle='Allow us to connect you to your dream home.'
+          buttonText='Search Properties'
+          buttonProps={{ basic: true, inverted: true, size: 'huge' }}
+        />
         <Segment id='home' vertical>
           <Container text>
             <Header as='h3' textAlign='center'>Let&#39;s Talk What We Do.</Header>

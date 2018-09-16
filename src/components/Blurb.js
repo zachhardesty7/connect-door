@@ -2,11 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  Header, HeaderContent
+  Header,
+  HeaderContent
 } from 'semantic-ui-react'
 
 const Blurb = ({
-  icon, header, headerAs, children
+  icon,
+  header,
+  headerAs,
+  children
 }) => (
   <div>
     {icon}
