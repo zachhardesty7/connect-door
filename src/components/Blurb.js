@@ -25,7 +25,12 @@ Blurb.propTypes = {
   icon: PropTypes.element,
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.element)
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.element, PropTypes.string
+    ]))
+  ])
 }
 
 Blurb.defaultProps = {

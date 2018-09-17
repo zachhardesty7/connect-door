@@ -33,6 +33,7 @@ export default class Navigation extends React.Component {
             <Menu.Item
               as={Link}
               to=''
+              key='logo'
               spy
               smooth
               duration={this.calcDuration}
@@ -46,6 +47,7 @@ export default class Navigation extends React.Component {
             <Menu.Item
               as={Link}
               to={`${page.toLowerCase().replace(' ', '-')}`}
+              key={`${page.toLowerCase().replace(' ', '-')}`}
               spy
               smooth
               duration={this.calcDuration}

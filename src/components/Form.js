@@ -25,11 +25,12 @@ const CustomForm = ({
     </Container>
     <Form>
       {fields.map(fieldGroup => (
-        <Form.Group widths='equal'>
+        <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
           {fieldGroup.map(field => (
             <Form.Input
+              key={`field-${field.toLowerCase().replace(/\W/g, '-')}`}
+              id={`field-${field.toLowerCase().replace(/\W/g, '-')}`}
               fluid
-              id={`field-${field.toLowerCase().replace(' ', '-')}`}
               placeholder={field}
             />
           ))}
@@ -46,7 +47,12 @@ const CustomForm = ({
 CustomForm.propTypes = {
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.oneOfType([
+      PropTypes.element, PropTypes.string
+    ]))
+  ]),
   fields: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   textArea: PropTypes.oneOfType([
     PropTypes.string, PropTypes.bool
