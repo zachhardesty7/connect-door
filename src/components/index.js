@@ -1,7 +1,17 @@
-export { default as Blurb } from './Blurb'
-export { default as Logo } from './Logo'
-export { default as Navigation } from './Navigation'
-export { default as Hero } from './Hero'
-export { default as Footer } from './Footer'
-export { default as Form } from './Form'
-export { default as SocialMediaIcons } from './SocialMediaIcons'
+import Blurb from './Blurb'
+import Logo from './Logo'
+import Navigation from './Navigation'
+import Hero from './Hero'
+import Footer from './Footer'
+import Form from './Form'
+import SocialMediaIcons from './SocialMediaIcons'
+
+export {
+  Blurb,
+  Logo,
+  Navigation,
+  Hero,
+  Footer,
+  Form,
+  SocialMediaIcons
+}
