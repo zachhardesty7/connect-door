@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-scroll'
 import {
   Container,
   Input,
@@ -13,6 +14,13 @@ export default class Navigation extends React.Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
+  calcDuration = (scrollDistanceInPx) => {
+    const min = 800
+    const max = 2000
+
+    return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
+  }
+
   render() {
     const { activeItem } = this.state
     const {
@@ -23,10 +31,12 @@ export default class Navigation extends React.Component {
         <Menu id='nav' compact text secondary>
           {logo && (
             <Menu.Item
-              as='a'
-              href='#'
+              as={Link}
+              to=''
+              spy
+              smooth
+              duration={this.calcDuration}
               name=''
-              onClick={this.handleItemClick}
             >
               {logo}
             </Menu.Item>
@@ -34,11 +44,12 @@ export default class Navigation extends React.Component {
 
           {pages.map(page => (
             <Menu.Item
-              as='a'
+              as={Link}
+              to={`${page.toLowerCase().replace(' ', '-')}`}
+              spy
+              smooth
+              duration={this.calcDuration}
               name={page}
-              href={`#${page.toLowerCase().replace(' ', '-')}`}
-              active={activeItem === page}
-              onClick={this.handleItemClick}
             />
           ))}
 
