@@ -3,6 +3,9 @@ import PropTypes from 'prop-types'
 import {
   Container,
   Form,
+  Message,
+  Transition,
+  Icon,
   Header
 } from 'semantic-ui-react'
 
@@ -11,11 +14,18 @@ import './Form.scss'
 class CustomForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { success: false, error: false }
+
     props.fields.forEach(fieldGroup => fieldGroup.forEach((field) => {
       this.state[this.process(field)] = ''
     }))
     if (props.textArea) this.state['field-text-area'] = ''
+  }
+
+  removeSuccessMessage = () => {
+    setTimeout(() => {
+      this.setState({ success: false })
+    }, 10000)
   }
 
   process = str => `field-${str.toLowerCase().replace(/\W/g, '-')}`
@@ -25,17 +35,31 @@ class CustomForm extends React.Component {
     .join('&')
 
   handleSubmit = (evt) => {
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: this.encode({ 'form-name': 'contact', ...this.state })
-    })
-      .catch(err => console.log(err))
+    const { state } = this
+
+    if (Object.keys(state).some(key => state[key] === '')) {
+      this.setState({ success: false, error: true })
+    } else {
+      fetch('/', { // eslint-disable-line no-undef
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: this.encode({ 'form-name': 'contact', ...state })
+      })
+        .catch(err => console.log(err)) // eslint-disable-line no-console
+
+      const newState = {}
+
+      Object.keys(state).forEach((key) => { newState[key] = '' })
+
+      this.setState({ success: true, error: false, ...newState })
+
+      this.removeSuccessMessage()
+    }
 
     evt.preventDefault()
   };
 
-  handleChange = e => this.setState({ [e.target.id]: e.target.value });
+  handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     const {
@@ -47,6 +71,8 @@ class CustomForm extends React.Component {
       textArea,
       button
     } = this.props
+
+    const { state } = this
 
     return (
       <Container className='customForm' text>
@@ -61,32 +87,58 @@ class CustomForm extends React.Component {
           onSubmit={this.handleSubmit}
           data-netlify='true'
           data-netlify-honeypot='bot-field'
+          success={state.success}
+          error={state.error}
         >
           <input type='hidden' name='bot-field' />
           {fields.map(fieldGroup => (
             <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
               {fieldGroup.map(field => (
                 <Form.Input
-                  onChange={this.handleChange}
+                  error={state.error && state[this.process(field)] === ''}
                   key={this.process(field)}
-                  id={this.process(field)}
                   name={this.process(field)}
                   fluid
                   placeholder={field}
+                  onChange={this.handleChange}
+                  value={state[this.process(field)]}
                 />
               ))}
             </Form.Group>
           ))}
           {textArea && (
             <Form.TextArea
-              id='field-text-area'
+              error={state.error && state['field-text-area'] === ''}
               name='field-text-area'
               autoHeight
               placeholder={textArea}
               style={{ minHeight: 125 }}
               onChange={this.handleChange}
+              value={state['field-text-area']}
             />
           )}
+
+          <Transition.Group className='form-messages' animation='fade down' duration={500}>
+            {state.success && (
+              <Message icon success className='form-message'>
+                <Icon name='check' />
+                <Message.Content>
+                  <Message.Header>Form Submitted</Message.Header>
+                    You&#39;ll hear back from our team shortly!
+                </Message.Content>
+              </Message>
+            )}
+            {state.error && (
+              <Message icon error className='form-message'>
+                <Icon name='x' />
+                <Message.Content>
+                  <Message.Header>Error</Message.Header>
+                    Please fill out all fields!
+                </Message.Content>
+              </Message>
+            )}
+          </Transition.Group>
+
           <Form.Button type='submit'>{button}</Form.Button>
         </Form>
       </Container>
