@@ -31,6 +31,11 @@ import {
   Form
 } from '../components'
 
+import checklist from '../../static/imgs/checklist.jpg'
+import contract from '../../static/imgs/contract.jpg'
+import forklift from '../../static/imgs/forklift.jpeg'
+import lookingAtLaptop from '../../static/imgs/looking-at-laptop.jpg'
+
 class RootIndex extends React.Component {
   render() {
     const siteTitle = get(this, 'props.data.site.siteMetadata.title')
@@ -126,7 +131,8 @@ class RootIndex extends React.Component {
               <Card.Group centered>
                 <Card>
                   <Image
-                    src='https://via.placeholder.com/650x650'
+                    className='darken-10'
+                    src={lookingAtLaptop}
                     label={{
                       content: '#1', ribbon: true, className: 'process-label', size: 'huge'
                     }}
@@ -140,7 +146,8 @@ class RootIndex extends React.Component {
                 </Card>
                 <Card>
                   <Image
-                    src='https://via.placeholder.com/650x650'
+                    className='darken-10'
+                    src={forklift}
                     label={{
                       content: '#2', ribbon: 'right', className: 'process-label', size: 'huge'
                     }}
@@ -155,7 +162,8 @@ class RootIndex extends React.Component {
               <Card.Group centered>
                 <Card>
                   <Image
-                    src='https://via.placeholder.com/650x650'
+                    className='darken-10'
+                    src={checklist}
                     label={{
                       content: '#3', ribbon: true, className: 'process-label', size: 'huge'
                     }}
@@ -168,7 +176,8 @@ class RootIndex extends React.Component {
                 </Card>
                 <Card>
                   <Image
-                    src='https://via.placeholder.com/650x650'
+                    className='darken-10'
+                    src={contract}
                     label={{
                       content: '#4', ribbon: 'right', className: 'process-label', size: 'huge'
                     }}
