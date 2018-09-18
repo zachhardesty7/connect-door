@@ -6,9 +6,14 @@
 }
 
 #bottom-bar {
-  background-color: $primaryColor;  
+  background-color: $primaryColor;
+}
+
+#bottom-bar-icons {
+  padding-top: 1.5em;
 }
 
 #attribution {
   color: rgba(255, 255, 255, 0.5);
+  align-self: center;
 }
