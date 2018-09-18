@@ -28,9 +28,10 @@ export default class Navigation extends React.Component {
     } = this.props
     return (
       <Container textAlign={centered && 'center'}>
-        <Menu id='nav' compact text secondary>
+        <Menu id='nav' size='large' compact text secondary>
           {logo && (
             <Menu.Item
+              className='logo'
               as={Link}
               to=''
               key='logo'

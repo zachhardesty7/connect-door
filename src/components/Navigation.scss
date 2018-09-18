@@ -1,4 +1,9 @@
 #nav {
   margin-top: 1em;
   margin-bottom: 1em;
+
+  & > .logo {
+    margin-right: 0.5em;
+    margin-bottom: -0.2em;
+  }
 }

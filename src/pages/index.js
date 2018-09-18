@@ -126,7 +126,7 @@ class RootIndex extends React.Component {
           </Segment>
 
           <Segment id='process' textAlign='center' vertical basic>
-            <Container>
+            <Container text>
               <Header as='h3'>The Proccess</Header>
               <Card.Group centered>
                 <Card>
@@ -138,10 +138,8 @@ class RootIndex extends React.Component {
                     }}
                   />
                   <Card.Content>
-                    <Card.Header>
-                      Connect with one of our leasing agents so that we can understand your needs
-                      in regards to timing, location(s), desired size, budget, etc.
-                    </Card.Header>
+                    Connect with one of our leasing agents so that we can understand your needs
+                    in regards to timing, location(s), desired size, budget, etc.
                   </Card.Content>
                 </Card>
                 <Card>
@@ -153,9 +151,7 @@ class RootIndex extends React.Component {
                     }}
                   />
                   <Card.Content>
-                    <Card.Header>
-                      Allow us to do the heavy-lifting with arranging and organizing a tour.
-                    </Card.Header>
+                    Allow us to do the heavy-lifting with arranging and organizing a tour.
                   </Card.Content>
                 </Card>
               </Card.Group>
@@ -169,9 +165,7 @@ class RootIndex extends React.Component {
                     }}
                   />
                   <Card.Content>
-                    <Card.Header>
-                      You let us know which you like best and checks all of the boxes.
-                    </Card.Header>
+                    You let us know which you like best and checks all of the boxes.
                   </Card.Content>
                 </Card>
                 <Card>
@@ -183,10 +177,8 @@ class RootIndex extends React.Component {
                     }}
                   />
                   <Card.Content>
-                    <Card.Header>
-                      We&#39;ll arrange getting the lease and forms signed and
-                      processed with the landlord.
-                    </Card.Header>
+                    We&#39;ll arrange getting the lease and forms signed and
+                    processed with the landlord.
                   </Card.Content>
                 </Card>
               </Card.Group>
