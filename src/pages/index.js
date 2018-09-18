@@ -105,6 +105,7 @@ class RootIndex extends React.Component {
 
           <Segment id='property-search' vertical secondary basic>
             <Form
+              name='property-search'
               header='Request a Property Tour'
               fields={[
                 ['First name', 'Last name'],
@@ -253,6 +254,7 @@ class RootIndex extends React.Component {
 
           <Segment id='contact' vertical basic>
             <Form
+              name='contact'
               header='Get in Contact With Us'
               fields={[
                 ['First name', 'Last name'],
