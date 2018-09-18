@@ -20,9 +20,9 @@ class CustomForm extends React.Component {
 
   process = str => `field-${str.toLowerCase().replace(/\W/g, '-')}`
 
-    encode = data => Object.keys(data)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
-      .join('&')
+  encode = data => Object.keys(data)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+    .join('&')
 
   handleSubmit = (evt) => {
     fetch('/', {
@@ -68,8 +68,9 @@ class CustomForm extends React.Component {
               {fieldGroup.map(field => (
                 <Form.Input
                   onChange={this.handleChange}
-                  key={`field-${field.toLowerCase().replace(/\W/g, '-')}`}
-                  id={`field-${field.toLowerCase().replace(/\W/g, '-')}`}
+                  key={this.process(field)}
+                  id={this.process(field)}
+                  name={this.process(field)}
                   fluid
                   placeholder={field}
                 />
@@ -79,6 +80,7 @@ class CustomForm extends React.Component {
           {textArea && (
             <Form.TextArea
               id='field-text-area'
+              name='field-text-area'
               autoHeight
               placeholder={textArea}
               style={{ minHeight: 125 }}
