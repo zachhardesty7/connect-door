@@ -12,9 +12,9 @@ const SocialMediaIcons = ({ inverted }) => (
       className: `socialMediaIcons ${!!inverted && 'inverted'}`
     }}
   >
-    <a href='https://instagram.com'><FaInstagram /></a>
-    <a href='https://twitter.com'><FaTwitter /></a>
-    <a href='https://facebook.com'><FaFacebook /></a>
+    <a href='https://www.facebook.com/theconnectdoor/'><FaFacebook /></a>
+    <a href='https://twitter.com/ConnectDoor'><FaTwitter /></a>
+    <a href='https://instagram.com/ConnectDoor'><FaInstagram /></a>
   </IconContext.Provider>
 )
 

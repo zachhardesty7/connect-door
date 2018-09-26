@@ -46,13 +46,13 @@ class RootIndex extends React.Component {
         <Helmet title={siteTitle} />
         <Navigation
           logo={<Logo />}
-          pages={['About', 'Property Search', 'Process', 'Careers', 'Contact']}
+          pages={['About', 'Property Tour', 'Process', 'Careers', 'Contact']}
           centered
         />
         <Hero
           title='CONNECT DOOR'
           subtitle='Allow us to connect you to your dream home.'
-          buttonText='Search Properties'
+          buttonText='Request a Property Tour'
           buttonProps={{ basic: true, inverted: true, size: 'huge' }}
         />
         {/* REVIEW: use a Segment.Group? */}
@@ -99,7 +99,7 @@ class RootIndex extends React.Component {
                       header='Reliability'
                     >
                     The search process requires organization and efficiency to ensure a smooth
-                    and easy search experience. Utilizing our in-house resources, we realiably
+                    and easy search experience. Utilizing our in-house resources, we reliably
                     improve the user experience and execution.
                     </Blurb>
                   </Grid.Column>
@@ -108,9 +108,9 @@ class RootIndex extends React.Component {
             </Container>
           </Segment>
 
-          <Segment id='property-search' vertical secondary basic>
+          <Segment id='property-tour' vertical secondary basic>
             <Form
-              name='property-search'
+              name='property-tour'
               header='Request a Property Tour'
               fields={[
                 ['First name', 'Last name'],
@@ -127,7 +127,7 @@ class RootIndex extends React.Component {
 
           <Segment id='process' textAlign='center' vertical basic>
             <Container text>
-              <Header as='h3'>The Proccess</Header>
+              <Header as='h3'>The Process</Header>
               <Card.Group centered>
                 <Card>
                   <Image
