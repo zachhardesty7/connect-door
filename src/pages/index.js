@@ -14,8 +14,7 @@ import {
   Grid,
   Segment,
   Header,
-  Image,
-  Card,
+  Item,
   Label,
   Message
 } from 'semantic-ui-react'
@@ -125,63 +124,83 @@ class RootIndex extends React.Component {
             </Form>
           </Segment>
 
-          <Segment id='process' textAlign='center' vertical basic>
-            <Container text>
-              <Header as='h3'>The Process</Header>
-              <Card.Group centered>
-                <Card>
-                  <Image
-                    className='darken-10'
+          <Segment id='process' vertical basic>
+            <Container className='container-items' text>
+              <Header as='h3' textAlign='center'>The Process</Header>
+              <Item.Group divided relaxed>
+                <Item>
+                  <Item.Image
+                    className='darken-25'
                     src={lookingAtLaptop}
+                    size='medium'
+                    rounded
                     label={{
                       content: '#1', ribbon: true, className: 'process-label', size: 'huge'
                     }}
                   />
-                  <Card.Content>
-                    Connect with one of our leasing agents so that we can understand your needs
-                    in regards to timing, location(s), desired size, budget, etc.
-                  </Card.Content>
-                </Card>
-                <Card>
-                  <Image
-                    className='darken-10'
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header>Connect</Item.Header>
+                    <Item.Description>
+                      Connect with one of our leasing agents so that we can understand your needs
+                      in regards to timing, location(s), desired size, budget, etc.
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+                <Item>
+                  <Item.Image
+                    className='darken-25'
                     src={forklift}
+                    size='medium'
+                    rounded
                     label={{
-                      content: '#2', ribbon: 'right', className: 'process-label', size: 'huge'
+                      content: '#2', ribbon: true, className: 'process-label', size: 'huge'
                     }}
                   />
-                  <Card.Content>
-                    Allow us to do the heavy-lifting with arranging and organizing a tour.
-                  </Card.Content>
-                </Card>
-              </Card.Group>
-              <Card.Group centered>
-                <Card>
-                  <Image
-                    className='darken-10'
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header>Tour</Item.Header>
+                    <Item.Description>
+                      Allow us to do the heavy-lifting with arranging and organizing a tour.
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+                <Item>
+                  <Item.Image
+                    className='darken-25'
                     src={checklist}
+                    size='medium'
+                    rounded
                     label={{
                       content: '#3', ribbon: true, className: 'process-label', size: 'huge'
                     }}
                   />
-                  <Card.Content>
-                    You let us know which you like best and checks all of the boxes.
-                  </Card.Content>
-                </Card>
-                <Card>
-                  <Image
-                    className='darken-10'
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header>Evaluate</Item.Header>
+                    <Item.Description>
+                      You let us know which you like best and checks all of the boxes.
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+                <Item>
+                  <Item.Image
+                    className='darken-25'
                     src={contract}
+                    size='medium'
+                    rounded
                     label={{
-                      content: '#4', ribbon: 'right', className: 'process-label', size: 'huge'
+                      content: '#4', ribbon: true, className: 'process-label', size: 'huge'
                     }}
                   />
-                  <Card.Content>
-                    We&#39;ll arrange getting the lease and forms signed and
-                    processed with the landlord.
-                  </Card.Content>
-                </Card>
-              </Card.Group>
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header>Sign</Item.Header>
+                    <Item.Description>
+                      We&#39;ll arrange getting the lease and forms signed and
+                      processed with the landlord.
+                    </Item.Description>
+                  </Item.Content>
+                </Item>
+              </Item.Group>
+            </Container>
+            <Container text textAlign='center'>
               <Message compact floating size='huge'>
                 <Message.Header>
                   <Label

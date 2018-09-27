@@ -2,9 +2,7 @@ import React from 'react'
 import {
   Container,
   Grid,
-  Segment,
-  Header,
-  List
+  Segment
 } from 'semantic-ui-react'
 
 import SocialMediaIcons from './SocialMediaIcons'
@@ -13,9 +11,9 @@ import './Footer.scss'
 const Footer = () => (
   <Segment inverted vertical id='bottom-bar'>
     <Container>
-      <Grid colums={2}>
+      <Grid columns={2} verticalAlign='middle'>
         <Grid.Column id='attribution' width={8}>
-            copyright &#169; 2018 connectdoor | designed and developed by
+          copyright &#169; 2018 ConnectDoor | designed and developed by
           {' '}
           <a href='https://zachhardesty.com'>Zach Hardesty</a>
         </Grid.Column>

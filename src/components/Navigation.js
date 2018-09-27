@@ -22,7 +22,8 @@ export default class Navigation extends React.Component {
   }
 
   render() {
-    const { activeItem } = this.state
+    // eslint-disable-next-line no-unused-vars
+    const { activeItem } = this.state // REVIEW: stick header?
     const {
       pages, logo, search, centered
     } = this.props

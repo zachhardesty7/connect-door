@@ -65,10 +65,19 @@ a {
       margin-bottom: 1em;
     }
 
+    .container-items {
+      margin-bottom: 3em;
+    }
+
+    .rounded img {
+      border-radius: 0.5rem;
+    }
+
     .process-label {
       background-color: $secondaryColor;
       color: white;
 
+      // allow placement on right with changed color
       &.right::after {
         border-top-color: $secondaryColor;
       }
@@ -77,11 +86,13 @@ a {
       }
     }
 
-    .darken-10::before {
+    // overlay darken by 20%
+    .darken-25::before {
       content: "";
       height: 100%;
       width: 100%;
       background: linear-gradient(0deg,rgba(0,0,0,0.25),rgba(0,0,0,0.25));
+      border-radius: inherit;
       top: 0;
       left: 0;
       position: absolute;
