@@ -1,9 +1,10 @@
 import React from 'react'
-import get from 'lodash/get'
+import PropTypes from 'prop-types'
+import { graphql } from 'gatsby'
 import Helmet from 'react-helmet'
-// import { Link } from 'gatsby'
-// import Hero from '../components/hero'
-// import ArticlePreview from '../components/article-preview'
+// import GImage from 'gatsby-image'
+
+// ui framework
 import { IconContext } from 'react-icons'
 import {
   FaHandshake, FaUserClock, FaMoneyBillWave, FaUser, FaChartLine
@@ -19,6 +20,7 @@ import {
   Message
 } from 'semantic-ui-react'
 
+// user-defined
 import './index.scss'
 import {
   Blurb,
@@ -30,19 +32,32 @@ import {
   Form
 } from '../components'
 
-import checklist from '../../static/imgs/checklist.jpg'
-import contract from '../../static/imgs/contract.jpg'
-import forklift from '../../static/imgs/forklift.jpeg'
-import lookingAtLaptop from '../../static/imgs/looking-at-laptop.jpg'
-
 class RootIndex extends React.Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      site: PropTypes.object,
+      allContentfulAsset: PropTypes.object
+    })
+  }
+
+  static defaultProps = {
+    data: PropTypes.shape({
+      site: {},
+      allContentfulAsset: {}
+    })
+  }
+
   render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    // const posts = get(this, 'props.data.allContentfulBlogPost.edges')
-    // const [author] = get(this, 'props.data.allContentfulPerson.edges')
+    const { data } = this.props
+    // const siteTitle = data.site.siteMetadata.title
+    const images = {}
+    data.allContentfulAsset.edges.forEach((i) => {
+      images[i.node.title] = i.node
+    })
+
     return (
       <React.Fragment>
-        <Helmet title={siteTitle} />
+        {/* <Helmet title={siteTitle} /> */}
         <Navigation
           logo={<Logo />}
           pages={['About', 'Property Tour', 'Process', 'Careers', 'Contact']}
@@ -130,8 +145,7 @@ class RootIndex extends React.Component {
               <Item.Group divided relaxed>
                 <Item>
                   <Item.Image
-                    className='darken-25'
-                    src={lookingAtLaptop}
+                    src={images.lookingAtLaptop.fluid.src}
                     size='medium'
                     rounded
                     label={{
@@ -149,7 +163,7 @@ class RootIndex extends React.Component {
                 <Item>
                   <Item.Image
                     className='darken-25'
-                    src={forklift}
+                    src={images.forklift.fluid.src}
                     size='medium'
                     rounded
                     label={{
@@ -166,7 +180,7 @@ class RootIndex extends React.Component {
                 <Item>
                   <Item.Image
                     className='darken-25'
-                    src={checklist}
+                    src={images.checklist.fluid.src}
                     size='medium'
                     rounded
                     label={{
@@ -183,7 +197,7 @@ class RootIndex extends React.Component {
                 <Item>
                   <Item.Image
                     className='darken-25'
-                    src={contract}
+                    src={images.contract.fluid.src}
                     size='medium'
                     rounded
                     label={{
@@ -300,6 +314,29 @@ class RootIndex extends React.Component {
 
 export default RootIndex
 
+export const imageQuery = graphql`
+  query {
+    allContentfulAsset {
+      edges {
+        node {
+          id
+          title
+          file {
+            url
+          }
+          fluid(maxWidth: 613) {
+            sizes
+            src
+            srcSet
+            srcWebp
+            srcSetWebp
+          }
+        }
+      }
+    }
+  }
+`
+
 // export const pageQuery = graphql`
 //   query HomeQuery {
 //     allContentfulBlogPost(sort: { fields: [publishDate], order: DESC }) {
@@ -322,7 +359,7 @@ export default RootIndex
 //         }
 //       }
 //     }
-//     allContentfulPerson(filter: { id: { eq: "c15jwOBqpxqSAOy2eOO4S0m" } }) {
+//     allContentfulPerson(filter: { id: { eq: "" } }) {
 //       edges {
 //         node {
 //           name
