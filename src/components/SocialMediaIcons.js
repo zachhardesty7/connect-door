@@ -13,9 +13,9 @@ const SocialMediaIcons = ({ inverted }) => (
         className: `socialMediaIcons ${!!inverted && 'inverted'}`
       }}
     >
-      <a href='https://www.facebook.com/theconnectdoor/'><FaFacebook /></a>
-      <a href='https://twitter.com/ConnectDoor'><FaTwitter /></a>
-      <a href='https://instagram.com/ConnectDoor'><FaInstagram /></a>
+      <a href='https://www.facebook.com/theconnectdoor/' rel='noopener noreferrer' target='_blank'><FaFacebook /></a>
+      <a href='https://twitter.com/ConnectDoor' rel='noopener noreferrer' target='_blank'><FaTwitter /></a>
+      <a href='https://instagram.com/ConnectDoor' rel='noopener noreferrer' target='_blank'><FaInstagram /></a>
     </IconContext.Provider>
   </Container>
 )

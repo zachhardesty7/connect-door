@@ -2,8 +2,16 @@
   margin-top: 1em;
   margin-bottom: 1em;
 
-  & > .logo {
+  .logo {
     margin-right: 0.5em;
-    margin-bottom: -0.2em;
+    margin-bottom: -0.05em;
+
+    img {
+      display: inherit;
+      vertical-align: inherit;
+      margin: inherit;
+      width: inherit;
+      margin: inherit;
+    }
   }
 }

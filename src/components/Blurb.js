@@ -1,23 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import {
-  Header,
-  HeaderContent
-} from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 
 const Blurb = ({
   icon,
   header,
   headerAs,
+  content,
   children
 }) => (
   <div>
     {icon}
     <Header as={headerAs} textAlign='center'>{header}</Header>
-    <HeaderContent>
-      {children}
-    </HeaderContent>
+    <Header.Content content={content} />
   </div>
 )
 

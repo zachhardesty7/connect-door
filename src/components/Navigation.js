@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-scroll'
+import GImage from 'gatsby-image'
 import {
   Container,
   Input,
@@ -32,7 +33,6 @@ export default class Navigation extends React.Component {
         <Menu id='nav' size='large' compact text secondary>
           {logo && (
             <Menu.Item
-              className='logo'
               as={Link}
               to=''
               key='logo'
@@ -41,7 +41,7 @@ export default class Navigation extends React.Component {
               duration={this.calcDuration}
               name=''
             >
-              {logo}
+              {<GImage fluid={logo} className='logo' />}
             </Menu.Item>
           )}
 
