@@ -189,7 +189,7 @@ class RootIndex extends React.Component {
               button={sectionContact.form.button}
             >
               {sectionContact.icons && (
-                <Container textAlign='center'>
+                <Container textAlign='center' className='contact-icons'>
                   <SocialMediaIcons />
                 </Container>
               )}

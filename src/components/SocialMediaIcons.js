@@ -1,22 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { IconContext } from 'react-icons'
-import { FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa'
+
 import { Container } from 'semantic-ui-react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInstagram, faTwitter, faFacebook } from '@fortawesome/free-brands-svg-icons'
+
 import './SocialMediaIcons.scss'
 
 const SocialMediaIcons = ({ inverted }) => (
-  <Container>
-    <IconContext.Provider
-      value={{
-        size: '1.5em',
-        className: `socialMediaIcons ${!!inverted && 'inverted'}`
-      }}
-    >
-      <a href='https://www.facebook.com/theconnectdoor/' rel='noopener noreferrer' target='_blank'><FaFacebook /></a>
-      <a href='https://twitter.com/ConnectDoor' rel='noopener noreferrer' target='_blank'><FaTwitter /></a>
-      <a href='https://instagram.com/ConnectDoor' rel='noopener noreferrer' target='_blank'><FaInstagram /></a>
-    </IconContext.Provider>
+  <Container className={`socialMediaIcons ${!!inverted && 'inverted'}`}>
+    <a href='https://www.facebook.com/theconnectdoor/' rel='noopener noreferrer' target='_blank'>
+      <FontAwesomeIcon icon={faFacebook} className='button-icon' size='lg' />
+    </a>
+    <a href='https://twitter.com/ConnectDoor' rel='noopener noreferrer' target='_blank'>
+      <FontAwesomeIcon icon={faTwitter} className='button-icon' size='lg' />
+    </a>
+    <a href='https://instagram.com/ConnectDoor' rel='noopener noreferrer' target='_blank'>
+      <FontAwesomeIcon icon={faInstagram} className='button-icon' size='lg' />
+    </a>
   </Container>
 )
 
