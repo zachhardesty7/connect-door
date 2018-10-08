@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import GImage from 'gatsby-image'
 
 import {
   Button,
@@ -16,6 +17,7 @@ import './Hero.scss'
 const Hero = ({
   title,
   subtitle,
+  background,
   buttonText,
   buttonProps
 }) => (
@@ -23,6 +25,13 @@ const Hero = ({
     vertical
     id='hero'
   >
+    {/* background image */}
+    <GImage
+      fluid={background}
+      style={{ position: `absolute` }}
+      className='background'
+    />
+
     <Container>
       <Header
         as='h1'

@@ -3,12 +3,12 @@
 #hero {
   padding-top: 10em;
   padding-bottom: 5em;
+
   &::before {
     content: "";
     height: 100%;
     width: 100.5%;
-    background: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
-                url(../../static/hero.jpg);
+    background: linear-gradient(0deg,rgba(0,0,0,0.65),rgba(0,0,0,0.65));
     filter: saturate(2) sepia(0.4);
     background-repeat: no-repeat;
     background-size: cover;
@@ -17,6 +17,20 @@
     left: -0.5%;
     position: absolute;
     z-index: -1;
+  }
+
+  .background {
+    position: absolute;
+    top: 0;
+    left: -0.5%;
+    height: 100%;
+    width: 100.5%;
+    z-index: -2;
+    & > img {
+      object-fit: cover !important; // or whatever
+      object-position: 0% 0% !important; // or whatever
+      font-family: 'object-fit: cover !important; object-position: 0% 0% !important;' // needed for IE9+ polyfill
+    }
   }
 
   h1,

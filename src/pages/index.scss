@@ -68,7 +68,7 @@ a {
     .process-label {
       z-index: 1;
       background-color: $secondaryColor;
-      color: white;
+      color: $black;
 
       // allow placement on right with changed color
       &.right::after {

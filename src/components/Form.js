@@ -97,10 +97,11 @@ class CustomForm extends React.Component {
                 {fieldGroup.map(field => (
                   <Form.Input
                     error={state.error && state[this.process(field)] === ''}
+                    id={`${name}-${this.process(field)}`}
                     key={this.process(field)}
-                    name={this.process(field)}
                     fluid
                     placeholder={field}
+                    label={field}
                     onChange={this.handleChange}
                     value={state[this.process(field)]}
                   />
@@ -110,10 +111,12 @@ class CustomForm extends React.Component {
           }
           {textArea && (
             <Form.TextArea
+              id={`${name}-text-area`}
               error={state.error && state['field-text-area'] === ''}
               name='field-text-area'
               autoHeight
-              placeholder={textArea}
+              placeholder='Message'
+              label={textArea}
               style={{ minHeight: 125 }}
               onChange={this.handleChange}
               value={state['field-text-area']}

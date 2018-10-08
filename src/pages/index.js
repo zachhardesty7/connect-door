@@ -56,8 +56,11 @@ class RootIndex extends React.Component {
 
     return (
       <React.Fragment>
-        <Helmet title={sectionHero.title}>
-          <html lang='en' />
+        <Helmet>
+          <meta charSet='utf-8' />
+          <title>{sectionHero.title}</title>
+          <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
+          <link rel='canonical' href='http://connectdoor.com' />
         </Helmet>
         <Navigation
           logo={sectionNav.logo.fluid}
@@ -68,6 +71,7 @@ class RootIndex extends React.Component {
           title={sectionHero.title}
           subtitle={sectionHero.subtitle}
           buttonText={sectionHero.button}
+          background={sectionHero.background.fluid}
           buttonProps={{ basic: true, inverted: true, size: 'huge' }}
         />
 
@@ -241,6 +245,19 @@ export const imageQuery = graphql`
           title
           subtitle
           button
+          background {
+            id
+            title
+            fluid(maxWidth: 1920) {
+              tracedSVG
+              aspectRatio
+              src
+              srcSet
+              srcWebp
+              srcSetWebp
+              sizes
+            }
+          }
         }
       }
     }

@@ -39,9 +39,10 @@ export default class Navigation extends React.Component {
               spy
               smooth
               duration={this.calcDuration}
+              tabIndex='0'
               name=''
             >
-              {<GImage fluid={logo} className='logo' />}
+              <GImage fluid={logo} className='logo' />
             </Menu.Item>
           )}
 
@@ -53,6 +54,7 @@ export default class Navigation extends React.Component {
               spy
               smooth
               duration={this.calcDuration}
+              tabIndex='0'
               name={page}
             />
           ))}
