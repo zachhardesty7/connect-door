@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
-// import Helmet from 'react-helmet'
+import Helmet from 'react-helmet'
 import Async from 'react-promise'
-// import GImage from 'gatsby-image'
+import GImage from 'gatsby-image'
 
 // ui framework
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -46,7 +46,6 @@ class RootIndex extends React.Component {
   render() {
     const { data } = this.props
 
-    const assets = data.allContentfulAsset.edges
     const sectionNav = data.allContentfulNav.edges[0].node
     const sectionHero = data.allContentfulHero.edges[0].node
     const sectionMission = data.allContentfulSectionBlurb.edges[1].node
@@ -55,15 +54,11 @@ class RootIndex extends React.Component {
     const sectionCareers = data.allContentfulSectionBlurb.edges[0].node
     const sectionContact = data.allContentfulSectionForm.edges[1].node
 
-    // const siteTitle = data.site.siteMetadata.title
-    const images = {}
-    assets.forEach((i) => {
-      images[i.node.title] = i.node
-    })
-
     return (
       <React.Fragment>
-        {/* <Helmet title={siteTitle} /> */}
+        <Helmet title={sectionHero.title}>
+          <html lang='en' />
+        </Helmet>
         <Navigation
           logo={sectionNav.logo.fluid}
           pages={sectionNav.sections}
@@ -75,7 +70,7 @@ class RootIndex extends React.Component {
           buttonText={sectionHero.button}
           buttonProps={{ basic: true, inverted: true, size: 'huge' }}
         />
-        {/* REVIEW: use a Segment.Group? */}
+
         <Segment id='home' vertical basic>
 
           <Segment id='about' vertical basic>
@@ -88,20 +83,16 @@ class RootIndex extends React.Component {
                 {sectionMission.blurbs.map(blurb => (
                   <Async
                     promise={import('@fortawesome/free-solid-svg-icons')}
-                    then={(icon) => {
-                      const name = `fa${toJoinedTitleCase(blurb.icon)}`
-                      const { [name]: test } = icon
-                      return (
-                        <Grid.Column>
-                          <Blurb
-                            icon={<FontAwesomeIcon icon={test} size='3x' color='#749AD3' />}
-                            header={blurb.title}
-                            headerAs='h4'
-                            content={blurb.content.content}
-                          />
-                        </Grid.Column>
-                      )
-                    }}
+                    then={icon => (
+                      <Grid.Column>
+                        <Blurb
+                          icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
+                          header={blurb.title}
+                          headerAs='h4'
+                          content={blurb.content.content}
+                        />
+                      </Grid.Column>
+                    )}
                   />
                 ))}
               </Grid>
@@ -112,14 +103,15 @@ class RootIndex extends React.Component {
             <Form
               name={sectionTour.form.name}
               header={sectionTour.title}
-              fields={[
-                ['First name', 'Last name'],
-                ['Email', 'Phone number']
-              ]}
+              fields={sectionTour.form.contentfulfields}
               textArea={sectionTour.form.textarea}
               button={sectionTour.form.button}
             >
-              {sectionTour.icons && <Container textAlign='center'><SocialMediaIcons /></Container>}
+              {sectionTour.icons && (
+                <Container textAlign='center'>
+                  <SocialMediaIcons />
+                </Container>
+              )}
               {sectionTour.content.content}
             </Form>
           </Segment>
@@ -130,15 +122,11 @@ class RootIndex extends React.Component {
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
                   <Item>
-                    <Item.Image
-                      // TODO: optimize
-                      src={item.image.fluid.src}
-                      size='medium'
-                      rounded
-                      label={{
-                        content: `#${i + 1}`, ribbon: true, className: 'process-label', size: 'huge'
-                      }}
-                    />
+                    <Item.Image size='medium' rounded>
+                      <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
+                      <GImage fluid={item.image.fluid} className='test' />
+                    </Item.Image>
+
                     <Item.Content verticalAlign='middle'>
                       <Item.Header>{item.title}</Item.Header>
                       <Item.Description>{item.content.content}</Item.Description>
@@ -196,14 +184,15 @@ class RootIndex extends React.Component {
             <Form
               name={sectionContact.form.name}
               header={sectionContact.title}
-              fields={[
-                ['First name', 'Last name'],
-                ['Email', 'Phone number']
-              ]}
+              fields={sectionTour.form.contentfulfields}
               textArea={sectionContact.form.textarea}
               button={sectionContact.form.button}
             >
-              {sectionContact.icons && <Container textAlign='center'><SocialMediaIcons /></Container>}
+              {sectionContact.icons && (
+                <Container textAlign='center'>
+                  <SocialMediaIcons />
+                </Container>
+              )}
               {sectionContact.content.content}
             </Form>
           </Segment>
@@ -286,10 +275,7 @@ export const imageQuery = graphql`
           form {
             id
             name
-            field1
-            field2
-            field3
-            field4
+            contentfulfields
             textarea
             button
           }
@@ -327,69 +313,5 @@ export const imageQuery = graphql`
         }
       }
     }
-    allContentfulAsset {
-      edges {
-        node {
-          id
-          title
-          file {
-            url
-          }
-          fluid(maxWidth: 613) {
-            sizes
-            src
-            srcSet
-            srcWebp
-            srcSetWebp
-          }
-        }
-      }
-    }
   }
 `
-
-// export const pageQuery = graphql`
-//   query HomeQuery {
-//     allContentfulBlogPost(sort: { fields: [publishDate], order: DESC }) {
-//       edges {
-//         node {
-//           title
-//           slug
-//           publishDate(formatString: "MMMM Do, YYYY")
-//           tags
-//           heroImage {
-//             sizes(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
-//              ...GatsbyContentfulSizes_tracedSVG
-//             }
-//           }
-//           description {
-//             childMarkdownRemark {
-//               html
-//             }
-//           }
-//         }
-//       }
-//     }
-//     allContentfulPerson(filter: { id: { eq: "" } }) {
-//       edges {
-//         node {
-//           name
-//           shortBio {
-//             shortBio
-//           }
-//           title
-//           heroImage: image {
-//             sizes(
-//               maxWidth: 1180
-//               maxHeight: 480
-//               resizingBehavior: PAD
-//               background: "rgb:000000"
-//             ) {
-//               ...GatsbyContentfulSizes_tracedSVG
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `

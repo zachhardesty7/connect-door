@@ -1,9 +1,5 @@
 @import '../theme/variables';
 
-// TODO: https://next.gatsbyjs.org/docs/actions/#setWebpackConfig
-// https://next.gatsbyjs.org/docs/add-custom-webpack-config
-// https://next.gatsbyjs.org/docs/migrating-from-v1-to-v2/#change-modifywebpackconfig-to-oncreatewebpackconfig
-
 #hero {
   padding-top: 10em;
   padding-bottom: 5em;
@@ -41,5 +37,10 @@
 
   button {
     background-color: $primaryColor;
+
+    .button-icon {
+      margin-left: .75em;
+      vertical-align: bottom;
+    }
   }
 }

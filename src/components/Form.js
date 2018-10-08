@@ -16,16 +16,16 @@ class CustomForm extends React.Component {
     super(props)
     this.state = { success: false, error: false }
 
-    props.fields.forEach(fieldGroup => fieldGroup.forEach((field) => {
+    props.fields.forEach((field) => {
       this.state[this.process(field)] = ''
-    }))
+    })
     if (props.textArea) this.state['field-text-area'] = ''
   }
 
   removeSuccessMessage = () => {
     setTimeout(() => {
       this.setState({ success: false })
-    }, 10000)
+    }, 6000)
   }
 
   process = str => `field-${str.toLowerCase().replace(/\W/g, '-')}`
@@ -78,9 +78,7 @@ class CustomForm extends React.Component {
       <Container className='customForm' text>
         <Container text>
           <Header as={headerAs} textAlign='center'>{header}</Header>
-          <Header.Content>
-            {children}
-          </Header.Content>
+          <Header.Content>{children}</Header.Content>
         </Container>
         <Form
           name={name}
@@ -91,21 +89,25 @@ class CustomForm extends React.Component {
           error={state.error}
         >
           <input type='hidden' name='bot-field' />
-          {fields.map(fieldGroup => (
-            <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
-              {fieldGroup.map(field => (
-                <Form.Input
-                  error={state.error && state[this.process(field)] === ''}
-                  key={this.process(field)}
-                  name={this.process(field)}
-                  fluid
-                  placeholder={field}
-                  onChange={this.handleChange}
-                  value={state[this.process(field)]}
-                />
-              ))}
-            </Form.Group>
-          ))}
+          {fields
+            .map((item, i) => (i % 2 === 0 && fields.slice(i, i + 2))) // group fields
+            .filter(item => item) // remove false (null) entries
+            .map(fieldGroup => (
+              <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
+                {fieldGroup.map(field => (
+                  <Form.Input
+                    error={state.error && state[this.process(field)] === ''}
+                    key={this.process(field)}
+                    name={this.process(field)}
+                    fluid
+                    placeholder={field}
+                    onChange={this.handleChange}
+                    value={state[this.process(field)]}
+                  />
+                ))}
+              </Form.Group>
+            ))
+          }
           {textArea && (
             <Form.TextArea
               error={state.error && state['field-text-area'] === ''}

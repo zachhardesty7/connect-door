@@ -5,9 +5,11 @@ import {
   Button,
   Container,
   Header,
-  Icon,
   Segment
 } from 'semantic-ui-react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 import './Hero.scss'
 
@@ -32,8 +34,7 @@ const Hero = ({
       />
       <Button {...buttonProps}>
         {buttonText}
-        {/* TODO: update to react-icons FaAngleRight */}
-        <Icon name='angle right' />
+        <FontAwesomeIcon icon={faAngleRight} className='button-icon' />
       </Button>
     </Container>
   </Segment>
