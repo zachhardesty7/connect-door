@@ -7,8 +7,7 @@ const Blurb = ({
   icon,
   header,
   headerAs,
-  content,
-  children
+  content
 }) => (
   <div>
     {icon}
@@ -21,19 +20,14 @@ Blurb.propTypes = {
   icon: PropTypes.element,
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.element, PropTypes.string
-    ]))
-  ])
+  content: PropTypes.string
 }
 
 Blurb.defaultProps = {
   icon: '',
   header: '',
   headerAs: 'h4',
-  children: []
+  content: ''
 }
 
 export default Blurb

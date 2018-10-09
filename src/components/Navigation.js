@@ -26,11 +26,16 @@ export default class Navigation extends React.Component {
     // eslint-disable-next-line no-unused-vars
     const { activeItem } = this.state // REVIEW: stick header?
     const {
-      pages, logo, search, centered
+      pages,
+      logo,
+      logoAlt,
+      search,
+      centered
     } = this.props
+
     return (
       <Container textAlign={centered && 'center'}>
-        <Menu id='nav' size='large' compact text secondary>
+        <Menu id='nav' size='large' compact stackable text secondary>
           {logo && (
             <Menu.Item
               as={Link}
@@ -42,7 +47,7 @@ export default class Navigation extends React.Component {
               tabIndex='0'
               name=''
             >
-              <GImage fluid={logo} className='logo' />
+              <GImage fluid={logo} alt={logoAlt} className='logo' />
             </Menu.Item>
           )}
 
@@ -76,6 +81,7 @@ Navigation.propTypes = {
   logo: PropTypes.oneOfType([
     PropTypes.element, PropTypes.object
   ]),
+  logoAlt: PropTypes.string,
   search: PropTypes.bool,
   centered: PropTypes.bool,
   pages: PropTypes.arrayOf(PropTypes.string)
@@ -83,6 +89,7 @@ Navigation.propTypes = {
 
 Navigation.defaultProps = {
   logo: {},
+  logoAlt: '',
   search: false,
   centered: false,
   pages: []

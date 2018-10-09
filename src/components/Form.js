@@ -155,13 +155,8 @@ CustomForm.propTypes = {
   name: PropTypes.string,
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.oneOfType([
-      PropTypes.element, PropTypes.string
-    ]))
-  ]),
-  fields: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  children: PropTypes.any, // eslint-disable-line react/forbid-prop-types
+  fields: PropTypes.arrayOf(PropTypes.string),
   textArea: PropTypes.oneOfType([
     PropTypes.string, PropTypes.bool
   ]),

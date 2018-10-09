@@ -18,6 +18,7 @@ const Hero = ({
   title,
   subtitle,
   background,
+  backgroundAlt,
   buttonText,
   buttonProps
 }) => (
@@ -28,6 +29,8 @@ const Hero = ({
     {/* background image */}
     <GImage
       fluid={background}
+      backgroundColor
+      alt={backgroundAlt}
       style={{ position: `absolute` }}
       className='background'
     />
@@ -52,6 +55,10 @@ const Hero = ({
 Hero.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
+  background: PropTypes.oneOfType([
+    PropTypes.element, PropTypes.object
+  ]),
+  backgroundAlt: PropTypes.string,
   buttonText: PropTypes.string,
   buttonProps: PropTypes.shape({
     basic: PropTypes.bool,
@@ -63,6 +70,8 @@ Hero.propTypes = {
 Hero.defaultProps = {
   title: '',
   subtitle: '',
+  background: {},
+  backgroundAlt: '',
   buttonText: 'Click Here',
   buttonProps: {}
 }

@@ -28,184 +28,167 @@ import {
   Form
 } from '../components'
 
-class RootIndex extends React.Component {
-  static propTypes = {
-    data: PropTypes.shape({
-      site: PropTypes.object,
-      allContentfulAsset: PropTypes.object
-    })
-  }
+const RootIndex = ({ data }) => {
+  const sectionNav = data.allContentfulNav.edges[0].node
+  const sectionHero = data.allContentfulHero.edges[0].node
+  const sectionMission = data.allContentfulSectionBlurb.edges[1].node
+  const sectionTour = data.allContentfulSectionForm.edges[0].node
+  const sectionItems = data.allContentfulSectionItems.edges[0].node
+  const sectionCareers = data.allContentfulSectionBlurb.edges[0].node
+  const sectionContact = data.allContentfulSectionForm.edges[1].node
 
-  static defaultProps = {
-    data: PropTypes.shape({
-      site: {},
-      allContentfulAsset: {}
-    })
-  }
+  return (
+    <React.Fragment>
+      <Helmet>
+        <meta charSet='utf-8' />
+        <title>{sectionHero.title}</title>
+        <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
+        <link rel='canonical' href='http://connectdoor.com' />
+      </Helmet>
+      <Navigation
+        logo={sectionNav.logo.fluid}
+        logoAlt={sectionNav.logo.title}
+        pages={sectionNav.sections}
+        centered
+      />
+      <Hero
+        title={sectionHero.title}
+        subtitle={sectionHero.subtitle}
+        buttonText={sectionHero.button}
+        background={sectionHero.background.fluid}
+        backgroundAlt={sectionHero.background.title}
+        buttonProps={{ basic: true, inverted: true, size: 'huge' }}
+      />
 
-  render() {
-    const { data } = this.props
+      <Segment id='home' vertical basic>
 
-    const sectionNav = data.allContentfulNav.edges[0].node
-    const sectionHero = data.allContentfulHero.edges[0].node
-    const sectionMission = data.allContentfulSectionBlurb.edges[1].node
-    const sectionTour = data.allContentfulSectionForm.edges[0].node
-    const sectionItems = data.allContentfulSectionItems.edges[0].node
-    const sectionCareers = data.allContentfulSectionBlurb.edges[0].node
-    const sectionContact = data.allContentfulSectionForm.edges[1].node
-
-    return (
-      <React.Fragment>
-        <Helmet>
-          <meta charSet='utf-8' />
-          <title>{sectionHero.title}</title>
-          <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
-          <link rel='canonical' href='http://connectdoor.com' />
-        </Helmet>
-        <Navigation
-          logo={sectionNav.logo.fluid}
-          pages={sectionNav.sections}
-          centered
-        />
-        <Hero
-          title={sectionHero.title}
-          subtitle={sectionHero.subtitle}
-          buttonText={sectionHero.button}
-          background={sectionHero.background.fluid}
-          buttonProps={{ basic: true, inverted: true, size: 'huge' }}
-        />
-
-        <Segment id='home' vertical basic>
-
-          <Segment id='about' vertical basic>
-            <Container text>
-              <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
-              <Header.Content>{sectionMission.content.content}</Header.Content>
-            </Container>
-            <Container className='blurbs'>
-              <Grid relaxed columns={3} divided padded>
-                {sectionMission.blurbs.map(blurb => (
-                  <Async
-                    promise={import('@fortawesome/free-solid-svg-icons')}
-                    then={icon => (
-                      <Grid.Column>
-                        <Blurb
-                          icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
-                          header={blurb.title}
-                          headerAs='h4'
-                          content={blurb.content.content}
-                        />
-                      </Grid.Column>
-                    )}
-                  />
-                ))}
-              </Grid>
-            </Container>
-          </Segment>
-
-          <Segment id='property-tour' vertical secondary basic>
-            <Form
-              name={sectionTour.form.name}
-              header={sectionTour.title}
-              fields={sectionTour.form.contentfulfields}
-              textArea={sectionTour.form.textarea}
-              button={sectionTour.form.button}
-            >
-              {sectionTour.icons && (
-                <Container textAlign='center'>
-                  <SocialMediaIcons />
-                </Container>
-              )}
-              {sectionTour.content.content}
-            </Form>
-          </Segment>
-
-          <Segment id='process' vertical basic>
-            <Container className='container-items' text>
-              <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
-              <Item.Group divided relaxed>
-                {sectionItems.steps.map((item, i) => (
-                  <Item>
-                    <Item.Image size='medium' rounded>
-                      <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
-                      <GImage fluid={item.image.fluid} className='test' />
-                    </Item.Image>
-
-                    <Item.Content verticalAlign='middle'>
-                      <Item.Header>{item.title}</Item.Header>
-                      <Item.Description>{item.content.content}</Item.Description>
-                    </Item.Content>
-                  </Item>
-                ))}
-              </Item.Group>
-            </Container>
-            <Container text textAlign='center'>
-              <Message compact floating size='huge'>
-                <Message.Header>
-                  <Label
-                    content={sectionItems.finalStepLabel}
-                    horizontal
-                    className='process-label'
-                    size='huge'
-                  />
-                  {sectionItems.finalStep}
-                </Message.Header>
-              </Message>
-            </Container>
-          </Segment>
-
-          <Segment id='careers' vertical basic secondary>
-            <Container text>
-              <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
-              <Header.Content>{sectionCareers.content.content}</Header.Content>
-            </Container>
-            <Container className='blurbs'>
-              <Grid relaxed columns={3} divided padded>
-                {sectionCareers.blurbs.map(blurb => (
-                  <Async
-                    promise={import('@fortawesome/free-solid-svg-icons')}
-                    then={(icon) => {
-                      const name = `fa${toJoinedTitleCase(blurb.icon)}`
-                      const { [name]: test } = icon
-                      return (
-                        <Grid.Column>
-                          <Blurb
-                            icon={<FontAwesomeIcon icon={test} size='3x' color='#749AD3' />}
-                            header={blurb.title}
-                            headerAs='h4'
-                            content={blurb.content.content}
-                          />
-                        </Grid.Column>
-                      )
-                    }}
-                  />
-                ))}
-              </Grid>
-            </Container>
-          </Segment>
-
-          <Segment id='contact' vertical basic>
-            <Form
-              name={sectionContact.form.name}
-              header={sectionContact.title}
-              fields={sectionTour.form.contentfulfields}
-              textArea={sectionContact.form.textarea}
-              button={sectionContact.form.button}
-            >
-              {sectionContact.icons && (
-                <Container textAlign='center' className='contact-icons'>
-                  <SocialMediaIcons />
-                </Container>
-              )}
-              {sectionContact.content.content}
-            </Form>
-          </Segment>
-
+        <Segment id='about' vertical basic>
+          <Container text>
+            <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
+            <Header.Content>{sectionMission.content.content}</Header.Content>
+          </Container>
+          <Container className='blurbs'>
+            <Grid relaxed stackable columns={3} divided padded>
+              {sectionMission.blurbs.map(blurb => (
+                <Async
+                  key={toJoinedTitleCase(blurb.title)}
+                  promise={import('@fortawesome/free-solid-svg-icons')}
+                  then={icon => (
+                    <Grid.Column>
+                      <Blurb
+                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
+                        header={blurb.title}
+                        headerAs='h4'
+                        content={blurb.content.content}
+                      />
+                    </Grid.Column>
+                  )}
+                />
+              ))}
+            </Grid>
+          </Container>
         </Segment>
-        <Footer />
-      </React.Fragment>
-    )
-  }
+
+        <Segment id='property-tour' vertical secondary basic>
+          <Form
+            name={sectionTour.form.name}
+            header={sectionTour.title}
+            fields={sectionTour.form.contentfulfields}
+            textArea={sectionTour.form.textarea}
+            button={sectionTour.form.button}
+          >
+            {sectionTour.icons && (
+              <Container textAlign='center'>
+                <SocialMediaIcons />
+              </Container>
+            )}
+            {sectionTour.content.content}
+          </Form>
+        </Segment>
+
+        <Segment id='process' vertical basic>
+          <Container className='container-items' text>
+            <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
+            <Item.Group divided relaxed>
+              {sectionItems.steps.map((item, i) => (
+                <Item key={toJoinedTitleCase(item.title)}>
+                  <Item.Image size='medium' rounded className='darken-25'>
+                    <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
+                    <GImage fixed={item.image.fixed} backgroundColor alt={item.image.title} />
+                  </Item.Image>
+
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header>{item.title}</Item.Header>
+                    <Item.Description>{item.content.content}</Item.Description>
+                  </Item.Content>
+                </Item>
+              ))}
+            </Item.Group>
+          </Container>
+          <Container text textAlign='center'>
+            <Message compact floating size='huge'>
+              <Message.Header>
+                <Label
+                  content={sectionItems.finalStepLabel}
+                  horizontal
+                  className='process-label'
+                  size='huge'
+                />
+                {sectionItems.finalStep}
+              </Message.Header>
+            </Message>
+          </Container>
+        </Segment>
+
+        <Segment id='careers' vertical basic secondary>
+          <Container text>
+            <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
+            <Header.Content>{sectionCareers.content.content}</Header.Content>
+          </Container>
+          <Container className='blurbs'>
+            <Grid relaxed stackable columns={3} divided padded>
+              {sectionCareers.blurbs.map(blurb => (
+                <Async
+                  key={toJoinedTitleCase(blurb.title)}
+                  promise={import('@fortawesome/free-solid-svg-icons')}
+                  then={icon => (
+                    <Grid.Column>
+                      <Blurb
+                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
+                        header={blurb.title}
+                        headerAs='h4'
+                        content={blurb.content.content}
+                      />
+                    </Grid.Column>
+                  )}
+                />
+              ))}
+            </Grid>
+          </Container>
+        </Segment>
+
+        <Segment id='contact' vertical basic>
+          <Form
+            name={sectionContact.form.name}
+            header={sectionContact.title}
+            fields={sectionTour.form.contentfulfields}
+            textArea={sectionContact.form.textarea}
+            button={sectionContact.form.button}
+          >
+            {sectionContact.icons && (
+              <Container textAlign='center' className='contact-icons'>
+                <SocialMediaIcons />
+              </Container>
+            )}
+            {sectionContact.content.content}
+          </Form>
+        </Segment>
+
+      </Segment>
+
+      <Footer copyright='ConnectDoor' />
+    </React.Fragment>
+  )
 }
 
 function toJoinedTitleCase(str) {
@@ -213,6 +196,20 @@ function toJoinedTitleCase(str) {
     /\w*/g,
     txt => txt.charAt(0).toUpperCase() + txt.substr(1)
   ).replace(/\W/g, '')
+}
+
+RootIndex.propTypes = {
+  data: PropTypes.shape({
+    site: PropTypes.object,
+    allContentfulAsset: PropTypes.object
+  })
+}
+
+RootIndex.defaultProps = {
+  data: PropTypes.shape({
+    site: {},
+    allContentfulAsset: {}
+  })
 }
 
 export default RootIndex
@@ -227,13 +224,7 @@ export const imageQuery = graphql`
             id
             title
             fluid(maxWidth: 300) {
-              tracedSVG
-              aspectRatio
-              src
-              srcSet
-              srcWebp
-              srcSetWebp
-              sizes
+              ...GatsbyContentfulFluid_tracedSVG
             }
           }
         }
@@ -249,13 +240,7 @@ export const imageQuery = graphql`
             id
             title
             fluid(maxWidth: 1920) {
-              tracedSVG
-              aspectRatio
-              src
-              srcSet
-              srcWebp
-              srcSetWebp
-              sizes
+              ...GatsbyContentfulFluid_withWebp
             }
           }
         }
@@ -313,14 +298,8 @@ export const imageQuery = graphql`
             image {
               id
               title
-              fluid(maxWidth: 600) {
-                tracedSVG
-                aspectRatio
-                src
-                srcSet
-                srcWebp
-                srcSetWebp
-                sizes
+              fixed(width: 300) {
+                ...GatsbyContentfulFixed_withWebp
               }
             }
             stepRibbon

@@ -21,6 +21,19 @@ if (!spaceId || !accessToken) {
 
 module.exports = {
   plugins: [
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: 'ConnectDoor',
+        short_name: 'ConnectDoor',
+        start_url: '/',
+        background_color: '#3B5998',
+        theme_color: '#3B5998',
+        display: 'minimal-ui',
+        icon: './static/Blue Logo/Icon/CD Logo -- Icon -- Blue.png' // This path is relative to the root of the site.
+      }
+    },
+    'gatsby-plugin-offline',
     'gatsby-transformer-remark',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-sharp',

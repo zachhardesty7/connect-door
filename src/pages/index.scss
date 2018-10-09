@@ -47,7 +47,11 @@ a {
 #home {
   padding: 3em 0em;
 
-  &>.segment {
+  .gatsby-image-wrapper {
+    display: block !important;
+  }
+
+  & > .segment {
     padding-top: 5em;
     padding-bottom: 5em;
   }
@@ -89,6 +93,7 @@ a {
       top: 0;
       left: 0;
       position: absolute;
+      z-index: 1;
     }
   }
 
