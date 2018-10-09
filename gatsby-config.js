@@ -33,6 +33,7 @@ module.exports = {
         icon: './static/Blue Logo/Icon/CD Logo -- Icon -- Blue.png' // This path is relative to the root of the site.
       }
     },
+    // 'gatsby-plugin-webpack-bundle-analyzer',
     'gatsby-plugin-offline',
     'gatsby-transformer-remark',
     'gatsby-plugin-react-helmet',
