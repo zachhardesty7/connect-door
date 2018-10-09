@@ -43,7 +43,7 @@ const RootIndex = ({ data }) => {
         <meta charSet='utf-8' />
         <title>{sectionHero.title}</title>
         <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
-        <link rel='canonical' href='http://connectdoor.com' />
+        <link rel='canonical' href='https://connectdoor.com' />
       </Helmet>
       <Navigation
         logo={sectionNav.logo.fluid}
