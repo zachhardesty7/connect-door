@@ -40,6 +40,7 @@ const RootIndex = ({ data }) => {
   return (
     <React.Fragment>
       <Helmet>
+        <html lang='en' />
         <meta charSet='utf-8' />
         <title>{sectionHero.title}</title>
         <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
