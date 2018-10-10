@@ -226,7 +226,7 @@ export const imageQuery = graphql`
           logo {
             id
             title
-            fluid(maxWidth: 100) {
+            fluid(maxWidth: 150) {
               ...GatsbyContentfulFluid_tracedSVG
             }
           }

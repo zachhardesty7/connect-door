@@ -8,8 +8,11 @@
 
 @import '../theme/variables';
 
+* {
+  font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif !important;
+}
+
 body {
-  font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif;
   font-size: 1em;
   line-height: 1.65;
   color: #373F49;
@@ -63,7 +66,7 @@ a {
     .process-label {
       z-index: 1;
       background-color: $secondaryColor;
-      color: $black;
+      color: $white;
 
       // allow placement on right with changed color
       &.right::after {
