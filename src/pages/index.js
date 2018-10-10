@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
+
+import { Link } from 'react-scroll'
 import Helmet from 'react-helmet'
 import Async from 'react-promise'
 import GImage from 'gatsby-image'
@@ -60,7 +62,15 @@ const RootIndex = ({ data }) => {
         buttonText={sectionHero.button}
         background={sectionHero.background.fluid}
         backgroundAlt={sectionHero.background.title}
-        buttonProps={{ basic: true, inverted: true, size: 'huge' }}
+        buttonProps={{
+          basic: true,
+          inverted: true,
+          size: 'huge',
+          as: Link,
+          to: 'property-tour',
+          smooth: true,
+          duration: calcDuration
+        }}
       />
 
       <Segment id='home' vertical basic>
@@ -213,6 +223,13 @@ RootIndex.defaultProps = {
     site: {},
     allContentfulAsset: {}
   })
+}
+
+const calcDuration = (scrollDistanceInPx) => {
+  const min = 800
+  const max = 2000
+
+  return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
 }
 
 export default RootIndex

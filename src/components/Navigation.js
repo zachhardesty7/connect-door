@@ -15,13 +15,6 @@ export default class Navigation extends React.Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-  calcDuration = (scrollDistanceInPx) => {
-    const min = 800
-    const max = 2000
-
-    return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
-  }
-
   render() {
     // eslint-disable-next-line no-unused-vars
     const { activeItem } = this.state // REVIEW: stick header?
@@ -43,7 +36,7 @@ export default class Navigation extends React.Component {
               key='logo'
               spy
               smooth
-              duration={this.calcDuration}
+              duration={calcDuration}
               tabIndex='0'
               name=''
             >
@@ -93,4 +86,11 @@ Navigation.defaultProps = {
   search: false,
   centered: false,
   pages: []
+}
+
+const calcDuration = (scrollDistanceInPx) => {
+  const min = 800
+  const max = 2000
+
+  return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
 }
