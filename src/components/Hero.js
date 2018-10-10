@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Async from 'react-promise'
 import GImage from 'gatsby-image'
 
 import {
@@ -46,7 +47,12 @@ const Hero = ({
       />
       <Button {...buttonProps}>
         {buttonText}
-        <FontAwesomeIcon icon={faAngleRight} className='button-icon' />
+        <Async
+          promise={import('@fortawesome/free-solid-svg-icons/faAngleRight')}
+          then={icon => (
+            <FontAwesomeIcon icon={icon.faAngleRight} className='button-icon' />
+          )}
+        />
       </Button>
     </Container>
   </Segment>
