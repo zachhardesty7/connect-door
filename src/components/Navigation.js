@@ -47,7 +47,7 @@ export default class Navigation extends React.Component {
               tabIndex='0'
               name=''
             >
-              <GImage fluid={logo} alt={logoAlt} className='logo' />
+              <GImage fixed={logo} alt={logoAlt} className='logo' />
             </Menu.Item>
           )}
 

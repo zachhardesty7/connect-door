@@ -49,7 +49,7 @@ const RootIndex = ({ data }) => {
         <link rel='canonical' href='https://connectdoor.com' />
       </Helmet>
       <Navigation
-        logo={sectionNav.logo.fluid}
+        logo={sectionNav.logo.fixed}
         logoAlt={sectionNav.logo.title}
         pages={sectionNav.sections}
         centered
@@ -226,8 +226,8 @@ export const imageQuery = graphql`
           logo {
             id
             title
-            fluid(maxWidth: 150) {
-              ...GatsbyContentfulFluid_tracedSVG
+            fixed(width: 150) {
+              ...GatsbyContentfulFixed_tracedSVG
             }
           }
         }
