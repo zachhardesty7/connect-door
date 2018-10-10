@@ -23,6 +23,12 @@ import {
 import './index.scss'
 import 'semantic-ui-css/semantic.min.css'
 
+// favicon
+import faviconApple from '../../static/apple-touch-icon.png'
+import favicon32 from '../../static/favicon-32x32.png'
+import favicon16 from '../../static/favicon-16x16.png'
+import faviconSafari from '../../static/safari-pinned-tab.svg'
+
 import {
   Blurb,
   Navigation,
@@ -49,6 +55,16 @@ const RootIndex = ({ data }) => {
         <title>{sectionHero.title}</title>
         <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
         <link rel='canonical' href='https://connectdoor.com' />
+
+        {/* favicon */}
+        <link rel='apple-touch-icon' sizes='180x180' href={faviconApple} />
+        <link rel='icon' type='image/png' sizes='32x32' href={favicon32} />
+        <link rel='icon' type='image/png' sizes='16x16' href={favicon16} />
+        <link rel='mask-icon' href={faviconSafari} color='#3b5998' />
+        <meta name='apple-mobile-web-app-title' content='ConnectDoor' />
+        <meta name='application-name' content='ConnectDoor' />
+        <meta name='msapplication-TileColor' content='#3b5998' />
+        <meta name='theme-color' content='#ffffff' />
       </Helmet>
       <Navigation
         logo={sectionNav.logo.fixed}
