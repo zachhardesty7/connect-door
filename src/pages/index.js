@@ -41,10 +41,10 @@ import {
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
-  const sectionMission = data.allContentfulSectionBlurb.edges[1].node
+  const sectionMission = data.allContentfulSectionBlurb.edges[0].node
   const sectionTour = data.allContentfulSectionForm.edges[0].node
   const sectionItems = data.allContentfulSectionItems.edges[0].node
-  const sectionCareers = data.allContentfulSectionBlurb.edges[0].node
+  const sectionCareers = data.allContentfulSectionBlurb.edges[1].node
   const sectionContact = data.allContentfulSectionForm.edges[1].node
 
   return (
@@ -79,8 +79,7 @@ const RootIndex = ({ data }) => {
         background={sectionHero.background.fluid}
         backgroundAlt={sectionHero.background.title}
         buttonProps={{
-          basic: true,
-          inverted: true,
+          primary: true,
           size: 'huge',
           as: Link,
           to: 'property-tour',
@@ -269,6 +268,13 @@ export const imageQuery = graphql`
     allContentfulHero {
       edges {
         node {
+          logo {
+            id
+            title
+            fixed(width: 100) {
+              ...GatsbyContentfulFixed_tracedSVG
+            }
+          }
           title
           subtitle
           button

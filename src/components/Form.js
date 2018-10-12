@@ -15,11 +15,12 @@ class CustomForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = { success: false, error: false }
+    const { name } = this.props
 
     props.fields.forEach((field) => {
-      this.state[this.process(field)] = ''
+      if (!field.includes(';')) { this.state[`${name}-${this.process(field)}`] = '' } else { this.state[`${name}-${this.process(field.slice(0, field.indexOf('(')))}`] = '' }
     })
-    if (props.textArea) this.state['field-text-area'] = ''
+    if (props.textArea) this.state[`${name}-field-text-area`] = ''
   }
 
   removeSuccessMessage = () => {
@@ -51,15 +52,15 @@ class CustomForm extends React.Component {
 
       Object.keys(state).forEach((key) => { newState[key] = '' })
 
-      this.setState({ success: true, error: false, ...newState })
+      this.setState({ ...newState, success: true, error: false })
 
       this.removeSuccessMessage()
     }
 
     evt.preventDefault()
-  };
+  }
 
-  handleChange = e => this.setState({ [e.target.name]: e.target.value });
+  handleChange = (e, { id, value }) => { this.setState({ [id]: value }) }
 
   render() {
     const {
@@ -94,32 +95,56 @@ class CustomForm extends React.Component {
             .filter(item => item) // remove false (null) entries
             .map(fieldGroup => (
               <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
-                {fieldGroup.map(field => (
-                  <Form.Input
-                    error={state.error && state[this.process(field)] === ''}
-                    id={`${name}-${this.process(field)}`}
-                    key={this.process(field)}
-                    fluid
-                    placeholder={field}
-                    label={field}
-                    onChange={this.handleChange}
-                    value={state[this.process(field)]}
-                  />
-                ))}
+                {fieldGroup.map((field) => {
+                  if (field.includes(';')) {
+                    const title = field.slice(0, field.indexOf('(')) // get title
+                    let options = field.slice(field.indexOf('(') + 1, field.indexOf(')')) // remove title
+                    options = options.split('; ') // -> arr
+                    options = options.map(op => ({ // --> arr of objs
+                      text: op,
+                      value: op
+                    }))
+
+                    return (
+                      <Form.Select
+                        error={state.error && state[`${name}-${this.process(title)}`] === ''}
+                        id={`${name}-${this.process(title)}`}
+                        key={`${name}-${this.process(title)}`}
+                        fluid
+                        placeholder={title}
+                        label={title}
+                        onChange={this.handleChange}
+                        value={state[`${name}-${this.process(title)}`]}
+                        options={options}
+                      />
+                    )
+                  }
+                  return (
+                    <Form.Input
+                      error={state.error && state[`${name}-${this.process(field)}`] === ''}
+                      id={`${name}-${this.process(field)}`}
+                      key={this.process(field)}
+                      fluid
+                      placeholder={field}
+                      label={field}
+                      onChange={this.handleChange}
+                      value={state[`${name}-${this.process(field)}`]}
+                    />
+                  )
+                })}
               </Form.Group>
             ))
           }
           {textArea && (
             <Form.TextArea
-              id={`${name}-text-area`}
-              error={state.error && state['field-text-area'] === ''}
-              name='field-text-area'
+              id={`${name}-field-text-area`}
+              error={state.error && state[`${name}-field-text-area`] === ''}
               autoHeight
               placeholder='Message'
               label={textArea}
               style={{ minHeight: 125 }}
               onChange={this.handleChange}
-              value={state['field-text-area']}
+              value={state[`${name}-field-text-area`]}
             />
           )}
 

@@ -50,7 +50,13 @@
   }
 
   .ui.button {
-    background-color: $primaryColor;
+    background-color: $secondaryColor;
+    transition: ease-in-out 50ms;
+
+    &:hover {
+      transition: ease-in-out 100ms;
+      background-color: $primaryColor;
+    }
 
     .button-icon {
       margin-left: .75em;
