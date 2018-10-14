@@ -64,6 +64,9 @@ const Hero = ({
 )
 
 Hero.propTypes = {
+  logo: PropTypes.oneOfType([
+    PropTypes.element, PropTypes.object
+  ]),
   title: PropTypes.string,
   subtitle: PropTypes.string,
   background: PropTypes.oneOfType([
@@ -74,11 +77,17 @@ Hero.propTypes = {
   buttonProps: PropTypes.shape({
     basic: PropTypes.bool,
     inverted: PropTypes.bool,
-    size: PropTypes.string
+    primary: PropTypes.bool,
+    size: PropTypes.string,
+    as: PropTypes.element,
+    to: PropTypes.string,
+    smooth: PropTypes.bool,
+    duration: PropTypes.func
   })
 }
 
 Hero.defaultProps = {
+  logo: {},
   title: '',
   subtitle: '',
   background: {},

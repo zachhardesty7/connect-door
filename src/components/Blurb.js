@@ -12,7 +12,7 @@ const Blurb = ({
   <div>
     {icon}
     <Header as={headerAs} textAlign='center'>{header}</Header>
-    <Header.Content content={content} />
+    <Header.Content>{content}</Header.Content>
   </div>
 )
 
@@ -20,7 +20,7 @@ Blurb.propTypes = {
   icon: PropTypes.element,
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  content: PropTypes.string
+  content: PropTypes.node
 }
 
 Blurb.defaultProps = {

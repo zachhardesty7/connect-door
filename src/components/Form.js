@@ -183,7 +183,7 @@ CustomForm.propTypes = {
   name: PropTypes.string,
   header: PropTypes.string,
   headerAs: PropTypes.string,
-  children: PropTypes.any, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.node,
   fields: PropTypes.arrayOf(PropTypes.string),
   textArea: PropTypes.oneOfType([
     PropTypes.string, PropTypes.bool
@@ -196,7 +196,7 @@ CustomForm.defaultProps = {
   header: '',
   headerAs: 'h3',
   children: [],
-  fields: [[]],
+  fields: [],
   textArea: false,
   button: 'Submit'
 }
