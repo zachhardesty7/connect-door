@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Hero.scss'
 
 const Hero = ({
+  logo,
   title,
   subtitle,
   background,
@@ -36,6 +37,11 @@ const Hero = ({
     />
 
     <Container>
+      <GImage
+        fixed={logo}
+        alt='logo'
+        className='logo'
+      />
       <Header
         as='h1'
         content={title}

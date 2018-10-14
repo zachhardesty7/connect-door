@@ -73,6 +73,7 @@ const RootIndex = ({ data }) => {
         centered
       />
       <Hero
+        logo={sectionHero.logo.fixed}
         title={sectionHero.title}
         subtitle={sectionHero.subtitle}
         buttonText={sectionHero.button}
@@ -199,7 +200,7 @@ const RootIndex = ({ data }) => {
           <Form
             name={sectionContact.form.name}
             header={sectionContact.title}
-            fields={sectionTour.form.contentfulfields}
+            fields={sectionContact.form.contentfulfields}
             textArea={sectionContact.form.textarea}
             button={sectionContact.form.button}
           >
@@ -271,7 +272,7 @@ export const imageQuery = graphql`
           logo {
             id
             title
-            fixed(width: 100) {
+            fixed(width: 50) {
               ...GatsbyContentfulFixed_tracedSVG
             }
           }

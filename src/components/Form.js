@@ -5,9 +5,11 @@ import {
   Form,
   Message,
   Transition,
-  Icon,
   Header
 } from 'semantic-ui-react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretDown, faExclamation, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 import './Form.scss'
 
@@ -100,7 +102,7 @@ class CustomForm extends React.Component {
                     const title = field.slice(0, field.indexOf('(')) // get title
                     let options = field.slice(field.indexOf('(') + 1, field.indexOf(')')) // remove title
                     options = options.split('; ') // -> arr
-                    options = options.map(op => ({ // --> arr of objs
+                    options = options.map(op => ({ // --> arr of obj
                       text: op,
                       value: op
                     }))
@@ -116,6 +118,7 @@ class CustomForm extends React.Component {
                         onChange={this.handleChange}
                         value={state[`${name}-${this.process(title)}`]}
                         options={options}
+                        icon={<FontAwesomeIcon icon={faCaretDown} pull='right' title='Instagram' />}
                       />
                     )
                   }
@@ -151,7 +154,7 @@ class CustomForm extends React.Component {
           <Transition.Group className='form-messages' animation='fade down' duration={500}>
             {state.success && (
               <Message icon success className='form-message'>
-                <Icon name='check' />
+                <FontAwesomeIcon icon={faCheck} size='2x' className='icon-message' title='Instagram' />
                 <Message.Content>
                   <Message.Header>Form Submitted</Message.Header>
                     You&#39;ll hear back from our team shortly!
@@ -160,7 +163,7 @@ class CustomForm extends React.Component {
             )}
             {state.error && (
               <Message icon error className='form-message'>
-                <Icon name='x' />
+                <FontAwesomeIcon icon={faExclamation} size='2x' className='icon-message' title='Instagram' />
                 <Message.Content>
                   <Message.Header>Error</Message.Header>
                     Please fill out all fields!

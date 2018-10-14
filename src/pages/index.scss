@@ -8,7 +8,7 @@
 
 @import '../theme/variables';
 
-* {
+*:not(.icon) {
   font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
