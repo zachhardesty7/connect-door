@@ -8,6 +8,8 @@ import {
   Menu
 } from 'semantic-ui-react'
 
+import { calcDuration } from '../utils'
+
 import './Navigation.scss'
 
 export default class Navigation extends React.Component {
@@ -51,7 +53,7 @@ export default class Navigation extends React.Component {
               key={`${page.toLowerCase().replace(' ', '-')}`}
               spy
               smooth
-              duration={this.calcDuration}
+              duration={calcDuration}
               tabIndex='0'
               name={page}
             />
@@ -86,11 +88,4 @@ Navigation.defaultProps = {
   search: false,
   centered: false,
   pages: []
-}
-
-const calcDuration = (scrollDistanceInPx) => {
-  const min = 800
-  const max = 2000
-
-  return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
 }

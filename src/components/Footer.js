@@ -19,7 +19,27 @@ const Footer = ({ copyright }) => (
           <a href='https://zachhardesty.com'>Zach Hardesty</a>
         </Grid.Column>
         <Grid.Column width={4} id='bottom-bar-icons' floated='right' textAlign='right'>
-          <SocialMediaIcons inverted />
+          <SocialMediaIcons
+            inverted
+            icons={[
+              {
+                name: 'Facebook',
+                link: 'https://www.facebook.com/theconnectdoor/'
+              },
+              {
+                name: 'Twitter',
+                link: 'https://twitter.com/ConnectDoor/'
+              },
+              {
+                name: 'Instagram',
+                link: 'https://instagram.com/ConnectDoor/'
+              },
+              {
+                name: 'Linkedin',
+                link: 'https://www.linkedin.com/company/connect-door/'
+              }
+            ]}
+          />
         </Grid.Column>
       </Grid>
     </Container>

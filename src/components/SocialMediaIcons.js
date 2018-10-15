@@ -1,32 +1,47 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Async from 'react-promise'
 
 import { Container } from 'semantic-ui-react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInstagram, faTwitter, faFacebook } from '@fortawesome/free-brands-svg-icons'
+
+import { toJoinedTitleCase } from '../utils'
 
 import './SocialMediaIcons.scss'
 
-const SocialMediaIcons = ({ inverted }) => (
+const SocialMediaIcons = ({ icons, inverted }) => (
   <Container className={`socialMediaIcons ${!!inverted && 'inverted'}`}>
-    <a href='https://www.facebook.com/theconnectdoor/' rel='noopener noreferrer' target='_blank'>
-      <FontAwesomeIcon icon={faFacebook} className='button-icon' size='lg' title='Facebook' />
-    </a>
-    <a href='https://twitter.com/ConnectDoor' rel='noopener noreferrer' target='_blank'>
-      <FontAwesomeIcon icon={faTwitter} className='button-icon' size='lg' title='Twitter' />
-    </a>
-    <a href='https://instagram.com/ConnectDoor' rel='noopener noreferrer' target='_blank'>
-      <FontAwesomeIcon icon={faInstagram} className='button-icon' size='lg' title='Instagram' />
-    </a>
+    {icons && icons.map(icon => (
+      <Async
+        key={toJoinedTitleCase(icon.name)}
+        promise={import('@fortawesome/free-brands-svg-icons')}
+        then={iconModule => (
+          <a href={icon.link} rel='noopener noreferrer' target='_blank'>
+            <FontAwesomeIcon
+              icon={iconModule[`fa${toJoinedTitleCase(icon.name)}`]}
+              className='button-icon'
+              size='lg'
+            />
+          </a>
+        )}
+      />
+    ))}
   </Container>
 )
 
 SocialMediaIcons.propTypes = {
+  icons: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      link: PropTypes.string
+    })
+  ),
   inverted: PropTypes.bool
 }
 
 SocialMediaIcons.defaultProps = {
+  icons: [],
   inverted: false
 }
 

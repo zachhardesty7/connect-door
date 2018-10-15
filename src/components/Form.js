@@ -11,6 +11,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown, faExclamation, faCheck } from '@fortawesome/free-solid-svg-icons'
 
+import { process, encode } from '../utils'
+
 import './Form.scss'
 
 class CustomForm extends React.Component {
@@ -20,7 +22,7 @@ class CustomForm extends React.Component {
     const { name } = this.props
 
     props.fields.forEach((field) => {
-      if (!field.includes(';')) { this.state[`${name}-${this.process(field)}`] = '' } else { this.state[`${name}-${this.process(field.slice(0, field.indexOf('(')))}`] = '' }
+      if (!field.includes(';')) { this.state[`${name}-${process(field)}`] = '' } else { this.state[`${name}-${process(field.slice(0, field.indexOf('(')))}`] = '' }
     })
     if (props.textArea) this.state[`${name}-field-text-area`] = ''
   }
@@ -31,12 +33,6 @@ class CustomForm extends React.Component {
     }, 6000)
   }
 
-  process = str => `field-${str.toLowerCase().replace(/\W/g, '-')}`
-
-  encode = data => Object.keys(data)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
-    .join('&')
-
   handleSubmit = (evt) => {
     const { state } = this
 
@@ -46,7 +42,7 @@ class CustomForm extends React.Component {
       fetch('/', { // eslint-disable-line no-undef
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: this.encode({ 'form-name': 'contact', ...state })
+        body: encode({ 'form-name': 'contact', ...state })
       })
         .catch(err => console.log(err)) // eslint-disable-line no-console
 
@@ -109,14 +105,14 @@ class CustomForm extends React.Component {
 
                     return (
                       <Form.Select
-                        error={state.error && state[`${name}-${this.process(title)}`] === ''}
-                        id={`${name}-${this.process(title)}`}
-                        key={`${name}-${this.process(title)}`}
+                        error={state.error && state[`${name}-${process(title)}`] === ''}
+                        id={`${name}-${process(title)}`}
+                        key={`${name}-${process(title)}`}
                         fluid
                         placeholder={title}
                         label={title}
                         onChange={this.handleChange}
-                        value={state[`${name}-${this.process(title)}`]}
+                        value={state[`${name}-${process(title)}`]}
                         options={options}
                         icon={<FontAwesomeIcon icon={faCaretDown} pull='right' title='Instagram' />}
                       />
@@ -124,14 +120,14 @@ class CustomForm extends React.Component {
                   }
                   return (
                     <Form.Input
-                      error={state.error && state[`${name}-${this.process(field)}`] === ''}
-                      id={`${name}-${this.process(field)}`}
-                      key={this.process(field)}
+                      error={state.error && state[`${name}-${process(field)}`] === ''}
+                      id={`${name}-${process(field)}`}
+                      key={process(field)}
                       fluid
                       placeholder={field}
                       label={field}
                       onChange={this.handleChange}
-                      value={state[`${name}-${this.process(field)}`]}
+                      value={state[`${name}-${process(field)}`]}
                     />
                   )
                 })}

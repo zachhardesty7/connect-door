@@ -38,6 +38,8 @@ import {
   Form
 } from '../components'
 
+import { toJoinedTitleCase, calcDuration } from '../utils'
+
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
@@ -130,7 +132,26 @@ const RootIndex = ({ data }) => {
           >
             {sectionTour.icons && (
               <Container textAlign='center'>
-                <SocialMediaIcons />
+                <SocialMediaIcons
+                  icons={[
+                    {
+                      name: 'Facebook',
+                      link: 'https://www.facebook.com/theconnectdoor/'
+                    },
+                    {
+                      name: 'Twitter',
+                      link: 'https://twitter.com/ConnectDoor/'
+                    },
+                    {
+                      name: 'Instagram',
+                      link: 'https://instagram.com/ConnectDoor/'
+                    },
+                    {
+                      name: 'Linkedin',
+                      link: 'https://www.linkedin.com/company/connect-door/'
+                    }
+                  ]}
+                />
               </Container>
             )}
             {sectionTour.content && sectionTour.content.content}
@@ -212,7 +233,26 @@ const RootIndex = ({ data }) => {
           >
             {sectionContact.icons && (
               <Container textAlign='center' className='contact-icons'>
-                <SocialMediaIcons />
+                <SocialMediaIcons
+                  icons={[
+                    {
+                      name: 'Facebook',
+                      link: 'https://www.facebook.com/theconnectdoor/'
+                    },
+                    {
+                      name: 'Twitter',
+                      link: 'https://twitter.com/ConnectDoor/'
+                    },
+                    {
+                      name: 'Instagram',
+                      link: 'https://instagram.com/ConnectDoor/'
+                    },
+                    {
+                      name: 'Linkedin',
+                      link: 'https://www.linkedin.com/company/connect-door/'
+                    }
+                  ]}
+                />
               </Container>
             )}
             {sectionContact.content && sectionContact.content.content}
@@ -224,13 +264,6 @@ const RootIndex = ({ data }) => {
       <Footer copyright='ConnectDoor' />
     </React.Fragment>
   )
-}
-
-function toJoinedTitleCase(str) {
-  return str.replace(
-    /\w*/g,
-    txt => txt.charAt(0).toUpperCase() + txt.substr(1)
-  ).replace(/\W/g, '')
 }
 
 RootIndex.propTypes = {
@@ -245,13 +278,6 @@ RootIndex.defaultProps = {
     site: {},
     allContentfulAsset: {}
   })
-}
-
-const calcDuration = (scrollDistanceInPx) => {
-  const min = 800
-  const max = 2000
-
-  return Math.min(Math.max(Math.abs(scrollDistanceInPx), min), max)
 }
 
 export default RootIndex
