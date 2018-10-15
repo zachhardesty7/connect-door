@@ -79,7 +79,7 @@ Hero.propTypes = {
     inverted: PropTypes.bool,
     primary: PropTypes.bool,
     size: PropTypes.string,
-    as: PropTypes.element,
+    as: PropTypes.func,
     to: PropTypes.string,
     smooth: PropTypes.bool,
     duration: PropTypes.func

@@ -42,10 +42,10 @@ const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
   const sectionMission = data.allContentfulSectionBlurb.edges[0].node
-  const sectionTour = data.allContentfulSectionForm.edges[0].node
+  const sectionTour = data.allContentfulSectionForm.edges[1].node
   const sectionItems = data.allContentfulSectionItems.edges[0].node
   const sectionCareers = data.allContentfulSectionBlurb.edges[1].node
-  const sectionContact = data.allContentfulSectionForm.edges[1].node
+  const sectionContact = data.allContentfulSectionForm.edges[0].node
 
   return (
     <React.Fragment>
@@ -67,18 +67,18 @@ const RootIndex = ({ data }) => {
         <meta name='theme-color' content='#ffffff' />
       </Helmet>
       <Navigation
-        logo={sectionNav.logo.fixed}
-        logoAlt={sectionNav.logo.title}
+        logo={sectionNav.logo && sectionNav.logo.fixed}
+        logoAlt={sectionNav.logo && sectionNav.logo.title}
         pages={sectionNav.sections}
         centered
       />
       <Hero
-        logo={sectionHero.logo.fixed}
+        logo={sectionHero.logo && sectionHero.logo.fixed}
         title={sectionHero.title}
         subtitle={sectionHero.subtitle}
         buttonText={sectionHero.button}
-        background={sectionHero.background.fluid}
-        backgroundAlt={sectionHero.background.title}
+        background={sectionHero.background && sectionHero.background.fluid}
+        backgroundAlt={sectionHero.background && sectionHero.background.title}
         buttonProps={{
           primary: true,
           size: 'huge',
@@ -94,7 +94,9 @@ const RootIndex = ({ data }) => {
         <Segment id='about' vertical basic>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
-            <Header.Content>{sectionMission.content.content}</Header.Content>
+            <Header.Content>
+              {sectionMission.content && sectionMission.content.content}
+            </Header.Content>
           </Container>
           <Container className='blurbs'>
             <Grid relaxed stackable columns={3} divided padded>
@@ -108,7 +110,7 @@ const RootIndex = ({ data }) => {
                         icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
                         header={blurb.title}
                         headerAs='h4'
-                        content={blurb.content.content}
+                        content={blurb.content && blurb.content.content}
                       />
                     </Grid.Column>
                   )}
@@ -131,7 +133,7 @@ const RootIndex = ({ data }) => {
                 <SocialMediaIcons />
               </Container>
             )}
-            {sectionTour.content.content}
+            {sectionTour.content && sectionTour.content.content}
           </Form>
         </Segment>
 
@@ -143,12 +145,14 @@ const RootIndex = ({ data }) => {
                 <Item key={toJoinedTitleCase(item.title)}>
                   <Item.Image size='medium' rounded className='darken-25'>
                     <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
-                    <GImage fixed={item.image.fixed} backgroundColor alt={item.image.title} />
+                    {item.image && (
+                      <GImage fixed={item.image.fixed} backgroundColor alt={item.image.title} />
+                    )}
                   </Item.Image>
 
                   <Item.Content verticalAlign='middle'>
                     <Item.Header>{item.title}</Item.Header>
-                    <Item.Description>{item.content.content}</Item.Description>
+                    <Item.Description>{item.content && item.content.content}</Item.Description>
                   </Item.Content>
                 </Item>
               ))}
@@ -172,7 +176,9 @@ const RootIndex = ({ data }) => {
         <Segment id='careers' vertical basic secondary>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
-            <Header.Content>{sectionCareers.content.content}</Header.Content>
+            <Header.Content>
+              {sectionCareers.content && sectionCareers.content.content}
+            </Header.Content>
           </Container>
           <Container className='blurbs'>
             <Grid relaxed stackable columns={3} divided padded>
@@ -186,7 +192,7 @@ const RootIndex = ({ data }) => {
                         icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
                         header={blurb.title}
                         headerAs='h4'
-                        content={blurb.content.content}
+                        content={blurb.content && blurb.content.content}
                       />
                     </Grid.Column>
                   )}
@@ -209,7 +215,7 @@ const RootIndex = ({ data }) => {
                 <SocialMediaIcons />
               </Container>
             )}
-            {sectionContact.content.content}
+            {sectionContact.content && sectionContact.content.content}
           </Form>
         </Segment>
 
@@ -252,7 +258,7 @@ export default RootIndex
 
 export const imageQuery = graphql`
   query {
-    allContentfulNav {
+    allContentfulNav(sort: { fields: [contentful_id] }) {
       edges {
         node {
           sections
@@ -266,7 +272,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    allContentfulHero {
+    allContentfulHero(sort: { fields: [contentful_id] }) {
       edges {
         node {
           logo {
@@ -289,7 +295,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    allContentfulSectionBlurb {
+    allContentfulSectionBlurb(sort: { fields: [contentful_id] }) {
       edges {
         node {
           id
@@ -308,7 +314,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    allContentfulSectionForm {
+    allContentfulSectionForm(sort: { fields: [contentful_id] }) {
       edges {
         node {
           id
@@ -327,7 +333,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    allContentfulSectionItems {
+    allContentfulSectionItems(sort: { fields: [contentful_id] }) {
       edges {
         node {
           id
