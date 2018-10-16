@@ -10,6 +10,7 @@ import GImage from 'gatsby-image'
 // ui framework
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  Card,
   Container,
   Grid,
   Segment,
@@ -46,6 +47,9 @@ const RootIndex = ({ data }) => {
   const sectionMission = data.allContentfulSectionBlurb.edges[0].node
   const sectionTour = data.allContentfulSectionForm.edges[1].node
   const sectionItems = data.allContentfulSectionItems.edges[0].node
+  const sectionTeam = (data.allContentfulSectionTeam.edges[1] &&
+    data.allContentfulSectionTeam.edges[1].node) ||
+    data.allContentfulSectionTeam.edges[0].node
   const sectionCareers = data.allContentfulSectionBlurb.edges[1].node
   const sectionContact = data.allContentfulSectionForm.edges[0].node
 
@@ -71,6 +75,7 @@ const RootIndex = ({ data }) => {
       <Navigation
         logo={sectionNav.logo && sectionNav.logo.fixed}
         logoAlt={sectionNav.logo && sectionNav.logo.title}
+        size={sectionNav.size}
         pages={sectionNav.sections}
         centered
       />
@@ -96,9 +101,9 @@ const RootIndex = ({ data }) => {
         <Segment id='about' vertical basic>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
-            <Header.Content>
-              {sectionMission.content && sectionMission.content.content}
-            </Header.Content>
+            {sectionMission.content && (
+              <Header.Content>{sectionMission.content.content}</Header.Content>
+            )}
           </Container>
           <Container className='blurbs'>
             <Grid relaxed stackable columns={3} divided padded>
@@ -161,6 +166,9 @@ const RootIndex = ({ data }) => {
         <Segment id='process' vertical basic>
           <Container className='container-items' text>
             <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
+            {sectionItems.content && (
+              <Header.Content>{sectionItems.content.content}</Header.Content>
+            )}
             <Item.Group divided relaxed>
               {sectionItems.steps.map((item, i) => (
                 <Item key={toJoinedTitleCase(item.title)}>
@@ -194,12 +202,44 @@ const RootIndex = ({ data }) => {
           </Container>
         </Segment>
 
+        {sectionTeam.title !== 'dummy' && (
+          <Segment id='team' basic>
+            <Container text className='container-team'>
+              <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
+              {sectionTeam.content && (
+                <Header.Content>{sectionTeam.content.content}</Header.Content>
+              )}
+            </Container>
+            <Container className='cards'>
+              <Card.Group itemsPerRow={sectionTeam.itemsPerRow} stackable doubling className='relaxed'>
+                {sectionTeam.members.map((member, i) => (
+                  <Card centered>
+                    {member.image && (
+                      <GImage fluid={member.image.fluid} backgroundColor alt={member.image.title} />
+                    )}
+                    <Card.Content>
+                      <Card.Header>{member.name}</Card.Header>
+                      <Card.Description>{member.content}</Card.Description>
+                    </Card.Content>
+                    {(member.number || member.email) && (
+                      <Card.Content extra>
+                        <Card.Meta>{member.number}</Card.Meta>
+                        <Card.Meta>{member.email}</Card.Meta>
+                      </Card.Content>
+                    )}
+                  </Card>
+                ))}
+              </Card.Group>
+            </Container>
+          </Segment>
+        )}
+
         <Segment id='careers' vertical basic secondary>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
-            <Header.Content>
-              {sectionCareers.content && sectionCareers.content.content}
-            </Header.Content>
+            {sectionCareers.content && (
+              <Header.Content>{sectionCareers.content.content}</Header.Content>
+            )}
           </Container>
           <Container className='blurbs'>
             <Grid relaxed stackable columns={3} divided padded>
@@ -288,8 +328,8 @@ export const imageQuery = graphql`
       edges {
         node {
           sections
+          size
           logo {
-            id
             title
             fixed(width: 150) {
               ...GatsbyContentfulFixed_tracedSVG
@@ -321,16 +361,37 @@ export const imageQuery = graphql`
         }
       }
     }
+    allContentfulSectionTeam(sort: { fields: [contentful_id] }) {
+      edges {
+        node {
+          title
+          content {
+            content
+          }
+          itemsPerRow
+          members {
+            image {
+              title
+              fluid(maxWidth: 500) {
+                ...GatsbyContentfulFluid_withWebp
+              }
+            }
+            name
+            content
+            email
+            number
+          }
+        }
+      }
+    }
     allContentfulSectionBlurb(sort: { fields: [contentful_id] }) {
       edges {
         node {
-          id
           title
           content {
             content
           }
           blurbs {
-            id
             icon
             title
             content {
@@ -343,14 +404,12 @@ export const imageQuery = graphql`
     allContentfulSectionForm(sort: { fields: [contentful_id] }) {
       edges {
         node {
-          id
           title
           icons
           content {
             content
           }
           form {
-            id
             name
             contentfulfields
             textarea
@@ -362,16 +421,13 @@ export const imageQuery = graphql`
     allContentfulSectionItems(sort: { fields: [contentful_id] }) {
       edges {
         node {
-          id
           title
           steps {
-            id
             title
             content {
               content
             }
             image {
-              id
               title
               fixed(width: 300) {
                 ...GatsbyContentfulFixed_withWebp

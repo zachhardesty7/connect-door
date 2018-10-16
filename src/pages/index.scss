@@ -91,7 +91,41 @@ a {
     }
   }
 
+  #team {
+    // force cards to always center
+    .ui.doubling.stackable.three.cards {
+      justify-content: center;
+    }
+  
+    // relaxed spacing between cards
+    .ui.cards.relaxed > .card {
+      width: calc(33.33333333% - 2.5em);
+      margin: 1.25em 1.125em;
+    }
+
+    @media only screen and (max-width: 991px) and (min-width: 768px) {
+      .ui.three.doubling.cards>.card {
+        width: calc(50% - 2.5em);
+        margin: 1.25em 1.125em;
+      }
+    }
+
+    // force center and appropriate size for mobile
+    @media only screen and (max-width: 767px) {
+      .ui.stackable.cards {
+        display: flex !important;
+
+        & > .card {
+          width: 350px !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+      }
+    }
+  }
+
   #about > .container:not(.blurbs),
+  #team > .container:not(.cards),
   #careers > .container:not(.blurbs) {
     padding-bottom: 3em;
   }

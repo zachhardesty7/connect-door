@@ -28,20 +28,24 @@ const Hero = ({
     id='hero'
   >
     {/* background image */}
-    <GImage
-      fluid={background}
-      backgroundColor
-      alt={backgroundAlt}
-      style={{ position: `absolute` }}
-      className='background'
-    />
+    {background && (
+      <GImage
+        fluid={background}
+        backgroundColor
+        alt={backgroundAlt}
+        style={{ position: `absolute` }}
+        className='background'
+      />
+    )}
 
     <Container>
-      <GImage
-        fixed={logo}
-        alt='logo'
-        className='logo'
-      />
+      {logo && (
+        <GImage
+          fixed={logo}
+          alt='logo'
+          className='logo'
+        />
+      )}
       <Header
         as='h1'
         content={title}

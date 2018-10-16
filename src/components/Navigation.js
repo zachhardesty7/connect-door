@@ -24,13 +24,14 @@ export default class Navigation extends React.Component {
       pages,
       logo,
       logoAlt,
+      size,
       search,
       centered
     } = this.props
 
     return (
       <Container textAlign={centered && 'center'}>
-        <Menu id='nav' size='large' compact stackable text secondary>
+        <Menu id='nav' size={size} compact stackable text secondary>
           {logo && (
             <Menu.Item
               as={Link}
@@ -77,6 +78,7 @@ Navigation.propTypes = {
     PropTypes.element, PropTypes.object
   ]),
   logoAlt: PropTypes.string,
+  size: PropTypes.string,
   search: PropTypes.bool,
   centered: PropTypes.bool,
   pages: PropTypes.arrayOf(PropTypes.string)
@@ -85,6 +87,7 @@ Navigation.propTypes = {
 Navigation.defaultProps = {
   logo: {},
   logoAlt: '',
+  size: 'large',
   search: false,
   centered: false,
   pages: []
