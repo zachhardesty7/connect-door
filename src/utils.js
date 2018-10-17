@@ -5,6 +5,7 @@ export const toJoinedTitleCase = str => (
   ).replace(/\W/g, '')
 )
 
+// used for smooth scrolling when anchor clicking link
 export const calcDuration = (scrollDistanceInPx) => {
   const min = 800
   const max = 2000

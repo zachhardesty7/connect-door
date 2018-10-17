@@ -4,6 +4,7 @@
   padding-top: 10em;
   padding-bottom: 5em;
 
+  // background overlay to dim and saturate
   &::before {
     content: "";
     height: 100%;
@@ -19,6 +20,7 @@
     z-index: -1;
   }
 
+  // background image
   .background {
     position: absolute;
     top: 0;
@@ -40,7 +42,7 @@
 
   h1,
   h2 {
-    color: white;
+    color: $white;
     font-weight: normal;
   }
 
@@ -56,6 +58,7 @@
     margin-top: 1em;
   }
 
+  // button hover transition
   .ui.button {
     background-color: $secondaryColor;
     transition: ease-in-out 50ms;

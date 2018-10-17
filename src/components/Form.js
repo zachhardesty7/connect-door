@@ -21,6 +21,7 @@ class CustomForm extends React.Component {
     this.state = { success: false, error: false }
     const { name } = this.props
 
+    // process and push fields into state
     props.fields.forEach((field) => {
       if (!field.includes(';')) { this.state[`${name}-${process(field)}`] = '' } else { this.state[`${name}-${process(field.slice(0, field.indexOf('(')))}`] = '' }
     })
@@ -87,14 +88,15 @@ class CustomForm extends React.Component {
           success={state.success}
           error={state.error}
         >
+          {/* limit bot responses */}
           <input type='hidden' name='bot-field' />
           {fields
-            .map((item, i) => (i % 2 === 0 && fields.slice(i, i + 2))) // group fields
+            .map((item, i) => (i % 2 === 0 && fields.slice(i, i + 2))) // group fields by twos
             .filter(item => item) // remove false (null) entries
             .map(fieldGroup => (
               <Form.Group key={`group-${fieldGroup.join('-').toLowerCase().replace(/\W/g, '-')}`} widths='equal'>
                 {fieldGroup.map((field) => {
-                  if (field.includes(';')) {
+                  if (field.includes(';')) { // custom syntax due to Contentful limitations
                     const title = field.slice(0, field.indexOf('(')) // get title
                     let options = field.slice(field.indexOf('(') + 1, field.indexOf(')')) // remove title
                     options = options.split('; ') // -> arr

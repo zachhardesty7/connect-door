@@ -12,3 +12,20 @@ $light:          #D2D7DB;
 $dark:           #343C42;
 $black:          #070707;
 $white:          #FFFFFF;
+
+// allow use in JS
+:export {
+  blue: $blue;
+  orange: $orange;
+  teal: $teal;
+  primary: $primaryColor;
+  secondary: $secondaryColor;
+  success: $success;
+  info: $info;
+  warning: $warning;
+  danger: $danger;
+  light: $light;
+  dark: $dark;
+  black: $black;
+  white: $white;
+}

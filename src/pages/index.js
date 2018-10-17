@@ -19,16 +19,11 @@ import {
   Label,
   Message
 } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
 import './index.scss'
-import 'semantic-ui-css/semantic.min.css'
-
-// favicon
-import faviconApple from '../../static/apple-touch-icon.png'
-import favicon32 from '../../static/favicon-32x32.png'
-import favicon16 from '../../static/favicon-16x16.png'
-import faviconSafari from '../../static/safari-pinned-tab.svg'
+import colors from '../theme/variables.scss'
 
 import {
   Blurb,
@@ -41,12 +36,19 @@ import {
 
 import { toJoinedTitleCase, calcDuration } from '../utils'
 
+// favicon
+import faviconApple from '../../static/apple-touch-icon.png'
+import favicon32 from '../../static/favicon-32x32.png'
+import favicon16 from '../../static/favicon-16x16.png'
+import faviconSafari from '../../static/safari-pinned-tab.svg'
+
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
   const sectionMission = data.allContentfulSectionBlurb.edges[0].node
   const sectionTour = data.allContentfulSectionForm.edges[1].node
   const sectionItems = data.allContentfulSectionItems.edges[0].node
+  // account for dummy entry
   const sectionTeam = (data.allContentfulSectionTeam.edges[1] &&
     data.allContentfulSectionTeam.edges[1].node) ||
     data.allContentfulSectionTeam.edges[0].node
@@ -66,11 +68,11 @@ const RootIndex = ({ data }) => {
         <link rel='apple-touch-icon' sizes='180x180' href={faviconApple} />
         <link rel='icon' type='image/png' sizes='32x32' href={favicon32} />
         <link rel='icon' type='image/png' sizes='16x16' href={favicon16} />
-        <link rel='mask-icon' href={faviconSafari} color='#3b5998' />
+        <link rel='mask-icon' href={faviconSafari} color={colors.primary} />
         <meta name='apple-mobile-web-app-title' content='ConnectDoor' />
         <meta name='application-name' content='ConnectDoor' />
-        <meta name='msapplication-TileColor' content='#3b5998' />
-        <meta name='theme-color' content='#ffffff' />
+        <meta name='msapplication-TileColor' content={colors.primary} />
+        <meta name='theme-color' content={colors.white} />
       </Helmet>
       <Navigation
         logo={sectionNav.logo && sectionNav.logo.fixed}
@@ -106,7 +108,7 @@ const RootIndex = ({ data }) => {
             )}
           </Container>
           <Container className='blurbs'>
-            <Grid relaxed stackable columns={3} divided padded>
+            <Grid relaxed stackable divided padded columns={sectionMission.blurbs.length}>
               {sectionMission.blurbs.map(blurb => (
                 <Async
                   key={toJoinedTitleCase(blurb.title)}
@@ -114,7 +116,7 @@ const RootIndex = ({ data }) => {
                   then={icon => (
                     <Grid.Column>
                       <Blurb
-                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
+                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color={colors.secondary} />}
                         header={blurb.title}
                         headerAs='h4'
                         content={blurb.content && blurb.content.content}
@@ -137,6 +139,7 @@ const RootIndex = ({ data }) => {
           >
             {sectionTour.icons && (
               <Container textAlign='center'>
+                {/* TODO: extract to contentful */}
                 <SocialMediaIcons
                   icons={[
                     {
@@ -163,6 +166,7 @@ const RootIndex = ({ data }) => {
           </Form>
         </Segment>
 
+        {/* TODO: extract to component (less undefined checking necessary) */}
         <Segment id='process' vertical basic>
           <Container className='container-items' text>
             <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
@@ -202,6 +206,7 @@ const RootIndex = ({ data }) => {
           </Container>
         </Segment>
 
+        {/* TODO: extract to component (less undefined checking necessary) */}
         {sectionTeam.title !== 'dummy' && (
           <Segment id='team' basic>
             <Container text className='container-team'>
@@ -221,6 +226,7 @@ const RootIndex = ({ data }) => {
                       <Card.Header>{member.name}</Card.Header>
                       <Card.Description>{member.content}</Card.Description>
                     </Card.Content>
+                    {/* prevent divider render */}
                     {(member.number || member.email) && (
                       <Card.Content extra>
                         <Card.Meta>{member.number}</Card.Meta>
@@ -242,7 +248,7 @@ const RootIndex = ({ data }) => {
             )}
           </Container>
           <Container className='blurbs'>
-            <Grid relaxed stackable columns={3} divided padded>
+            <Grid relaxed stackable columns={sectionCareers.blurbs.length} divided padded>
               {sectionCareers.blurbs.map(blurb => (
                 <Async
                   key={toJoinedTitleCase(blurb.title)}
@@ -250,7 +256,7 @@ const RootIndex = ({ data }) => {
                   then={icon => (
                     <Grid.Column>
                       <Blurb
-                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color='#749AD3' />}
+                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color={colors.secondary} />}
                         header={blurb.title}
                         headerAs='h4'
                         content={blurb.content && blurb.content.content}
@@ -273,6 +279,7 @@ const RootIndex = ({ data }) => {
           >
             {sectionContact.icons && (
               <Container textAlign='center' className='contact-icons'>
+                {/* TODO: extract to contentful */}
                 <SocialMediaIcons
                   icons={[
                     {
@@ -307,17 +314,11 @@ const RootIndex = ({ data }) => {
 }
 
 RootIndex.propTypes = {
-  data: PropTypes.shape({
-    site: PropTypes.object,
-    allContentfulAsset: PropTypes.object
-  })
+  data: PropTypes.object // eslint-disable-line react/forbid-prop-types
 }
 
 RootIndex.defaultProps = {
-  data: PropTypes.shape({
-    site: {},
-    allContentfulAsset: {}
-  })
+  data: {}
 }
 
 export default RootIndex
@@ -429,7 +430,7 @@ export const imageQuery = graphql`
             }
             image {
               title
-              fixed(width: 300) {
+              fixed(width: 500) {
                 ...GatsbyContentfulFixed_withWebp
               }
             }

@@ -11,13 +11,14 @@
 
   }
 
+  // support inverted style
   &.inverted {
     a .button-icon {
       color: $secondaryColor;
       margin: 0 0.5em;
 
       &:hover {
-        color: #ffffff;
+        color: $white;
       }
     }
   }

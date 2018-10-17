@@ -1,3 +1,4 @@
+// logo font
 @font-face {
   font-family: "Branding";
   font-weight: normal;
@@ -8,6 +9,7 @@
 
 @import '../theme/variables';
 
+// override SemanticUI font "Lato"
 *:not(.icon) {
   font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif !important;
 }
@@ -15,7 +17,7 @@
 body {
   font-size: 1em;
   line-height: 1.65;
-  color: #373F49;
+  color: $dark;
   margin: 0;
 }
 
@@ -45,6 +47,7 @@ a {
     display: block !important;
   }
 
+  // space each segment
   & > .segment {
     padding-top: 5em;
     padding-bottom: 5em;
@@ -77,7 +80,7 @@ a {
       }
     }
 
-    // overlay darken by 20%
+    // overlay darken by 25%
     .darken-25::before {
       content: "";
       height: 100%;
@@ -97,7 +100,7 @@ a {
       justify-content: center;
     }
   
-    // relaxed spacing between cards
+    // relax spacing between cards
     .ui.cards.relaxed > .card {
       width: calc(33.33333333% - 2.5em);
       margin: 1.25em 1.125em;
@@ -124,6 +127,7 @@ a {
     }
   }
 
+  // pad between title/content and items
   #about > .container:not(.blurbs),
   #team > .container:not(.cards),
   #careers > .container:not(.blurbs) {
