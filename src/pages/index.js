@@ -430,7 +430,7 @@ export const imageQuery = graphql`
             }
             image {
               title
-              fixed(width: 500) {
+              fixed(width: 300) {
                 ...GatsbyContentfulFixed_withWebp
               }
             }
