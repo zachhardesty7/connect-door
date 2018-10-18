@@ -31,7 +31,7 @@ export default class Navigation extends React.Component {
 
     return (
       <Container textAlign={centered && 'center'}>
-        <Menu id='nav' size={size} compact stackable text secondary>
+        <Menu id='nav' size={size} compact text secondary>
           {logo && (
             <Menu.Item
               as={Link}
