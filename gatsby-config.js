@@ -33,6 +33,14 @@ module.exports = {
         icon: './static/Blue Logo/Icon/CD Logo -- Icon -- Blue -- Square.png' // This path is relative to the root of the site.
       }
     },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: 'UA-127721122-1',
+        // Setting this parameter is also optional
+        respectDNT: true
+      }
+    },
     // 'gatsby-plugin-webpack-bundle-analyzer',
     'gatsby-plugin-offline',
     'gatsby-transformer-remark',

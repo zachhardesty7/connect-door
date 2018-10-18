@@ -11,6 +11,7 @@
     "bluebird": "^3.5.2",
     "gatsby": "^2.0.17",
     "gatsby-image": "^2.0.5",
+    "gatsby-plugin-google-analytics": "^2.0.6",
     "gatsby-plugin-manifest": "^2.0.5",
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
@@ -26,8 +27,8 @@
     "react-helmet": "^5.2.0",
     "react-promise": "^2.0.3",
     "react-scroll": "^1.7.10",
-    "semantic-ui-react": "^0.82.5",
-    "semantic-ui-css": "^2.4.0"
+    "semantic-ui-css": "^2.4.0",
+    "semantic-ui-react": "^0.82.5"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
