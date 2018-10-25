@@ -12,66 +12,55 @@ import { calcDuration } from '../utils'
 
 import './Navigation.scss'
 
-export default class Navigation extends React.Component {
-  state = { activeItem: 'home' }
+// REVIEW: add sticky header?
+const Navigation = ({
+  pages,
+  logo,
+  logoAlt,
+  size,
+  search,
+  centered
+}) => (
+  <Container textAlign={centered && 'center'}>
+    <Menu id='nav' size={size} compact text secondary>
+      {logo && (
+        <Menu.Item
+          as={Link}
+          to=''
+          key='logo'
+          spy
+          smooth
+          duration={calcDuration}
+          tabIndex='0'
+          name=''
+        >
+          <GImage fixed={logo} alt={logoAlt} className='logo' />
+        </Menu.Item>
+      )}
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+      {pages.map(page => (
+        <Menu.Item
+          as={Link}
+          to={`${page.toLowerCase().replace(' ', '-')}`}
+          key={`${page.toLowerCase().replace(' ', '-')}`}
+          spy
+          smooth
+          duration={calcDuration}
+          tabIndex='0'
+          name={page}
+        />
+      ))}
 
-  render() {
-    // eslint-disable-next-line no-unused-vars
-    const { activeItem } = this.state // REVIEW: stick header?
-    const {
-      pages,
-      logo,
-      logoAlt,
-      size,
-      search,
-      centered
-    } = this.props
-
-    return (
-      <Container textAlign={centered && 'center'}>
-        <Menu id='nav' size={size} compact text secondary>
-          {logo && (
-            <Menu.Item
-              as={Link}
-              to=''
-              key='logo'
-              spy
-              smooth
-              duration={calcDuration}
-              tabIndex='0'
-              name=''
-            >
-              <GImage fixed={logo} alt={logoAlt} className='logo' />
-            </Menu.Item>
-          )}
-
-          {pages.map(page => (
-            <Menu.Item
-              as={Link}
-              to={`${page.toLowerCase().replace(' ', '-')}`}
-              key={`${page.toLowerCase().replace(' ', '-')}`}
-              spy
-              smooth
-              duration={calcDuration}
-              tabIndex='0'
-              name={page}
-            />
-          ))}
-
-          {search && (
-            <Menu.Menu position='right'>
-              <Menu.Item>
-                <Input icon='search' placeholder='Search Properties...' />
-              </Menu.Item>
-            </Menu.Menu>
-          )}
-        </Menu>
-      </Container>
-    )
-  }
-}
+      {search && (
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Input icon='search' placeholder='Search Properties...' />
+          </Menu.Item>
+        </Menu.Menu>
+      )}
+    </Menu>
+  </Container>
+)
 
 Navigation.propTypes = {
   logo: PropTypes.oneOfType([
@@ -92,3 +81,5 @@ Navigation.defaultProps = {
   centered: false,
   pages: []
 }
+
+export default Navigation

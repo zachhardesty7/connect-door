@@ -40,12 +40,12 @@ class CustomForm extends React.Component {
     if (Object.keys(state).some(key => state[key] === '')) {
       this.setState({ success: false, error: true })
     } else {
-      fetch('/', { // eslint-disable-line no-undef
+      fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encode({ 'form-name': 'contact', ...state })
       })
-        .catch(err => console.log(err)) // eslint-disable-line no-console
+        .catch(err => console.log(err))
 
       const newState = {}
 

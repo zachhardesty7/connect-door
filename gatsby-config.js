@@ -1,9 +1,5 @@
-let contentfulConfig
-
-try {
-  // Load the Contentful config from the .contentful.json
-  contentfulConfig = require('./.contentful')
-} catch (_) {}
+// Load the Contentful config from the .contentful.json
+let contentfulConfig = require('./.contentful')
 
 // Overwrite the Contentful config with environment variables if they exist
 contentfulConfig = {
@@ -30,7 +26,7 @@ module.exports = {
         background_color: '#3B5998',
         theme_color: '#3B5998',
         display: 'minimal-ui',
-        icon: './static/Blue Logo/Icon/CD Logo -- Icon -- Blue -- Square.png' // This path is relative to the root of the site.
+        icon: './static/logo-icon-blue-square.png' // This path is relative to the root of the site.
       }
     },
     {

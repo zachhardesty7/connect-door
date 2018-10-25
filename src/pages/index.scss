@@ -1,9 +1,9 @@
 // logo font
 @font-face {
-  font-family: "Branding";
+  font-family: 'Branding';
   font-weight: normal;
   font-style: normal;
-  src: url("../../static/branding-medium.otf") format("opentype");
+  src: url('../../static/branding-medium.otf') format('opentype');
   font-display: swap;
 }
 
@@ -11,7 +11,7 @@
 
 // override SemanticUI font "Lato"
 *:not(.icon) {
-  font-family: "Branding", Tahoma, Arial, Helvetica, sans-serif !important;
+  font-family: 'Branding', Tahoma, Arial, Helvetica, sans-serif !important;
 }
 
 body {
@@ -36,11 +36,19 @@ h3 {
 a {
   color: $secondaryColor;
   &:hover {
-    color: #ffffff;
+    color: $white;
   }
 }
 
 #home {
+  h3 {
+    font-size: 3em;
+  }
+
+  h4 {
+    font-size: 2em;
+  }
+
   padding: 3em 0em;
 
   .gatsby-image-wrapper {
@@ -137,16 +145,8 @@ a {
   .blurbs {
     text-align: center;
   }
-  
-  h3 {
-    font-size: 3em;
-  }
-
-  h4 {
-    font-size: 2em;
-  }
 
   #contact .contact-icons {
-    padding-bottom: 1em;
+    padding-bottom: 1;
   }
 }

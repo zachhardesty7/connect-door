@@ -1,18 +1,19 @@
-$blue:   #3B5998;
-$orange: #CA6914;
-$teal:   #749AD3;
+$blue:   #3b5998;
+$orange: #ca6914;
+$teal:   #749ad3;
 
-$primaryColor:   #3B5998;
-$secondaryColor: #749AD3;
+$primaryColor:   $blue;
+$secondaryColor: $teal;
 $success:        #28a745;
-$info:           #749AD3;
+$info:           $teal;
 $warning:        #ffc107;
 $danger:         #dc3545;
-$light:          #D2D7DB;
-$dark:           #343C42;
+$light:          #d2d7db;
+$dark:           #343c42;
 $black:          #070707;
-$white:          #FFFFFF;
+$white:          #fff;
 
+// stylelint-disable selector-pseudo-class-no-unknown, property-no-unknown
 // allow use in JS
 :export {
   blue: $blue;

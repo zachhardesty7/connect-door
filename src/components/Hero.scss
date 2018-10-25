@@ -31,6 +31,7 @@
     & > img {
       object-fit: cover !important;
       object-position: 0% 0% !important;
+      // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
       font-family: 'object-fit: cover !important; object-position: 0% 0% !important;' // needed for IE9+ polyfill
     }
   }

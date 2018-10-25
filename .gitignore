@@ -59,6 +59,7 @@ typings/
 
 # build folder
 public
+build
 
 # gatsby cache folder
 .cache
@@ -68,3 +69,6 @@ public
 
 # vscode
 .vscode
+
+# other misc files
+deploy.js

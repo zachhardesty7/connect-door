@@ -8,6 +8,9 @@
   "plugins": [
     "jsx-a11y"
   ],
+  "globals": {
+    "fetch": true
+  },
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -18,8 +21,7 @@
         ]
       }
     ],
-    "react/prefer-stateless-function": 0,
-    "strict": 0,
+    "no-console": 0,
     "jsx-quotes": [
       "error",
       "prefer-single"
