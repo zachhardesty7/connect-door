@@ -1,5 +1,9 @@
-// Load the Contentful config from the .contentful.json
-let contentfulConfig = require('./.contentful')
+let contentfulConfig
+
+try {
+  // Load the Contentful config from the .contentful.json
+  contentfulConfig = require('./.contentful')
+} catch (_) { console.info('using env vars') }
 
 // Overwrite the Contentful config with environment variables if they exist
 contentfulConfig = {
