@@ -11,6 +11,7 @@
     "stylelint-scss"
   ],
   "rules": {
+    "no-descending-specificity": null,
     "block-opening-brace-space-before": "always",
     "block-closing-brace-newline-after": [
       "always",

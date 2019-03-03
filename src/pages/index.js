@@ -6,6 +6,8 @@ import { Link } from 'react-scroll'
 import Helmet from 'react-helmet'
 import GImage from 'gatsby-image'
 
+import styled, { createGlobalStyle } from 'styled-components'
+
 // ui framework
 import {
   Card,
@@ -20,12 +22,11 @@ import {
 import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
-import './index.scss'
 import {
   Blurb,
   Icon
 } from 'semantic-styled-ui'
-import colors from '../theme/variables.scss'
+// import branding from '../../static/branding-medium.otf'
 
 import {
   Navigation,
@@ -35,13 +36,172 @@ import {
   Form
 } from '../components'
 
-import { toJoinedTitleCase, calcDuration } from '../utils'
+import { defaultColors, toJoinedTitleCase, calcDuration } from '../utils'
 
 // favicon
 import faviconApple from '../../static/apple-touch-icon.png'
 import favicon32 from '../../static/favicon-32x32.png'
 import favicon16 from '../../static/favicon-16x16.png'
 import faviconSafari from '../../static/safari-pinned-tab.svg'
+
+const GlobalStyle = createGlobalStyle`
+  /* logo font */
+  @font-face {
+    font-family: 'Branding';
+    font-weight: 600;
+    font-style: normal;
+    src: url('/static/branding.otf') format('opentype');
+    font-display: swap;
+  }
+
+  /* override SemanticUI font "Lato" */
+  *:not(.icon) {
+    font-family: 'Branding', Tahoma, Arial, Helvetica, sans-serif !important;
+  }
+
+  body {
+    font-size: 1em;
+    line-height: 1.65;
+    color: ${defaultColors.dark};
+    margin: 0;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-size: 2em;
+    font-weight: 600 !important;
+  }
+
+  a {
+    color: ${defaultColors.secondaryColor};
+    &:hover {
+      color: ${defaultColors.white};
+    }
+  }
+`
+
+const Main = styled(Segment)`
+  h3 {
+    font-size: 3em;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 2em;
+    font-weight: 600;
+  }
+
+  padding: 3em 0em;
+
+  .gatsby-image-wrapper {
+    display: block !important;
+  }
+
+  /* space each segment */
+  & > .segment {
+    padding-top: 5em;
+    padding-bottom: 5em;
+  }
+`
+
+const BaseSegment = styled(Segment)`
+  & > .container:first-child {
+    padding-bottom: 3em;
+  }
+`
+
+const ProcessSegment = styled(Segment)`
+  h3 {
+    font-weight: 600;
+    margin-bottom: 1em;
+  }
+
+  h4 {
+    font-weight: 600;
+  }
+
+  .container-items {
+    margin-bottom: 3em;
+  }
+
+  .rounded img {
+    border-radius: 0.5rem;
+  }
+
+  .process-label {
+    z-index: 1;
+    background-color: ${defaultColors.secondary};
+    color: ${defaultColors.white};
+
+    /* allow placement on right with changed color */
+    &.right::after {
+      border-top-color: ${defaultColors.secondary};
+    }
+    &:not(.right)::after {
+      border-right-color: ${defaultColors.secondary};
+    }
+  }
+
+  /* overlay darken by 25% */
+  .darken-25::before {
+    content: "";
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(0deg,rgba(0,0,0,0.25),rgba(0,0,0,0.25));
+    border-radius: inherit;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 1;
+  }
+`
+
+const TeamSegment = styled(BaseSegment)`
+  /* force cards to always center */
+  .ui.doubling.stackable.three.cards {
+    justify-content: center;
+  }
+
+  /* relax spacing between cards */
+  .ui.cards.relaxed > .card {
+    width: calc(33.33333333% - 2.5em);
+    margin: 1.25em 1.125em;
+  }
+
+  @media only screen and (max-width: 991px) and (min-width: 768px) {
+    .ui.three.doubling.cards>.card {
+      width: calc(50% - 2.5em);
+      margin: 1.25em 1.125em;
+    }
+  }
+
+  /* force center and appropriate size for mobile */
+  @media only screen and (max-width: 767px) {
+    .ui.stackable.cards {
+      display: flex !important;
+
+      & > .card {
+        width: 350px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+    }
+  }
+`
+
+const Blurbs = styled(Container)`
+  text-align: center;
+`
+
+const ContactIcons = styled(Container)`
+  padding-bottom: 1;
+`
 
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
@@ -57,7 +217,8 @@ const RootIndex = ({ data }) => {
   const sectionContact = data.allContentfulSectionForm.edges[0].node
 
   return (
-    <main className='root'>
+    <div className='root'>
+      <GlobalStyle />
       <Helmet>
         <html lang='en' />
         <meta charSet='utf-8' />
@@ -69,11 +230,11 @@ const RootIndex = ({ data }) => {
         <link rel='apple-touch-icon' sizes='180x180' href={faviconApple} />
         <link rel='icon' type='image/png' sizes='32x32' href={favicon32} />
         <link rel='icon' type='image/png' sizes='16x16' href={favicon16} />
-        <link rel='mask-icon' href={faviconSafari} color={colors.primary} />
+        <link rel='mask-icon' href={faviconSafari} color={defaultColors.primary} />
         <meta name='apple-mobile-web-app-title' content='ConnectDoor' />
         <meta name='application-name' content='ConnectDoor' />
-        <meta name='msapplication-TileColor' content={colors.primary} />
-        <meta name='theme-color' content={colors.white} />
+        <meta name='msapplication-TileColor' content={defaultColors.primary} />
+        <meta name='theme-color' content={defaultColors.white} />
       </Helmet>
       <Navigation
         logo={sectionNav.logo && sectionNav.logo.fixed}
@@ -99,21 +260,21 @@ const RootIndex = ({ data }) => {
         }}
       />
 
-      <Segment id='home' vertical basic>
+      <Main vertical basic>
 
-        <Segment id='about' vertical basic>
+        <BaseSegment vertical basic>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
             {sectionMission.content && (
               <Header.Content>{sectionMission.content.content}</Header.Content>
             )}
           </Container>
-          <Container className='blurbs'>
+          <Blurbs>
             <Grid relaxed stackable divided padded columns={sectionMission.blurbs.length}>
               {sectionMission.blurbs.map(blurb => (
                 <Grid.Column key={toJoinedTitleCase(blurb.title)}>
                   <Blurb
-                    icon={<Icon name={blurb.icon} size='big' color={colors.secondary} />}
+                    icon={<Icon name={blurb.icon} size='big' color={defaultColors.secondary} />}
                     header={blurb.title}
                   >
                     {blurb.content && blurb.content.content}
@@ -121,8 +282,8 @@ const RootIndex = ({ data }) => {
                 </Grid.Column>
               ))}
             </Grid>
-          </Container>
-        </Segment>
+          </Blurbs>
+        </BaseSegment>
 
         <Segment id='property-tour' vertical secondary basic>
           <Form
@@ -162,7 +323,7 @@ const RootIndex = ({ data }) => {
         </Segment>
 
         {/* TODO: extract to component (less undefined checking necessary) */}
-        <Segment id='process' vertical basic>
+        <ProcessSegment id='process' vertical basic>
           <Container className='container-items' text>
             <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
             {sectionItems.content && (
@@ -179,7 +340,7 @@ const RootIndex = ({ data }) => {
                   </Item.Image>
 
                   <Item.Content verticalAlign='middle'>
-                    <Item.Header>{item.title}</Item.Header>
+                    <Item.Header as='h4'>{item.title}</Item.Header>
                     <Item.Description>{item.content && item.content.content}</Item.Description>
                   </Item.Content>
                 </Item>
@@ -199,11 +360,11 @@ const RootIndex = ({ data }) => {
               </Message.Header>
             </Message>
           </Container>
-        </Segment>
+        </ProcessSegment>
 
         {/* TODO: extract to component (less undefined checking necessary) */}
         {sectionTeam.title !== 'dummy' && (
-          <Segment id='team' basic>
+          <TeamSegment basic>
             <Container text className='container-team'>
               <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
               {sectionTeam.content && (
@@ -232,22 +393,22 @@ const RootIndex = ({ data }) => {
                 ))}
               </Card.Group>
             </Container>
-          </Segment>
+          </TeamSegment>
         )}
 
-        <Segment id='careers' vertical basic secondary>
+        <BaseSegment vertical basic secondary>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
             {sectionCareers.content && (
               <Header.Content>{sectionCareers.content.content}</Header.Content>
             )}
           </Container>
-          <Container className='blurbs'>
+          <Blurbs>
             <Grid relaxed stackable columns={sectionCareers.blurbs.length} divided padded>
               {sectionCareers.blurbs.map(blurb => (
                 <Grid.Column key={toJoinedTitleCase(blurb.title)}>
                   <Blurb
-                    icon={<Icon name={blurb.icon} size='big' color={colors.secondary} />}
+                    icon={<Icon name={blurb.icon} size='big' color={defaultColors.secondary} />}
                     header={blurb.title}
                   >
                     {blurb.content && blurb.content.content}
@@ -255,8 +416,8 @@ const RootIndex = ({ data }) => {
                 </Grid.Column>
               ))}
             </Grid>
-          </Container>
-        </Segment>
+          </Blurbs>
+        </BaseSegment>
 
         <Segment id='contact' vertical basic>
           <Form
@@ -267,7 +428,7 @@ const RootIndex = ({ data }) => {
             button={sectionContact.form.button}
           >
             {sectionContact.icons && (
-              <Container textAlign='center' className='contact-icons'>
+              <ContactIcons textAlign='center'>
                 {/* TODO: extract to contentful */}
                 <SocialMediaIcons
                   icons={[
@@ -289,16 +450,16 @@ const RootIndex = ({ data }) => {
                     }
                   ]}
                 />
-              </Container>
+              </ContactIcons>
             )}
             {sectionContact.content && sectionContact.content.content}
           </Form>
         </Segment>
 
-      </Segment>
+      </Main>
 
       <Footer copyright='ConnectDoor' />
-    </main>
+    </div>
   )
 }
 

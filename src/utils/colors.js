@@ -1,7 +1,7 @@
 const colors = {
   blue: '#3b5998',
   orange: '#ca6914',
-  teal: '#749ad3m',
+  teal: '#749ad3',
 
   success: '#28a745',
   info: '#31CCEC',
@@ -16,8 +16,8 @@ const colors = {
 const aliasedColors = {
   ...colors,
   primary: colors.blue,
-  secondary: colors.white,
-  accent: colors.red
+  secondary: colors.teal,
+  accent: colors.orange
 }
 
 export default aliasedColors
