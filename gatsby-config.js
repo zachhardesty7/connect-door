@@ -41,11 +41,23 @@ module.exports = {
         respectDNT: true
       }
     },
-    // 'gatsby-plugin-webpack-bundle-analyzer',
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+      options: {
+        // production: true
+      }
+    },
     'gatsby-plugin-offline',
-    'gatsby-transformer-remark',
+    {
+      resolve: 'gatsby-plugin-styled-components',
+      options: {
+        pure: process.env.NODE_ENV === 'production',
+        fileName: process.env.NODE_ENV !== 'production',
+        displayName: process.env.NODE_ENV !== 'production'
+      }
+    },
     'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sharp',
     {
       resolve: 'gatsby-plugin-sass',
       options: {
@@ -55,6 +67,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-contentful',
       options: contentfulConfig
-    }
+    },
+    'gatsby-plugin-netlify'
   ]
 }
