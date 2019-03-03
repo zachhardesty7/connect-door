@@ -4,11 +4,9 @@ import { graphql } from 'gatsby'
 
 import { Link } from 'react-scroll'
 import Helmet from 'react-helmet'
-import Async from 'react-promise'
 import GImage from 'gatsby-image'
 
 // ui framework
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   Card,
   Container,
@@ -23,10 +21,13 @@ import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
 import './index.scss'
+import {
+  Blurb,
+  Icon
+} from 'semantic-styled-ui'
 import colors from '../theme/variables.scss'
 
 import {
-  Blurb,
   Navigation,
   Hero,
   Footer,
@@ -56,7 +57,7 @@ const RootIndex = ({ data }) => {
   const sectionContact = data.allContentfulSectionForm.edges[0].node
 
   return (
-    <React.Fragment>
+    <main className='root'>
       <Helmet>
         <html lang='en' />
         <meta charSet='utf-8' />
@@ -110,20 +111,14 @@ const RootIndex = ({ data }) => {
           <Container className='blurbs'>
             <Grid relaxed stackable divided padded columns={sectionMission.blurbs.length}>
               {sectionMission.blurbs.map(blurb => (
-                <Async
-                  key={toJoinedTitleCase(blurb.title)}
-                  promise={import('@fortawesome/free-solid-svg-icons')}
-                  then={icon => (
-                    <Grid.Column>
-                      <Blurb
-                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color={colors.secondary} />}
-                        header={blurb.title}
-                        headerAs='h4'
-                        content={blurb.content && blurb.content.content}
-                      />
-                    </Grid.Column>
-                  )}
-                />
+                <Grid.Column key={toJoinedTitleCase(blurb.title)}>
+                  <Blurb
+                    icon={<Icon name={blurb.icon} size='big' color={colors.secondary} />}
+                    header={blurb.title}
+                  >
+                    {blurb.content && blurb.content.content}
+                  </Blurb>
+                </Grid.Column>
               ))}
             </Grid>
           </Container>
@@ -218,7 +213,7 @@ const RootIndex = ({ data }) => {
             <Container className='cards'>
               <Card.Group itemsPerRow={sectionTeam.itemsPerRow} stackable doubling className='relaxed'>
                 {sectionTeam.members.map((member, i) => (
-                  <Card centered>
+                  <Card centered key={member.name}>
                     {member.image && (
                       <GImage fluid={member.image.fluid} backgroundColor alt={member.image.title} />
                     )}
@@ -250,20 +245,14 @@ const RootIndex = ({ data }) => {
           <Container className='blurbs'>
             <Grid relaxed stackable columns={sectionCareers.blurbs.length} divided padded>
               {sectionCareers.blurbs.map(blurb => (
-                <Async
-                  key={toJoinedTitleCase(blurb.title)}
-                  promise={import('@fortawesome/free-solid-svg-icons')}
-                  then={icon => (
-                    <Grid.Column>
-                      <Blurb
-                        icon={<FontAwesomeIcon icon={icon[`fa${toJoinedTitleCase(blurb.icon)}`]} size='3x' color={colors.secondary} />}
-                        header={blurb.title}
-                        headerAs='h4'
-                        content={blurb.content && blurb.content.content}
-                      />
-                    </Grid.Column>
-                  )}
-                />
+                <Grid.Column key={toJoinedTitleCase(blurb.title)}>
+                  <Blurb
+                    icon={<Icon name={blurb.icon} size='big' color={colors.secondary} />}
+                    header={blurb.title}
+                  >
+                    {blurb.content && blurb.content.content}
+                  </Blurb>
+                </Grid.Column>
               ))}
             </Grid>
           </Container>
@@ -309,7 +298,7 @@ const RootIndex = ({ data }) => {
       </Segment>
 
       <Footer copyright='ConnectDoor' />
-    </React.Fragment>
+    </main>
   )
 }
 
