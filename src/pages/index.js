@@ -23,6 +23,7 @@ import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
 import {
+  Navigation,
   Blurb,
   Footer,
   IconGroup,
@@ -31,9 +32,7 @@ import {
 // import branding from '../../static/branding-medium.otf'
 
 import {
-  Navigation,
   Hero,
-  SocialMediaIcons,
   Form
 } from '../components'
 
@@ -218,8 +217,9 @@ const RootIndex = ({ data }) => {
   const sectionContact = data.allContentfulSectionForm.edges[0].node
 
   return (
-    <div className='root'>
+    <div id='top' className='root'>
       <GlobalStyle />
+
       <Helmet>
         <html lang='en' />
         <meta charSet='utf-8' />
@@ -237,13 +237,16 @@ const RootIndex = ({ data }) => {
         <meta name='msapplication-TileColor' content={defaultColors.primary} />
         <meta name='theme-color' content={defaultColors.white} />
       </Helmet>
-      <Navigation
-        logo={sectionNav.logo && sectionNav.logo.fixed}
-        logoAlt={sectionNav.logo && sectionNav.logo.title}
-        size={sectionNav.size}
-        pages={sectionNav.sections}
-        centered
-      />
+
+      <Navigation tag={Link} size={sectionNav.size} text pointing={false}>
+        <Navigation.Logo to='top' tabIndex='0'>
+          <GImage fixed={sectionNav.logo.fixed} alt='logo' />
+        </Navigation.Logo>
+        {sectionNav.sections.map((page, i) => (
+          <Navigation.Item key={page} to={page} anchor tabIndex={i + 1}>{page}</Navigation.Item>
+        ))}
+      </Navigation>
+
       <Hero
         logo={sectionHero.logo && sectionHero.logo.fixed}
         title={sectionHero.title}
@@ -255,7 +258,7 @@ const RootIndex = ({ data }) => {
           primary: true,
           size: 'huge',
           as: Link,
-          to: 'property-tour',
+          to: 'Property Tour',
           smooth: true,
           duration: calcDuration
         }}
@@ -263,7 +266,7 @@ const RootIndex = ({ data }) => {
 
       <Main vertical basic>
 
-        <BaseSegment vertical basic>
+        <BaseSegment id={sectionNav.sections[0]} vertical basic>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
             {sectionMission.content && (
@@ -286,7 +289,7 @@ const RootIndex = ({ data }) => {
           </Blurbs>
         </BaseSegment>
 
-        <Segment id='property-tour' vertical secondary basic>
+        <Segment id={sectionNav.sections[1]} vertical secondary basic>
           <Form
             name={sectionTour.form.name}
             header={sectionTour.title}
@@ -295,36 +298,19 @@ const RootIndex = ({ data }) => {
             button={sectionTour.form.button}
           >
             {sectionTour.icons && (
-              <Container textAlign='center'>
-                {/* TODO: extract to contentful */}
-                <SocialMediaIcons
-                  icons={[
-                    {
-                      name: 'Facebook',
-                      link: 'https://www.facebook.com/theconnectdoor/'
-                    },
-                    {
-                      name: 'Twitter',
-                      link: 'https://twitter.com/ConnectDoor/'
-                    },
-                    {
-                      name: 'Instagram',
-                      link: 'https://instagram.com/ConnectDoor/'
-                    },
-                    {
-                      name: 'Linkedin',
-                      link: 'https://www.linkedin.com/company/connect-door/'
-                    }
-                  ]}
-                />
-              </Container>
+              <IconGroup justify='center' color={defaultColors.primary} hoverColor={defaultColors.secondary}>
+                <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+                <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+                <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+              </IconGroup>
             )}
             {sectionTour.content && sectionTour.content.content}
           </Form>
         </Segment>
 
         {/* TODO: extract to component (less undefined checking necessary) */}
-        <ProcessSegment id='process' vertical basic>
+        <ProcessSegment id={sectionNav.sections[2]} vertical basic>
           <Container className='container-items' text>
             <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
             {sectionItems.content && (
@@ -397,7 +383,7 @@ const RootIndex = ({ data }) => {
           </TeamSegment>
         )}
 
-        <BaseSegment vertical basic secondary>
+        <BaseSegment id={sectionNav.sections[3]} vertical basic secondary>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
             {sectionCareers.content && (
@@ -420,7 +406,7 @@ const RootIndex = ({ data }) => {
           </Blurbs>
         </BaseSegment>
 
-        <Segment id='contact' vertical basic>
+        <Segment id={sectionNav.sections[4]} vertical basic>
           <Form
             name={sectionContact.form.name}
             header={sectionContact.title}
@@ -430,27 +416,12 @@ const RootIndex = ({ data }) => {
           >
             {sectionContact.icons && (
               <ContactIcons textAlign='center'>
-                {/* TODO: extract to contentful */}
-                <SocialMediaIcons
-                  icons={[
-                    {
-                      name: 'Facebook',
-                      link: 'https://www.facebook.com/theconnectdoor/'
-                    },
-                    {
-                      name: 'Twitter',
-                      link: 'https://twitter.com/ConnectDoor/'
-                    },
-                    {
-                      name: 'Instagram',
-                      link: 'https://instagram.com/ConnectDoor/'
-                    },
-                    {
-                      name: 'Linkedin',
-                      link: 'https://www.linkedin.com/company/connect-door/'
-                    }
-                  ]}
-                />
+                <IconGroup color={defaultColors.primary} hoverColor={defaultColors.secondary} justify='center'>
+                  <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                  <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+                  <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+                  <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+                </IconGroup>
               </ContactIcons>
             )}
             {sectionContact.content && sectionContact.content.content}
@@ -460,9 +431,10 @@ const RootIndex = ({ data }) => {
       </Main>
 
       <Footer
+        backgroundColor={defaultColors.primary}
         inverted
         icons={(
-          <IconGroup justify='flex-end'>
+          <IconGroup compact justify='flex-end'>
             <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
             <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
             <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
