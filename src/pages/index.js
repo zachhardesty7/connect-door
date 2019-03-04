@@ -24,6 +24,8 @@ import 'semantic-ui-css/semantic.min.css'
 // user-defined
 import {
   Blurb,
+  Footer,
+  IconGroup,
   Icon
 } from 'semantic-styled-ui'
 // import branding from '../../static/branding-medium.otf'
@@ -31,7 +33,6 @@ import {
 import {
   Navigation,
   Hero,
-  Footer,
   SocialMediaIcons,
   Form
 } from '../components'
@@ -458,7 +459,20 @@ const RootIndex = ({ data }) => {
 
       </Main>
 
-      <Footer copyright='ConnectDoor' />
+      <Footer
+        inverted
+        icons={(
+          <IconGroup justify='flex-end'>
+            <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+            <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+            <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+            <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+          </IconGroup>
+        )}
+        copyright='ConnectDoor'
+        developerName='Zach Hardesty'
+        developerLink='https://zachhardesty.com'
+      />
     </div>
   )
 }
