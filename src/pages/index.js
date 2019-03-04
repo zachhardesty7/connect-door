@@ -26,14 +26,14 @@ import {
   Navigation,
   Blurb,
   Footer,
+  Form,
   IconGroup,
   Icon
 } from 'semantic-styled-ui'
 // import branding from '../../static/branding-medium.otf'
 
 import {
-  Hero,
-  Form
+  Hero
 } from '../components'
 
 import { defaultColors, toJoinedTitleCase, calcDuration } from '../utils'
@@ -199,8 +199,12 @@ const Blurbs = styled(Container)`
   text-align: center;
 `
 
-const ContactIcons = styled(Container)`
-  padding-bottom: 1;
+const PaddedForm = styled(Form)`
+  padding-top: 2em;
+`
+
+const UnpaddedTopIconGroup = styled(IconGroup)`
+  padding-top: 0;
 `
 
 const RootIndex = ({ data }) => {
@@ -290,23 +294,24 @@ const RootIndex = ({ data }) => {
         </BaseSegment>
 
         <Segment id={sectionNav.sections[1]} vertical secondary basic>
-          <Form
-            name={sectionTour.form.name}
-            header={sectionTour.title}
-            fields={sectionTour.form.contentfulfields}
-            textArea={sectionTour.form.textarea}
-            button={sectionTour.form.button}
-          >
-            {sectionTour.icons && (
-              <IconGroup justify='center' color={defaultColors.primary} hoverColor={defaultColors.secondary}>
+          <Container text>
+            <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
+            {sectionContact.icons && (
+              <UnpaddedTopIconGroup color={defaultColors.primary} hoverColor={defaultColors.secondary} justify='center'>
                 <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
                 <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
                 <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
                 <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-              </IconGroup>
+              </UnpaddedTopIconGroup>
             )}
-            {sectionTour.content && sectionTour.content.content}
-          </Form>
+            <Header.Content>{sectionTour.content && sectionTour.content.content}</Header.Content>
+            <PaddedForm
+              name={sectionTour.form.name}
+              fields={sectionTour.form.contentfulfields}
+              textArea={sectionTour.form.textarea}
+              button={sectionTour.form.button}
+            />
+          </Container>
         </Segment>
 
         {/* TODO: extract to component (less undefined checking necessary) */}
@@ -407,25 +412,30 @@ const RootIndex = ({ data }) => {
         </BaseSegment>
 
         <Segment id={sectionNav.sections[4]} vertical basic>
-          <Form
-            name={sectionContact.form.name}
-            header={sectionContact.title}
-            fields={sectionContact.form.contentfulfields}
-            textArea={sectionContact.form.textarea}
-            button={sectionContact.form.button}
-          >
-            {sectionContact.icons && (
-              <ContactIcons textAlign='center'>
-                <IconGroup color={defaultColors.primary} hoverColor={defaultColors.secondary} justify='center'>
-                  <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-                  <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-                  <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-                  <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-                </IconGroup>
-              </ContactIcons>
-            )}
-            {sectionContact.content && sectionContact.content.content}
-          </Form>
+          <Container text>
+            <Container text>
+              <Header as='h3' textAlign='center'>{sectionContact.title}</Header>
+              {sectionContact.icons && (
+                <Container textAlign='center'>
+                  <UnpaddedTopIconGroup color={defaultColors.primary} hoverColor={defaultColors.secondary} justify='center'>
+                    <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                    <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+                    <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+                    <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+                  </UnpaddedTopIconGroup>
+                </Container>
+              )}
+              <Header.Content>
+                {sectionContact.content && sectionContact.content.content}
+              </Header.Content>
+            </Container>
+            <PaddedForm
+              name={sectionContact.form.name}
+              fields={sectionContact.form.contentfulfields}
+              textArea={sectionContact.form.textarea}
+              button={sectionContact.form.button}
+            />
+          </Container>
         </Segment>
 
       </Main>
