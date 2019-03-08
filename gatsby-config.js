@@ -20,9 +20,12 @@ if (!spaceId || !accessToken) {
 }
 
 module.exports = {
+  siteMetadata: {
+    siteUrl: 'https://theconnectdoor.com'
+  },
   plugins: [
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: 'gatsby-plugin-manifest',
       options: {
         name: 'ConnectDoor',
         short_name: 'ConnectDoor',
@@ -34,7 +37,7 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-127721122-1',
         // Setting this parameter is also optional
