@@ -385,7 +385,11 @@ const RootIndex = ({ data }) => {
                   {sectionTeam.members.map((member, i) => (
                     <Card centered key={member.name}>
                       {member.image && (
-                        <GImage fluid={member.image.fluid} backgroundColor alt={member.image.title} />
+                        <GImage
+                          fluid={member.image.fluid}
+                          backgroundColor
+                          alt={member.image.title}
+                        />
                       )}
                       <Card.Content>
                         <Card.Header>{member.name}</Card.Header>
