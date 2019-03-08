@@ -23,6 +23,7 @@ import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
 import {
+  Hero,
   Navigation,
   Blurb,
   Footer,
@@ -32,11 +33,7 @@ import {
 } from 'semantic-styled-ui'
 // import branding from '../../static/branding-medium.otf'
 
-import {
-  Hero
-} from '../components'
-
-import { defaultColors, toJoinedTitleCase, calcDuration } from '../utils'
+import { defaultColors, toJoinedTitleCase } from '../utils'
 
 // favicon
 import faviconApple from '../../static/apple-touch-icon.png'
@@ -243,7 +240,7 @@ const RootIndex = ({ data }) => {
       </Helmet>
 
       <Navigation tag={Link} size={sectionNav.size} text pointing={false}>
-        <Navigation.Logo to='top' tabIndex='0'>
+        <Navigation.Logo to='top' anchor tabIndex='0'>
           <GImage fixed={sectionNav.logo.fixed} alt='logo' />
         </Navigation.Logo>
         {sectionNav.sections.map((page, i) => (
@@ -252,21 +249,30 @@ const RootIndex = ({ data }) => {
       </Navigation>
 
       <Hero
-        logo={sectionHero.logo && sectionHero.logo.fixed}
+        logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
+        inlineLogo
+        overlay='darker'
+        baseline='bottom'
+        size='compact'
         title={sectionHero.title}
         subtitle={sectionHero.subtitle}
-        buttonText={sectionHero.button}
-        background={sectionHero.background && sectionHero.background.fluid}
-        backgroundAlt={sectionHero.background && sectionHero.background.title}
-        buttonProps={{
-          primary: true,
-          size: 'huge',
-          as: Link,
-          to: 'Property Tour',
-          smooth: true,
-          duration: calcDuration
-        }}
-      />
+        button={(
+          <Hero.Button
+            color={defaultColors.secondary}
+            colorHover={defaultColors.primary}
+            compact
+            anchor
+            tag={Link}
+            to={sectionNav.sections[1]}
+          >
+            {sectionHero.button}
+          </Hero.Button>
+        )}
+      >
+        {sectionHero.backgrounds.map(background => (
+          <GImage fluid={background.fluid} alt={background.title} key={background.title} />
+        ))}
+      </Hero>
 
       <Main vertical basic>
 
@@ -282,10 +288,10 @@ const RootIndex = ({ data }) => {
               {sectionMission.blurbs.map(blurb => (
                 <Grid.Column key={toJoinedTitleCase(blurb.title)}>
                   <Blurb
-                    icon={<Icon name={blurb.icon} size='big' color={defaultColors.secondary} />}
+                    icon={<Icon name={blurb.icon} size='bigger' color={defaultColors.secondary} />}
                     header={blurb.title}
                   >
-                    {blurb.content && blurb.content.content}
+                    {blurb?.content?.content}
                   </Blurb>
                 </Grid.Column>
               ))}
@@ -296,7 +302,7 @@ const RootIndex = ({ data }) => {
         <Segment id={sectionNav.sections[1]} vertical secondary basic>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
-            {sectionContact.icons && (
+            {sectionTour.icons && (
               <UnpaddedTopIconGroup color={defaultColors.primary} hoverColor={defaultColors.secondary} justify='center'>
                 <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
                 <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
@@ -304,7 +310,7 @@ const RootIndex = ({ data }) => {
                 <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
               </UnpaddedTopIconGroup>
             )}
-            <Header.Content>{sectionTour.content && sectionTour.content.content}</Header.Content>
+            <Header.Content>{sectionTour?.content?.content}</Header.Content>
             <PaddedForm
               name={sectionTour.form.name}
               fields={sectionTour.form.contentfulfields}
@@ -333,7 +339,7 @@ const RootIndex = ({ data }) => {
 
                   <Item.Content verticalAlign='middle'>
                     <Item.Header as='h4'>{item.title}</Item.Header>
-                    <Item.Description>{item.content && item.content.content}</Item.Description>
+                    <Item.Description>{item?.content?.content}</Item.Description>
                   </Item.Content>
                 </Item>
               ))}
@@ -403,7 +409,7 @@ const RootIndex = ({ data }) => {
                     icon={<Icon name={blurb.icon} size='big' color={defaultColors.secondary} />}
                     header={blurb.title}
                   >
-                    {blurb.content && blurb.content.content}
+                    {blurb?.content?.content}
                   </Blurb>
                 </Grid.Column>
               ))}
@@ -426,7 +432,7 @@ const RootIndex = ({ data }) => {
                 </Container>
               )}
               <Header.Content>
-                {sectionContact.content && sectionContact.content.content}
+                {sectionContact?.content?.content}
               </Header.Content>
             </Container>
             <PaddedForm
@@ -498,7 +504,7 @@ export const imageQuery = graphql`
           title
           subtitle
           button
-          background {
+          backgrounds {
             id
             title
             fluid(maxWidth: 1920) {
