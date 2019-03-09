@@ -25,7 +25,7 @@ module.exports = {
   ],
   plugins: [
     // TODO: breaks when using npm linked version of semantic-styled-ui
-    // 'babel-plugin-transform-semantic-ui-react-style-imports',
+    'babel-plugin-transform-semantic-ui-react-style-imports',
     [
       'transform-react-remove-prop-types', {
         removeImport: true
