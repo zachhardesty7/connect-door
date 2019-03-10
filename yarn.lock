@@ -10358,10 +10358,10 @@ selfsigned@^1.9.1:
   dependencies:
     node-forge "0.7.5"
 
-semantic-styled-ui@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.2.6.tgz#df6b47021f32fa5fd0e38f02048d4369d2c138ba"
-  integrity sha512-NFaJJ7lClyZzN1JoSK069IjbE3f/cTIp5rhVrCPECjs6+LYkcHYJc8mEhZ8MsW3yp/OIuHhnakk3aX239upJAQ==
+semantic-styled-ui@0.2.8:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.2.8.tgz#816fb0a657ae80c5723a4dcfa7fb60982b1b0f71"
+  integrity sha512-JKGulQgwdAsYZi4JuWPclVkZMsVM8lMxACdb0M6OXKlsoR0mmC3gwMm9tGmJCXaP4cnG6sgewJlQPIXZHi4C4Q==
   dependencies:
     prop-types "^15.7.2"
     semantic-ui-react "^0.85.0"
