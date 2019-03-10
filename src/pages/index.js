@@ -29,17 +29,30 @@ import {
   Footer,
   Form,
   IconGroup,
-  Icon
+  Icon,
+  Utils
 } from 'semantic-styled-ui'
 // import branding from '../../static/branding-medium.otf'
-
-import { defaultColors, toJoinedTitleCase } from '../utils'
 
 // favicon
 import faviconApple from '../../static/apple-touch-icon.png'
 import favicon32 from '../../static/favicon-32x32.png'
 import favicon16 from '../../static/favicon-16x16.png'
 import faviconSafari from '../../static/safari-pinned-tab.svg'
+
+const brandColors = {
+  blue: '#3b5998',
+  orange: '#ca6914',
+  teal: '#749ad3',
+  white: '#ffffff'
+}
+
+const defaultColors = {
+  ...brandColors,
+  primary: brandColors.blue,
+  secondary: brandColors.teal,
+  accent: brandColors.orange
+}
 
 const GlobalStyle = createGlobalStyle`
   /* logo font */
@@ -59,7 +72,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-size: 1em;
     line-height: 1.65;
-    color: ${defaultColors.dark};
     margin: 0;
   }
 
@@ -73,13 +85,6 @@ const GlobalStyle = createGlobalStyle`
   h3 {
     font-size: 2em;
     font-weight: 600 !important;
-  }
-
-  a {
-    color: ${defaultColors.secondaryColor};
-    &:hover {
-      color: ${defaultColors.white};
-    }
   }
 `
 
@@ -133,8 +138,8 @@ const ProcessSegment = styled(Segment)`
 
   .process-label {
     z-index: 1;
-    background-color: ${defaultColors.secondary};
-    color: ${defaultColors.white};
+    ${Utils.getColor('white')}
+    ${Utils.getBackgroundColor('secondary')}
 
     /* allow placement on right with changed color */
     &.right::after {
@@ -205,32 +210,20 @@ const UnpaddedTopIconGroup = styled(IconGroup)`
 `
 
 const RootIndex = ({ data }) => {
-  const sectionNav = data.allContentfulNav.edges[0].node
-  const sectionHero = data.allContentfulHero.edges[0].node
-  const sectionMission = data.allContentfulSectionBlurb.edges[0].node
-  const sectionTour = data.allContentfulSectionForm.edges[1].node
-  const sectionItems = data.allContentfulSectionItems.edges[0].node
+  const sectionNav = data.allContentfulNav.nodes[0]
+  const sectionHero = data.allContentfulHero.nodes[0]
+  const sectionMission = data.allContentfulSectionBlurb.nodes[0]
+  const sectionTour = data.allContentfulSectionForm.nodes[1]
+  const sectionItems = data.allContentfulSectionItems.nodes[0]
   // account for dummy entry
-  const sectionTeam = (data.allContentfulSectionTeam.edges[1] &&
-    data.allContentfulSectionTeam.edges[1].node) ||
-    data.allContentfulSectionTeam.edges[0].node
-  const sectionCareers = data.allContentfulSectionBlurb.edges[1].node
-  const sectionContact = data.allContentfulSectionForm.edges[0].node
-
-  const colors = {
-    blue: '#3b5998',
-    orange: '#ca6914',
-    teal: '#749ad3'
-  }
+  const sectionTeam = (data.allContentfulSectionTeam.nodes[1] &&
+    data.allContentfulSectionTeam.nodes[1]) ||
+    data.allContentfulSectionTeam.nodes[0]
+  const sectionCareers = data.allContentfulSectionBlurb.nodes[1]
+  const sectionContact = data.allContentfulSectionForm.nodes[0]
 
   return (
-    <ThemeProvider theme={{
-      ...colors,
-      primary: colors.blue,
-      secondary: colors.teal,
-      accent: colors.orange
-    }}
-    >
+    <ThemeProvider theme={{ ...defaultColors }}>
       <div id='top' className='root'>
         <GlobalStyle />
 
@@ -297,7 +290,7 @@ const RootIndex = ({ data }) => {
             <Blurbs>
               <Grid relaxed stackable divided padded columns={sectionMission.blurbs.length}>
                 {sectionMission.blurbs.map(blurb => (
-                  <Grid.Column key={toJoinedTitleCase(blurb.title)}>
+                  <Grid.Column key={blurb.title}>
                     <Blurb
                       icon={<Icon name={blurb.icon} inverted size='bigger' />}
                       header={blurb.title}
@@ -340,7 +333,7 @@ const RootIndex = ({ data }) => {
               )}
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
-                  <Item key={toJoinedTitleCase(item.title)}>
+                  <Item key={item.title}>
                     <Item.Image size='medium' rounded className='darken-25'>
                       <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
                       {item.image && (
@@ -419,7 +412,7 @@ const RootIndex = ({ data }) => {
             <Blurbs>
               <Grid relaxed stackable columns={sectionCareers.blurbs.length} divided padded>
                 {sectionCareers.blurbs.map(blurb => (
-                  <Grid.Column key={toJoinedTitleCase(blurb.title)}>
+                  <Grid.Column key={blurb.title}>
                     <Blurb
                       icon={<Icon name={blurb.icon} inverted size='bigger' />}
                       header={blurb.title}
