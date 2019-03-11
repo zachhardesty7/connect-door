@@ -30,7 +30,8 @@ import {
   Form,
   IconGroup,
   Icon,
-  Utils
+  getColor,
+  getBackgroundColor
 } from 'semantic-styled-ui'
 // import branding from '../../static/branding-medium.otf'
 
@@ -138,8 +139,8 @@ const ProcessSegment = styled(Segment)`
 
   .process-label {
     z-index: 1;
-    ${Utils.getColor('white')}
-    ${Utils.getBackgroundColor('secondary')}
+    ${getColor('white')}
+    ${getBackgroundColor('secondary')}
 
     /* allow placement on right with changed color */
     &.right::after {
