@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^0.1.1",
+    "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^1.0.0-rc",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-plugin-transform-semantic-ui-react-style-imports": "0.0.4",
