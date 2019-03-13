@@ -35,9 +35,7 @@ module.exports = {
     [
       '@quickbaseoss/babel-plugin-styled-components-css-namespace',
       {
-        cssNamespace: 'root.root.root'
-        // broken in current version lol
-        // "rawCssNamespace": "#___gatsby"
+        cssNamespace: '.root.root.root'
       }
     ],
     [

@@ -12,7 +12,6 @@ import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import {
   Card,
   Container,
-  Grid,
   Segment,
   Header,
   Item,
@@ -25,11 +24,12 @@ import 'semantic-ui-css/semantic.min.css'
 import {
   Hero,
   Navigation,
-  Blurb,
+  Blurbs,
   Footer,
   Form,
   IconGroup,
   Icon,
+  asTag,
   getColor,
   getBackgroundColor
 } from 'semantic-styled-ui'
@@ -83,76 +83,58 @@ const GlobalStyle = createGlobalStyle`
 
   h1,
   h2,
-  h3 {
-    font-size: 2em;
+  h3,
+  h4 {
     font-weight: 600 !important;
   }
-`
-
-const Main = styled(Segment)`
-  h3 {
-    font-size: 3em;
-    font-weight: 600;
-  }
-
-  h4 {
-    font-size: 2em;
-    font-weight: 600;
-  }
-
-  padding: 3em 0em;
 
   .gatsby-image-wrapper {
     display: block !important;
   }
-
-  /* space each segment */
-  & > .segment {
-    padding-top: 5em;
-    padding-bottom: 5em;
-  }
 `
 
-const BaseSegment = styled(Segment)`
-  & > .container:first-child {
-    padding-bottom: 3em;
-  }
-`
-
-const ProcessSegment = styled(Segment)`
+const SegmentTagged = asTag(Segment)
+const BaseSegment = styled(SegmentTagged)`
   h3 {
-    font-weight: 600;
-    margin-bottom: 1em;
+    font-size: 3em;
   }
 
   h4 {
-    font-weight: 600;
+    font-size: 2em !important;
   }
 
-  .container-items {
-    margin-bottom: 3em;
+  padding-top: 6em;
+  padding-bottom: 6em;
+`
+
+const HeaderTagged = asTag(Header)
+const ProcessHeader = styled(HeaderTagged)`
+  margin-bottom: 1em;
+`
+
+const ProcessLabelContainer = styled(Container)`
+  padding-top: 4em;
+`
+
+const ProcessLabel = styled(Label)`
+  z-index: 1;
+  left: calc(.05rem - 1.2em);
+  
+  ${getColor('white')};
+  ${getBackgroundColor('secondary')};
+
+  /* allow placement on right with changed color */
+  &.right::after {
+    border-top-color: ${defaultColors.secondary};
   }
-
-  .rounded img {
-    border-radius: 0.5rem;
+  &:not(.right)::after {
+    border-right-color: ${defaultColors.secondary};
   }
+`
 
-  .process-label {
-    z-index: 1;
-    ${getColor('white')}
-    ${getBackgroundColor('secondary')}
-
-    /* allow placement on right with changed color */
-    &.right::after {
-      border-top-color: ${defaultColors.secondary};
-    }
-    &:not(.right)::after {
-      border-right-color: ${defaultColors.secondary};
-    }
-  }
-
+const ProcessDarkenedImage = styled(Item.Image)`
   /* overlay darken by 25% */
-  .darken-25::before {
+  &::before {
     content: "";
     height: 100%;
     width: 100%;
@@ -198,18 +180,6 @@ const TeamSegment = styled(BaseSegment)`
   }
 `
 
-const Blurbs = styled(Container)`
-  text-align: center;
-`
-
-const PaddedForm = styled(Form)`
-  padding-top: 2em;
-`
-
-const UnpaddedTopIconGroup = styled(IconGroup)`
-  padding-top: 0;
-`
-
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
@@ -248,7 +218,7 @@ const RootIndex = ({ data }) => {
 
         <Navigation tag={Link} size={sectionNav.size} text pointing={false}>
           <Navigation.Logo to='top' anchor tabIndex='0'>
-            <GImage fixed={sectionNav.logo.fixed} alt='logo' />
+            <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
             <Navigation.Item key={page} to={page} anchor tabIndex={i + 1}>{page}</Navigation.Item>
@@ -279,91 +249,83 @@ const RootIndex = ({ data }) => {
           ))}
         </Hero>
 
-        <Main vertical basic>
+        <Segment as='main' vertical basic>
 
-          <BaseSegment id={sectionNav.sections[0]} vertical basic>
-            <Container text>
-              <Header as='h3' textAlign='center'>{sectionMission.title}</Header>
-              {sectionMission.content && (
-                <Header.Content>{sectionMission.content.content}</Header.Content>
-              )}
-            </Container>
-            <Blurbs>
-              <Grid relaxed stackable divided padded columns={sectionMission.blurbs.length}>
-                {sectionMission.blurbs.map(blurb => (
-                  <Grid.Column key={blurb.title}>
-                    <Blurb
-                      icon={<Icon name={blurb.icon} inverted size='bigger' />}
-                      header={blurb.title}
-                    >
-                      {blurb?.content?.content}
-                    </Blurb>
-                  </Grid.Column>
-                ))}
-              </Grid>
-            </Blurbs>
-          </BaseSegment>
+          <Blurbs
+            as={BaseSegment}
+            id={sectionNav.sections[0]}
+            title={sectionMission.title}
+            content={sectionMission.content?.content}
+          >
+            {sectionMission.blurbs.map(blurb => (
+              <Blurbs.Item
+                key={blurb.title}
+                icon={<Icon name={blurb.icon} inverted size='bigger' />}
+                header={blurb.title}
+              >
+                {blurb.content?.content}
+              </Blurbs.Item>
+            ))}
+          </Blurbs>
 
-          <Segment id={sectionNav.sections[1]} vertical secondary basic>
+          <BaseSegment id={sectionNav.sections[1]} tag='section' vertical secondary basic>
             <Container text>
               <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
               {sectionTour.icons && (
-                <UnpaddedTopIconGroup inverted size='large' justify='center'>
+                <IconGroup padded='bottom' inverted size='large' justify='center'>
                   <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
                   <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
                   <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
                   <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-                </UnpaddedTopIconGroup>
+                </IconGroup>
               )}
               <Header.Content>{sectionTour?.content?.content}</Header.Content>
-              <PaddedForm
-                name={sectionTour.form.name}
-                fields={sectionTour.form.contentfulfields}
-                textArea={sectionTour.form.textarea}
-                button={sectionTour.form.button}
+              <Form
+                name={sectionTour.form?.name}
+                fields={sectionTour.form?.contentfulfields}
+                textArea={sectionTour.form?.textarea}
+                button={sectionTour.form?.button}
+                padded='top'
               />
             </Container>
-          </Segment>
+          </BaseSegment>
 
           {/* TODO: extract to component (less undefined checking necessary) */}
-          <ProcessSegment id={sectionNav.sections[2]} vertical basic>
-            <Container className='container-items' text>
-              <Header as='h3' textAlign='center'>{sectionItems.title}</Header>
-              {sectionItems.content && (
-                <Header.Content>{sectionItems.content.content}</Header.Content>
-              )}
+          <BaseSegment id={sectionNav.sections[2]} vertical basic>
+            <Container text>
+              <ProcessHeader tag='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
+              <Header.Content>{sectionItems.content?.content}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
                   <Item key={item.title}>
-                    <Item.Image size='medium' rounded className='darken-25'>
-                      <Label content={`#${i + 1}`} ribbon className='process-label' size='huge' />
+                    <ProcessDarkenedImage size='medium' rounded>
+                      <ProcessLabel content={`#${i + 1}`} ribbon size='huge' />
                       {item.image && (
-                        <GImage fixed={item.image.fixed} backgroundColor alt={item.image.title} />
+                        <GImage fixed={item.image?.fixed} backgroundColor alt={item.image?.title} />
                       )}
-                    </Item.Image>
+                    </ProcessDarkenedImage>
 
                     <Item.Content verticalAlign='middle'>
                       <Item.Header as='h4'>{item.title}</Item.Header>
-                      <Item.Description>{item?.content?.content}</Item.Description>
+                      <Item.Description>{item.content?.content}</Item.Description>
                     </Item.Content>
                   </Item>
                 ))}
               </Item.Group>
             </Container>
-            <Container text textAlign='center'>
+            <ProcessLabelContainer text textAlign='center'>
               <Message compact floating size='huge'>
                 <Message.Header>
-                  <Label
+                  <ProcessLabel
                     content={sectionItems.finalStepLabel}
                     horizontal
-                    className='process-label'
                     size='huge'
                   />
                   {sectionItems.finalStep}
                 </Message.Header>
               </Message>
-            </Container>
-          </ProcessSegment>
+            </ProcessLabelContainer>
+          </BaseSegment>
 
           {/* TODO: extract to component (less undefined checking necessary) */}
           {sectionTeam.title !== 'dummy' && (
@@ -371,7 +333,7 @@ const RootIndex = ({ data }) => {
               <Container text className='container-team'>
                 <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
                 {sectionTeam.content && (
-                  <Header.Content>{sectionTeam.content.content}</Header.Content>
+                  <Header.Content>{sectionTeam.content?.content}</Header.Content>
                 )}
               </Container>
               <Container className='cards'>
@@ -380,9 +342,9 @@ const RootIndex = ({ data }) => {
                     <Card centered key={member.name}>
                       {member.image && (
                         <GImage
-                          fluid={member.image.fluid}
+                          fluid={member.image?.fluid}
                           backgroundColor
-                          alt={member.image.title}
+                          alt={member.image?.title}
                         />
                       )}
                       <Card.Content>
@@ -403,57 +365,52 @@ const RootIndex = ({ data }) => {
             </TeamSegment>
           )}
 
-          <BaseSegment id={sectionNav.sections[3]} vertical basic secondary>
-            <Container text>
-              <Header as='h3' textAlign='center'>{sectionCareers.title}</Header>
-              {sectionCareers.content && (
-                <Header.Content>{sectionCareers.content.content}</Header.Content>
-              )}
-            </Container>
-            <Blurbs>
-              <Grid relaxed stackable columns={sectionCareers.blurbs.length} divided padded>
-                {sectionCareers.blurbs.map(blurb => (
-                  <Grid.Column key={blurb.title}>
-                    <Blurb
-                      icon={<Icon name={blurb.icon} inverted size='bigger' />}
-                      header={blurb.title}
-                    >
-                      {blurb?.content?.content}
-                    </Blurb>
-                  </Grid.Column>
-                ))}
-              </Grid>
-            </Blurbs>
-          </BaseSegment>
+          <Blurbs
+            id={sectionNav.sections[3]}
+            title={sectionCareers.title}
+            content={sectionCareers.content?.content}
+            secondary
+          >
+            {sectionCareers.blurbs.map(blurb => (
+              <Blurbs.Item
+                key={blurb.title}
+                icon={<Icon name={blurb.icon} inverted size='bigger' />}
+                header={blurb.title}
+              >
+                {blurb.content?.content}
+              </Blurbs.Item>
+            ))}
+          </Blurbs>
 
-          <Segment id={sectionNav.sections[4]} vertical basic>
+          <BaseSegment id={sectionNav.sections[4]} vertical basic>
             <Container text>
               <Container text>
                 <Header as='h3' textAlign='center'>{sectionContact.title}</Header>
                 {sectionContact.icons && (
                   <Container textAlign='center'>
-                    <UnpaddedTopIconGroup inverted size='large' justify='center'>
+                    <IconGroup padded='bottom' inverted size='large' justify='center'>
                       <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
                       <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
                       <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
                       <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-                    </UnpaddedTopIconGroup>
+                    </IconGroup>
                   </Container>
                 )}
                 <Header.Content>
                   {sectionContact?.content?.content}
                 </Header.Content>
               </Container>
-              <PaddedForm
-                name={sectionContact.form.name}
-                fields={sectionContact.form.contentfulfields}
-                textArea={sectionContact.form.textarea}
-                button={sectionContact.form.button}
+              <Form
+                name={sectionContact.form?.name}
+                fields={sectionContact.form?.contentfulfields}
+                textArea={sectionContact.form?.textarea}
+                button={sectionContact.form?.button}
+                padded='top'
               />
             </Container>
-          </Segment>
+          </BaseSegment>
 
-        </Main>
+        </Segment>
 
         <Footer
           inverted
