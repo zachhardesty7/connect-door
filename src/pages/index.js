@@ -211,17 +211,17 @@ const UnpaddedTopIconGroup = styled(IconGroup)`
 `
 
 const RootIndex = ({ data }) => {
-  const sectionNav = data.allContentfulNav.nodes[0]
-  const sectionHero = data.allContentfulHero.nodes[0]
-  const sectionMission = data.allContentfulSectionBlurb.nodes[0]
-  const sectionTour = data.allContentfulSectionForm.nodes[1]
-  const sectionItems = data.allContentfulSectionItems.nodes[0]
+  const sectionNav = data.allContentfulNav.edges[0].node
+  const sectionHero = data.allContentfulHero.edges[0].node
+  const sectionMission = data.allContentfulSectionBlurb.edges[0].node
+  const sectionTour = data.allContentfulSectionForm.edges[1].node
+  const sectionItems = data.allContentfulSectionItems.edges[0].node
   // account for dummy entry
-  const sectionTeam = (data.allContentfulSectionTeam.nodes[1] &&
-    data.allContentfulSectionTeam.nodes[1]) ||
-    data.allContentfulSectionTeam.nodes[0]
-  const sectionCareers = data.allContentfulSectionBlurb.nodes[1]
-  const sectionContact = data.allContentfulSectionForm.nodes[0]
+  const sectionTeam = (data.allContentfulSectionTeam.edges[1] &&
+    data.allContentfulSectionTeam.edges[1].node) ||
+    data.allContentfulSectionTeam.edges[0].node
+  const sectionCareers = data.allContentfulSectionBlurb.edges[1].node
+  const sectionContact = data.allContentfulSectionForm.edges[0].node
 
   return (
     <ThemeProvider theme={{ ...defaultColors }}>
