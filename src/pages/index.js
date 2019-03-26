@@ -33,13 +33,10 @@ import {
   getColor,
   getBackgroundColor
 } from 'semantic-styled-ui'
-// import branding from '../../static/branding-medium.otf'
 
-// favicon
-import faviconApple from '../../static/apple-touch-icon.png'
-import favicon32 from '../../static/favicon-32x32.png'
-import favicon16 from '../../static/favicon-16x16.png'
-import faviconSafari from '../../static/safari-pinned-tab.svg'
+import brandingMedium from '../assets/branding-medium.otf'
+// import brandingSemibold from '../fonts/branding-semibold.otf'
+// import brandingSemilight from '../fonts/branding-semilight.otf'
 
 const brandColors = {
   blue: '#3b5998',
@@ -59,9 +56,7 @@ const GlobalStyle = createGlobalStyle`
   /* logo font */
   @font-face {
     font-family: 'Branding';
-    font-weight: 600;
-    font-style: normal;
-    src: url('/static/branding.otf') format('opentype');
+    src: url(${brandingMedium}) format('opentype');
     font-display: swap;
   }
 
@@ -72,24 +67,16 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-size: 1em;
-    line-height: 1.65;
     margin: 0;
+  }
+
+  p {
+    line-height: 1.5;
   }
 
   img {
     display: block;
     width: 100%;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-weight: 600 !important;
-  }
-
-  .gatsby-image-wrapper {
-    display: block !important;
   }
 `
 
@@ -133,6 +120,10 @@ const ProcessLabel = styled(Label)`
 `
 
 const ProcessDarkenedImage = styled(Item.Image)`
+  .gatsby-image-wrapper {
+    display: block !important;
+  }
+
   /* overlay darken by 25% */
   &::before {
     content: "";
@@ -204,24 +195,14 @@ const RootIndex = ({ data }) => {
           <title>{sectionHero.title}</title>
           <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
           <link rel='canonical' href='https://connectdoor.com' />
-
-          {/* favicon */}
-          <link rel='apple-touch-icon' sizes='180x180' href={faviconApple} />
-          <link rel='icon' type='image/png' sizes='32x32' href={favicon32} />
-          <link rel='icon' type='image/png' sizes='16x16' href={favicon16} />
-          <link rel='mask-icon' href={faviconSafari} color={defaultColors.primary} />
-          <meta name='apple-mobile-web-app-title' content='ConnectDoor' />
-          <meta name='application-name' content='ConnectDoor' />
-          <meta name='msapplication-TileColor' content={defaultColors.primary} />
-          <meta name='theme-color' content={defaultColors.white} />
         </Helmet>
 
         <Navigation tag={Link} size={sectionNav.size} text pointing={false}>
-          <Navigation.Logo to='top' anchor tabIndex='0'>
+          <Navigation.Logo link='#top' tabIndex='0'>
             <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
-            <Navigation.Item key={page} to={page} anchor tabIndex={i + 1}>{page}</Navigation.Item>
+            <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
           ))}
         </Navigation>
 
@@ -236,9 +217,8 @@ const RootIndex = ({ data }) => {
           button={(
             <Hero.Button
               compact
-              anchor
               tag={Link}
-              to={sectionNav.sections[1]}
+              link={`#${sectionNav.sections[1]}`}
             >
               {sectionHero.button}
             </Hero.Button>
@@ -415,7 +395,7 @@ const RootIndex = ({ data }) => {
         <Footer
           inverted
           icons={(
-            <IconGroup light compact justify='flex-end'>
+            <IconGroup light justify='flex-end'>
               <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
               <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
               <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
