@@ -2,7 +2,7 @@ let contentfulConfig
 
 try {
   // Load the Contentful config from the .contentful.json
-  contentfulConfig = require('./.contentful')
+  contentfulConfig = require('./.contentful') // eslint-disable-line global-require
 } catch (_) { console.info('using env vars') }
 
 // Overwrite the Contentful config with environment variables if they exist
@@ -32,8 +32,9 @@ module.exports = {
         start_url: '/',
         background_color: '#3B5998',
         theme_color: '#3B5998',
-        display: 'minimal-ui',
-        icon: './static/logo-icon-blue-square.png' // This path is relative to the root of the site.
+        display: 'standalone',
+        icon: './src/assets/cd-logo-icon-blue.svg',
+        include_favicon: true
       }
     },
     {
