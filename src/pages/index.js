@@ -269,7 +269,7 @@ const RootIndex = ({ data }) => {
             </Container>
           </BaseSegment>
 
-          {/* TODO: extract to component (less undefined checking necessary) */}
+          {/* @TODO extract to component (less undefined checking necessary) */}
           <BaseSegment id={sectionNav.sections[2]} vertical basic>
             <Container text>
               <ProcessHeader tag='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
@@ -405,14 +405,6 @@ const RootIndex = ({ data }) => {
       </div>
     </ThemeProvider>
   )
-}
-
-RootIndex.propTypes = {
-  data: PropTypes.object // eslint-disable-line react/forbid-prop-types
-}
-
-RootIndex.defaultProps = {
-  data: {}
 }
 
 export default RootIndex
