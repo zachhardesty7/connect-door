@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
+import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
 import { Link } from 'react-scroll'
 import Helmet from 'react-helmet'
@@ -35,8 +36,6 @@ import {
 } from 'semantic-styled-ui'
 
 import brandingMedium from '../assets/branding-medium.otf'
-// import brandingSemibold from '../fonts/branding-semibold.otf'
-// import brandingSemilight from '../fonts/branding-semilight.otf'
 
 const brandColors = {
   blue: '#3b5998',
@@ -197,7 +196,7 @@ const RootIndex = ({ data }) => {
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
-        <Navigation tag={Link} size={sectionNav.size} text pointing={false}>
+        <Navigation tag={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
             <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
@@ -235,7 +234,7 @@ const RootIndex = ({ data }) => {
             as={BaseSegment}
             id={sectionNav.sections[0]}
             title={sectionMission.title}
-            content={sectionMission.content?.content}
+            content={richTextToJsx(sectionMission.content?.json)}
           >
             {sectionMission.blurbs.map(blurb => (
               <Blurbs.Item
@@ -243,7 +242,7 @@ const RootIndex = ({ data }) => {
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {blurb.content?.content}
+                {richTextToJsx(blurb.content?.json)}
               </Blurbs.Item>
             ))}
           </Blurbs>
@@ -259,7 +258,7 @@ const RootIndex = ({ data }) => {
                   <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
                 </IconGroup>
               )}
-              <Header.Content>{sectionTour?.content?.content}</Header.Content>
+              <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
               <Form
                 name={sectionTour.form?.name}
                 fields={sectionTour.form?.contentfulfields}
@@ -274,12 +273,12 @@ const RootIndex = ({ data }) => {
           <BaseSegment id={sectionNav.sections[2]} vertical basic>
             <Container text>
               <ProcessHeader tag='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
-              <Header.Content>{sectionItems.content?.content}</Header.Content>
+              <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
                   <Item key={item.title}>
                     <ProcessDarkenedImage size='medium' rounded>
-                      <ProcessLabel content={`#${i + 1}`} ribbon size='huge' />
+                      <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
                       {item.image && (
                         <GImage fixed={item.image?.fixed} backgroundColor alt={item.image?.title} />
                       )}
@@ -287,7 +286,7 @@ const RootIndex = ({ data }) => {
 
                     <Item.Content verticalAlign='middle'>
                       <Item.Header as='h4'>{item.title}</Item.Header>
-                      <Item.Description>{item.content?.content}</Item.Description>
+                      <Item.Description>{richTextToJsx(item.content?.json)}</Item.Description>
                     </Item.Content>
                   </Item>
                 ))}
@@ -296,24 +295,21 @@ const RootIndex = ({ data }) => {
             <ProcessLabelContainer text textAlign='center'>
               <Message compact floating size='huge'>
                 <Message.Header>
-                  <ProcessLabel
-                    content={sectionItems.finalStepLabel}
-                    horizontal
-                    size='huge'
-                  />
+                  <ProcessLabel horizontal size='huge'>
+                    {sectionItems.finalStepLabel}
+                  </ProcessLabel>
                   {sectionItems.finalStep}
                 </Message.Header>
               </Message>
             </ProcessLabelContainer>
           </BaseSegment>
 
-          {/* TODO: extract to component (less undefined checking necessary) */}
           {sectionTeam.title !== 'dummy' && (
             <TeamSegment basic>
               <Container text className='container-team'>
                 <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
                 {sectionTeam.content && (
-                  <Header.Content>{sectionTeam.content?.content}</Header.Content>
+                  <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
                 )}
               </Container>
               <Container className='cards'>
@@ -348,7 +344,7 @@ const RootIndex = ({ data }) => {
           <Blurbs
             id={sectionNav.sections[3]}
             title={sectionCareers.title}
-            content={sectionCareers.content?.content}
+            content={richTextToJsx(sectionCareers.content?.json)}
             secondary
           >
             {sectionCareers.blurbs.map(blurb => (
@@ -357,7 +353,7 @@ const RootIndex = ({ data }) => {
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {blurb.content?.content}
+                {richTextToJsx(blurb.content?.json)}
               </Blurbs.Item>
             ))}
           </Blurbs>
@@ -377,7 +373,7 @@ const RootIndex = ({ data }) => {
                   </Container>
                 )}
                 <Header.Content>
-                  {sectionContact?.content?.content}
+                  {richTextToJsx(sectionContact?.content?.json)}
                 </Header.Content>
               </Container>
               <Form
@@ -465,7 +461,7 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            content
+            json
           }
           itemsPerRow
           members {
@@ -476,7 +472,9 @@ export const imageQuery = graphql`
               }
             }
             name
-            content
+            bio {
+              json
+            }
             email
             number
           }
@@ -488,13 +486,13 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            content
+            json
           }
           blurbs {
             icon
             title
             content {
-              content
+              json
             }
           }
         }
@@ -506,7 +504,7 @@ export const imageQuery = graphql`
           title
           icons
           content {
-            content
+            json
           }
           form {
             name
@@ -524,7 +522,7 @@ export const imageQuery = graphql`
           steps {
             title
             content {
-              content
+              json
             }
             image {
               title

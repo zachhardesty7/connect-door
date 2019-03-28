@@ -49,7 +49,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-webpack-bundle-analyzer',
       options: {
-        // production: true
+        // production: true,
+        openAnalyzer: false
       }
     },
     'gatsby-plugin-offline',
