@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
 import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
@@ -7,32 +7,32 @@ import { Link } from 'react-scroll'
 import Helmet from 'react-helmet'
 import GImage from 'gatsby-image'
 
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 
 // ui framework
 import {
   Card,
   Container,
-  Segment,
   Header,
   Item,
   Label,
-  Message
+  Message,
+  Segment,
 } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 // user-defined
 import {
-  Hero,
-  Navigation,
   Blurbs,
   Footer,
   Form,
-  IconGroup,
+  Hero,
   Icon,
+  IconGroup,
+  Navigation,
   asTag,
+  getBackgroundColor,
   getColor,
-  getBackgroundColor
 } from 'semantic-styled-ui'
 
 import brandingMedium from '../assets/branding-medium.otf'
@@ -41,14 +41,14 @@ const brandColors = {
   blue: '#3b5998',
   orange: '#ca6914',
   teal: '#749ad3',
-  white: '#ffffff'
+  white: '#ffffff',
 }
 
 const defaultColors = {
   ...brandColors,
   primary: brandColors.blue,
   secondary: brandColors.teal,
-  accent: brandColors.orange
+  accent: brandColors.orange,
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -223,7 +223,7 @@ const RootIndex = ({ data }) => {
             </Hero.Button>
           )}
         >
-          {sectionHero.backgrounds.map(background => (
+          {sectionHero.backgrounds.map((background) => (
             <GImage fluid={background.fluid} alt={background.title} key={background.title} />
           ))}
         </Hero>
@@ -236,7 +236,7 @@ const RootIndex = ({ data }) => {
             title={sectionMission.title}
             content={richTextToJsx(sectionMission.content?.json)}
           >
-            {sectionMission.blurbs.map(blurb => (
+            {sectionMission.blurbs.map((blurb) => (
               <Blurbs.Item
                 key={blurb.title}
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
@@ -347,7 +347,7 @@ const RootIndex = ({ data }) => {
             content={richTextToJsx(sectionCareers.content?.json)}
             secondary
           >
-            {sectionCareers.blurbs.map(blurb => (
+            {sectionCareers.blurbs.map((blurb) => (
               <Blurbs.Item
                 key={blurb.title}
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}

@@ -10,46 +10,46 @@ module.exports = {
         targets: {
           browsers: [
             '>0.25%',
-            'not dead'
-          ]
-        }
-      }
+            'not dead',
+          ],
+        },
+      },
     ],
     [
       '@babel/preset-react',
       {
         useBuiltIns: true,
-        pragma: 'React.createElement'
-      }
-    ]
+        pragma: 'React.createElement',
+      },
+    ],
   ],
   plugins: [
     'babel-plugin-transform-semantic-ui-react-style-imports',
     [
       'transform-react-remove-prop-types', {
-        removeImport: true
-      }
+        removeImport: true,
+      },
     ],
     '@babel/plugin-proposal-optional-chaining',
     [
       '@quickbaseoss/babel-plugin-styled-components-css-namespace',
       {
-        cssNamespace: '.root.root.root'
-      }
+        cssNamespace: '.root.root.root',
+      },
     ],
     [
       '@babel/plugin-proposal-class-properties',
       {
-        loose: true
-      }
+        loose: true,
+      },
     ],
     '@babel/plugin-syntax-dynamic-import',
     [
       '@babel/plugin-transform-runtime',
       {
         helpers: true,
-        regenerator: true
-      }
-    ]
-  ]
+        regenerator: true,
+      },
+    ],
+  ],
 }
