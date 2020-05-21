@@ -1,10 +1,9 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
 import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
 import { Link } from 'react-scroll'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import GImage from 'gatsby-image'
 
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
@@ -24,32 +23,19 @@ import 'semantic-ui-css/semantic.min.css'
 // user-defined
 import {
   Blurbs,
+  ContactForm,
   Footer,
-  Form,
   Hero,
   Icon,
   IconGroup,
   Navigation,
-  asTag,
   getBackgroundColor,
   getColor,
 } from 'semantic-styled-ui'
 
 import brandingMedium from '../assets/branding-medium.otf'
 
-const brandColors = {
-  blue: '#3b5998',
-  orange: '#ca6914',
-  teal: '#749ad3',
-  white: '#ffffff',
-}
-
-const defaultColors = {
-  ...brandColors,
-  primary: brandColors.blue,
-  secondary: brandColors.teal,
-  accent: brandColors.orange,
-}
+import { defaultColors } from '../constants'
 
 const GlobalStyle = createGlobalStyle`
   /* logo font */
@@ -79,8 +65,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const SegmentTagged = asTag(Segment)
-const BaseSegment = styled(SegmentTagged)`
+const BaseSegment = styled(Segment)`
   h3 {
     font-size: 3em;
   }
@@ -93,8 +78,7 @@ const BaseSegment = styled(SegmentTagged)`
   padding-bottom: 6em;
 `
 
-const HeaderTagged = asTag(Header)
-const ProcessHeader = styled(HeaderTagged)`
+const ProcessHeader = styled(Header)`
   margin-bottom: 1em;
 `
 
@@ -196,7 +180,7 @@ const RootIndex = ({ data }) => {
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
-        <Navigation tag={Link} size={sectionNav.size} text pointing>
+        <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
             <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
@@ -216,7 +200,7 @@ const RootIndex = ({ data }) => {
           button={(
             <Hero.Button
               compact
-              tag={Link}
+              forwardedAs={Link}
               link={`#${sectionNav.sections[1]}`}
             >
               {sectionHero.button}
@@ -247,7 +231,7 @@ const RootIndex = ({ data }) => {
             ))}
           </Blurbs>
 
-          <BaseSegment id={sectionNav.sections[1]} tag='section' vertical secondary basic>
+          <BaseSegment id={sectionNav.sections[1]} forwardedAs='section' vertical secondary basic>
             <Container text>
               <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
               {sectionTour.icons && (
@@ -259,7 +243,7 @@ const RootIndex = ({ data }) => {
                 </IconGroup>
               )}
               <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
-              <Form
+              <ContactForm
                 name={sectionTour.form?.name}
                 fields={sectionTour.form?.contentfulfields}
                 textArea={sectionTour.form?.textarea}
@@ -272,7 +256,7 @@ const RootIndex = ({ data }) => {
           {/* @TODO extract to component (less undefined checking necessary) */}
           <BaseSegment id={sectionNav.sections[2]} vertical basic>
             <Container text>
-              <ProcessHeader tag='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
+              <ProcessHeader forwardedAs='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
               <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
@@ -376,7 +360,7 @@ const RootIndex = ({ data }) => {
                   {richTextToJsx(sectionContact?.content?.json)}
                 </Header.Content>
               </Container>
-              <Form
+              <ContactForm
                 name={sectionContact.form?.name}
                 fields={sectionContact.form?.contentfulfields}
                 textArea={sectionContact.form?.textarea}

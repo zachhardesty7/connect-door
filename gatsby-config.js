@@ -57,9 +57,9 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
-        pure: process.env.NODE_ENV === 'production',
-        fileName: process.env.NODE_ENV !== 'production',
-        displayName: process.env.NODE_ENV !== 'production',
+        pure: process.env.NODE_ENV !== 'local',
+        fileName: process.env.NODE_ENV === 'local',
+        displayName: process.env.NODE_ENV === 'local',
       },
     },
     'gatsby-plugin-react-helmet',
