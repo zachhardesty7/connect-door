@@ -7,9 +7,10 @@
     "extends": "hardesty"
   },
   "scripts": {
+    "setup": "sh scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
     "clean": "gatsby clean && rimraf node_modules && yarn",
-    "start": "yarn dev",
-    "dev": "gatsby develop",
+    "start": "gatsby develop",
+    "dev": "sh scripts/develop.sh ../../../programming/repos/semantic-styled-ui",
     "dev:https": "gatsby develop --https",
     "test": "yarn run build && yarn run serve",
     "serve": "gatsby serve",
