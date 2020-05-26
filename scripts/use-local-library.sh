@@ -8,7 +8,7 @@ reregister() {
 reregister "$1/node_modules/react" &
 reregister "$1/node_modules/react-dom" &
 reregister "$1/node_modules/styled-components" &
-reregister "$1/node_modules/semantic-ui-css" &
+# reregister "$1/node_modules/semantic-ui-css" &
 
 # link local component library
 reregister "$1" &
@@ -20,7 +20,7 @@ printf "$(tput bold)\nAll library packages registered\n\n$(tput sgr0)"
 yarn link react &
 yarn link react-dom &
 yarn link styled-components &
-yarn link semantic-ui-css &
+# yarn link semantic-ui-css &
 yarn link semantic-styled-ui &
 
 wait

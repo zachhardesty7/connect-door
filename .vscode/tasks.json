@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [],
+			"label": "yarn dev",
+			"detail": "link to dev library, run watcher & gatsby",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			}
+		}
+	]
+}

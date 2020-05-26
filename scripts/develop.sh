@@ -1,4 +1,4 @@
-scripts/use-local-library.sh $1
+sh scripts/use-local-library.sh $1
 
 printf "$(tput bold)building library in watch mode (yarn dev)$(tput sgr0)\n\n"
 

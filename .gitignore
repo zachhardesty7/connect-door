@@ -67,8 +67,7 @@ build
 # contentful config file
 .contentful.json
 
-# vscode
-.vscode
+.DS_Store
 
 # other misc files
 deploy.js
