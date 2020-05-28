@@ -6,32 +6,29 @@ import { Link } from 'react-scroll'
 import { Helmet } from 'react-helmet'
 import GImage from 'gatsby-image'
 
-import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
-
 // ui framework
 import {
-  Card,
-  Container,
-  Header,
-  Item,
-  Label,
-  Message,
-  Segment,
-} from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
-
-// user-defined
-import {
   Blurbs,
+  Card,
   ContactForm,
+  Container,
   Footer,
+  Header,
   Hero,
   Icon,
   IconGroup,
+  Item,
+  Label,
+  Message,
   Navigation,
+  Segment,
   getBackgroundColor,
   getColor,
 } from 'semantic-styled-ui'
+
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
+
+import 'semantic-ui-css/semantic.min.css'
 
 import brandingMedium from '../assets/branding-medium.otf'
 
@@ -41,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
   /* logo font */
   @font-face {
     font-family: 'Branding';
+    /* stylelint-disable-next-line function-whitespace-after */
     src: url(${brandingMedium}) format('opentype');
     font-display: swap;
   }
@@ -89,7 +87,7 @@ const ProcessLabelContainer = styled(Container)`
 const ProcessLabel = styled(Label)`
   z-index: 1;
   left: calc(.05rem - 1.2em);
-  
+
   ${getColor('white')};
   ${getBackgroundColor('secondary')};
 
@@ -154,6 +152,10 @@ const TeamSegment = styled(BaseSegment)`
   }
 `
 
+const NavLogo = styled(GImage).attrs()`
+  margin-bottom: -3px;
+`
+
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
@@ -176,13 +178,16 @@ const RootIndex = ({ data }) => {
           <html lang='en' />
           <meta charSet='utf-8' />
           <title>{sectionHero.title}</title>
-          <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
+          <meta
+            name='Description'
+            content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings'
+          />
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
         <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
-            <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
+            <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
             <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
@@ -200,7 +205,7 @@ const RootIndex = ({ data }) => {
           button={(
             <Hero.Button
               compact
-              forwardedAs={Link}
+              as={Link}
               link={`#${sectionNav.sections[1]}`}
             >
               {sectionHero.button}
@@ -256,7 +261,12 @@ const RootIndex = ({ data }) => {
           {/* @TODO extract to component (less undefined checking necessary) */}
           <BaseSegment id={sectionNav.sections[2]} vertical basic>
             <Container text>
-              <ProcessHeader forwardedAs='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
+              <ProcessHeader
+                forwardedAs='h3'
+                textAlign='center'
+              >
+                {sectionItems.title}
+              </ProcessHeader>
               <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
@@ -264,7 +274,11 @@ const RootIndex = ({ data }) => {
                     <ProcessDarkenedImage size='medium' rounded>
                       <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
                       {item.image && (
-                        <GImage fixed={item.image?.fixed} backgroundColor alt={item.image?.title} />
+                        <GImage
+                          fixed={item.image?.fixed}
+                          $backgroundColor
+                          alt={item.image?.title}
+                        />
                       )}
                     </ProcessDarkenedImage>
 
@@ -297,13 +311,18 @@ const RootIndex = ({ data }) => {
                 )}
               </Container>
               <Container className='cards'>
-                <Card.Group itemsPerRow={sectionTeam.itemsPerRow} stackable doubling className='relaxed'>
+                <Card.Group
+                  itemsPerRow={sectionTeam.itemsPerRow}
+                  stackable
+                  doubling
+                  className='relaxed'
+                >
                   {sectionTeam.members.map((member, i) => (
                     <Card centered key={member.name}>
                       {member.image && (
                         <GImage
                           fluid={member.image?.fluid}
-                          backgroundColor
+                          $backgroundColor
                           alt={member.image?.title}
                         />
                       )}

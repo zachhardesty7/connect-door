@@ -3,12 +3,8 @@ module.exports = {
     'babel-preset-gatsby',
   ],
   plugins: [
-    'babel-plugin-transform-semantic-ui-react-style-imports',
-    [
-      'transform-react-remove-prop-types', {
-        removeImport: true,
-      },
-    ],
+    // FIXME: breaks library styling
+    // 'babel-plugin-transform-semantic-ui-react-style-imports',
     [
       '@quickbaseoss/babel-plugin-styled-components-css-namespace',
       {
