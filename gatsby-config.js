@@ -41,7 +41,6 @@ module.exports = {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-127721122-1',
-        // Setting this parameter is also optional
         respectDNT: true,
       },
     },
@@ -57,14 +56,11 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
-        // pure: process.env.NODE_ENV !== 'local',
-        // fileName: process.env.NODE_ENV === 'local',
-        // displayName: process.env.NODE_ENV === 'local',
-        minify: false,
-        transpileTemplateLiterals: false,
-        pure: false,
-        fileName: true,
-        displayName: true,
+        minify: process.env.ENV_MODE === 'prod',
+        transpileTemplateLiterals: process.env.ENV_MODE === 'prod',
+        pure: process.env.ENV_MODE === 'prod',
+        fileName: false,
+        displayName: process.env.ENV_MODE === 'local',
       },
     },
     'gatsby-plugin-react-helmet',

@@ -1,17 +1,17 @@
 {
   "name": "connect-door",
   "description": "Connect Door Website",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Zach Hardesty <hello@zachhardesty.com>",
   "eslintConfig": {
     "extends": "hardesty"
   },
   "scripts": {
-    "setup": "sh scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
     "clean": "gatsby clean && rimraf node_modules && yarn",
-    "start": "gatsby develop",
+    "setup": "sh scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
     "dev": "sh scripts/develop.sh ../../../programming/repos/semantic-styled-ui",
-    "dev:https": "gatsby develop --https",
+    "start": "gatsby develop",
+    "start:https": "gatsby develop --https",
     "test": "yarn run build && yarn run serve",
     "serve": "gatsby serve",
     "build": "gatsby build"

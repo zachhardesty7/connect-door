@@ -6,6 +6,10 @@
 			"command": "cd ${cwd}; yarn dev",
 			"label": "yarn dev",
 			"detail": "link to dev library, run watcher & gatsby",
+			"presentation": {
+				"echo": false,
+				"clear": true
+			},
 			"group": {
 				"kind": "test",
 				"isDefault": true
