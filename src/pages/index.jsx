@@ -31,6 +31,12 @@ import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import 'semantic-ui-css/semantic.min.css'
 
 import brandingMedium from '../assets/branding-medium.otf'
+import montserratMedium from '../assets/Montserrat-Medium.ttf'
+import SFTextReg from '../assets/SF-Pro-Text-Regular.otf'
+// import cormorantGaramondReg from '../assets/CormorantGaramond-Regular.ttf'
+// import arvoReg from '../assets/Arvo-Regular.ttf'
+// import SFReg from '../assets/SF-Pro-Display-Regular.otf'
+// import OSReg from '../assets/OpenSans-Regular.ttf'
 
 import { defaultColors } from '../constants'
 
@@ -43,18 +49,51 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
 
-  /* override SemanticUI font "Lato" */
-  *:not(.icon) {
+  /* heading font - h3-h8 */
+  @font-face {
+    font-family: 'HeadFont';
+    /* stylelint-disable-next-line function-whitespace-after */
+    src: url(${SFTextReg}) format('opentype');
+    font-display: swap;
+  }
+
+  /* body font - p tags */
+  @font-face {
+    font-family: 'BodyFont';
+    /* stylelint-disable-next-line function-whitespace-after */
+    src: url(${SFTextReg}) format('opentype');
+    font-display: swap;
+  }
+
+  /* main font - all but h1, h3-h8, p */
+  @font-face {
+    font-family: 'RestFont';
+    /* stylelint-disable-next-line function-whitespace-after */
+    src: url(${montserratMedium}) format('opentype');
+    font-display: swap;
+  }
+
+  h1 {
     font-family: 'Branding', Tahoma, Arial, Helvetica, sans-serif !important;
+  }
+
+  h3, h4, h5, h6 {
+    font-family: 'HeadFont', Tahoma, Arial, Helvetica, sans-serif !important;
+  }
+
+  p {
+    font-family: 'BodyFont', Tahoma, Arial, Helvetica, sans-serif !important;
+    font-size: 1.15em;
+    line-height: 1.5;
+  }
+
+  *:not(.icon):not(h1):not(h3):not(h4):not(h5):not(h6):not(p) {
+    font-family: 'RestFont', Tahoma, Arial, Helvetica, sans-serif !important;
   }
 
   body {
     font-size: 1em;
     margin: 0;
-  }
-
-  p {
-    line-height: 1.5;
   }
 
   img {
@@ -180,7 +219,8 @@ const RootIndex = ({ data }) => {
           <title>{sectionHero.title}</title>
           <meta
             name='Description'
-            content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings'
+            content={'Progressive Web App to advertise the services of ' +
+            'ConnectDoor and contact them on listings'}
           />
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
