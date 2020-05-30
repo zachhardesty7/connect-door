@@ -7,7 +7,8 @@
     "extends": "hardesty"
   },
   "scripts": {
-    "clean": "gatsby clean && rimraf node_modules && yarn",
+    "clean": "gatsby clean",
+    "clean:full": "yarn clean && rimraf node_modules && yarn",
     "setup": "sh scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
     "dev": "sh scripts/develop.sh ../../../programming/repos/semantic-styled-ui",
     "start": "gatsby develop",

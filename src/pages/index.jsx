@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import { Link as GLink, graphql } from 'gatsby'
 import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
 import { Link } from 'react-scroll'
@@ -225,12 +225,20 @@ const RootIndex = ({ data }) => {
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
-        <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
+        <Navigation as={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
             <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
-          {sectionNav.sections.map((page, i) => (
-            <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
+          {sectionNav.sections.map((page) => (
+            // last item is a new page link
+            <Navigation.Item
+              key={page}
+              as={page === 'Properties' ? GLink : undefined}
+              link={page === 'Properties' ? page.toLowerCase() : `#${page}`}
+              tabIndex='0'
+            >
+              {page}
+            </Navigation.Item>
           ))}
         </Navigation>
 
@@ -245,8 +253,8 @@ const RootIndex = ({ data }) => {
           button={(
             <Hero.Button
               compact
-              as={Link}
-              link={`#${sectionNav.sections[1]}`}
+              as={GLink}
+              link={sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}
             >
               {sectionHero.button}
             </Hero.Button>
