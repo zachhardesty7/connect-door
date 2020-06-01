@@ -1,7 +1,10 @@
 const XLSX = require('xlsx')
 const fetch = require('node-fetch')
 
-// from 30s
+// most of the reference materials are here
+// https://www.gatsbyjs.org/docs/creating-a-transformer-plugin/
+
+// from 30s code snippets
 const toCamelCase = (str) => {
   const s =
     str &&
@@ -16,11 +19,8 @@ const toCamelCase = (str) => {
 const evaluateSheetURL = async(url) => {
   const raw = await fetch(`http://${url.slice(2)}`)
   if (raw.statusText !== 'OK') throw new Error('fetch failed')
-  console.log(raw)
 
   const buffer = await raw.arrayBuffer()
-  console.log(buffer)
-
   const int8Arr = new Uint8Array(buffer)
   const wb = XLSX.read(int8Arr, { type: 'array' })
 
@@ -46,9 +46,7 @@ const evaluateSheetURL = async(url) => {
         if (key.toLowerCase().includes('apartment')) apartmentAmenities.push(val)
       })
 
-      // eslint-disable-next-line no-param-reassign
       parsedUnit.communityAmenities = [...new Set(communityAmenities)]
-      // eslint-disable-next-line no-param-reassign
       parsedUnit.apartmentAmenities = [...new Set(apartmentAmenities)]
 
       return parsedUnit
@@ -86,7 +84,7 @@ exports.onCreateNode = async({
 }) => {
   const { createNode, createParentChildLink } = actions
 
-  // only log for nodes of mediaType `text/yaml`
+  // only log for nodes of excel sheets
   if (node.internal.type !== 'ContentfulAsset' || !node.file || node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     return
   }
