@@ -40,7 +40,7 @@ const evaluateSheetURL = async(url) => {
 
       // convert keys to camelCase & accumulate amenities for easier and more consistent use
       Object.entries(unit).forEach(([key, val]) => {
-        if (!key || !val) return
+        if (!key) return
         parsedUnit[toCamelCase(key)] = val
         if (key.toLowerCase().includes('community')) communityAmenities.push(val)
         if (key.toLowerCase().includes('apartment')) apartmentAmenities.push(val)
