@@ -1,0 +1,109 @@
+const XLSX = require('xlsx')
+const fetch = require('node-fetch')
+
+// from 30s
+const toCamelCase = (str) => {
+  const s =
+    str &&
+    str
+      .match(/[A-Z]{2,}(?=[A-Z][a-z]+\d*|\b)|[A-Z]?[a-z]+\d*|[A-Z]|\d+/g)
+      .map((x) => x.slice(0, 1).toUpperCase() + x.slice(1).toLowerCase())
+      .join('')
+  return s.slice(0, 1).toLowerCase() + s.slice(1)
+}
+
+// fetch excel file from url and return processed js object
+const evaluateSheetURL = async(url) => {
+  const raw = await fetch(`http://${url.slice(2)}`)
+  if (raw.statusText !== 'OK') throw new Error('fetch failed')
+  console.log(raw)
+
+  const buffer = await raw.arrayBuffer()
+  console.log(buffer)
+
+  const int8Arr = new Uint8Array(buffer)
+  const wb = XLSX.read(int8Arr, { type: 'array' })
+
+  // process each worksheet, aka set of units at a property
+  return wb.SheetNames.map((sheetName) => {
+    const ws = wb.Sheets[sheetName]
+    const name = ws.C2 ? ws.C2.v : undefined
+    const addr = ws.C3 ? ws.C3.v : undefined
+
+    // custom range eliminates blank rows & columns before data starts
+    const items = XLSX.utils.sheet_to_json(ws, { range: 'C4:Z9999' })
+
+    const units = items.map((unit) => {
+      const parsedUnit = {}
+      const communityAmenities = []
+      const apartmentAmenities = []
+
+      // convert keys to camelCase & accumulate amenities for easier and more consistent use
+      Object.entries(unit).forEach(([key, val]) => {
+        if (!key || !val) return
+        parsedUnit[toCamelCase(key)] = val
+        if (key.toLowerCase().includes('community')) communityAmenities.push(val)
+        if (key.toLowerCase().includes('apartment')) apartmentAmenities.push(val)
+      })
+
+      // eslint-disable-next-line no-param-reassign
+      parsedUnit.communityAmenities = [...new Set(communityAmenities)]
+      // eslint-disable-next-line no-param-reassign
+      parsedUnit.apartmentAmenities = [...new Set(apartmentAmenities)]
+
+      return parsedUnit
+    })
+
+    return {
+      name,
+      addr,
+      units,
+    }
+  })
+}
+
+exports.onCreateWebpackConfig = ({
+  actions,
+}) => {
+  // changes requested by `sheetJS` aka `xljs`
+  actions.setWebpackConfig({
+    node: {
+      process: false,
+      Buffer: false,
+    },
+    resolve: {
+      alias: { './dist/cpexcel.js': '' },
+    },
+  })
+}
+
+// might be possible to use `createRemoteFileNode` from `gatsby-source-filesystem`
+exports.onCreateNode = async({
+  node,
+  actions,
+  createNodeId,
+  createContentDigest,
+}) => {
+  const { createNode, createParentChildLink } = actions
+
+  // only log for nodes of mediaType `text/yaml`
+  if (node.internal.type !== 'ContentfulAsset' || !node.file || node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+    return
+  }
+
+  const properties = await evaluateSheetURL(node.file.url)
+
+  const xlNode = {
+    properties,
+    id: createNodeId(`${node.id} >>> SHEET`),
+    children: [],
+    parent: node.id,
+    internal: {
+      contentDigest: createContentDigest(properties),
+      type: 'PropertyJson',
+    },
+  }
+
+  createNode(xlNode)
+  createParentChildLink({ parent: node, child: xlNode })
+}
