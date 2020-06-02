@@ -43,7 +43,7 @@ const Properties = ({ data: { propertiesPage, propertiesJson } }) => {
         closeOnBlur
         closeOnEscape
         placeholder='Select # Beds'
-        onChange={(e, { value }) => setBedsSelected(value)}
+        onChange={(_, { value }) => { setBedsSelected(value) }}
         value={bedsSelected}
         options={bedsOptions}
       />
@@ -52,7 +52,7 @@ const Properties = ({ data: { propertiesPage, propertiesJson } }) => {
         closeOnBlur
         closeOnEscape
         placeholder='Select # Baths'
-        onChange={(e, { value }) => setBathsSelected(value)}
+        onChange={(_, { value }) => { setBathsSelected(value) }}
         value={bathsSelected}
         options={bathsOptions}
       />
