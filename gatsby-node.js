@@ -30,10 +30,13 @@ const evaluateSheetURL = async(url) => {
     const name = ws.C2 ? ws.C2.v : undefined
     const addr = ws.C3 ? ws.C3.v : undefined
 
+    const beds = new Set()
+    const baths = new Set()
+
     // custom range eliminates blank rows & columns before data starts
     const items = XLSX.utils.sheet_to_json(ws, { range: 'C4:Z9999' })
 
-    const units = items.map((unit) => {
+    const units = items.filter((unit) => unit && unit.Unit).map((unit) => {
       const parsedUnit = {}
       const communityAmenities = []
       const apartmentAmenities = []
@@ -49,12 +52,18 @@ const evaluateSheetURL = async(url) => {
       parsedUnit.communityAmenities = [...new Set(communityAmenities)]
       parsedUnit.apartmentAmenities = [...new Set(apartmentAmenities)]
 
+      // TODO: edge case testing
+      parsedUnit.beds !== null && beds.add(parsedUnit.beds)
+      parsedUnit.baths !== null && baths.add(parsedUnit.baths)
+
       return parsedUnit
     })
 
     return {
       name,
       addr,
+      beds: [...beds].sort(),
+      baths: [...baths].sort(),
       units,
     }
   })
