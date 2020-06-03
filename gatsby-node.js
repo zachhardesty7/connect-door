@@ -24,37 +24,70 @@ const evaluateSheetURL = async(url) => {
   const int8Arr = new Uint8Array(buffer)
   const wb = XLSX.read(int8Arr, { type: 'array' })
 
-  // process each worksheet, aka set of units at a property
-  return wb.SheetNames.map((sheetName) => {
-    const ws = wb.Sheets[sheetName]
-    const name = ws.C2 ? ws.C2.v : undefined
-    const addr = ws.C3 ? ws.C3.v : undefined
+  const bedsAll = new Set()
+  const bathsAll = new Set()
+  const zipcodesAll = new Set()
+  const communityAmenitiesAll = new Set()
+  const apartmentAmenitiesAll = new Set()
 
-    const beds = new Set()
-    const baths = new Set()
+  // process each worksheet, aka set of units at a property
+  const sheets = wb.SheetNames.map((sheetName) => {
+    const ws = wb.Sheets[sheetName]
+
+    const name = ws.C2 ? ws.C2.v : undefined
+    const street = ws.C3 ? ws.C3.v : undefined
+    const city = ws.D3 ? ws.D3.v : undefined
+    const state = ws.E3 ? ws.E3.v : undefined
+    const zipcode = ws.F3 ? ws.F3.v : undefined
+
+    const addr = `${street}, ${city}, ${state} ${zipcode}`
+
+    zipcodesAll.add(zipcode)
+
+    // calc union of all vals of each unit for entire property
+    const bedsProperty = new Set()
+    const bathsProperty = new Set()
+    const communityAmenitiesProperty = new Set()
+    const apartmentAmenitiesProperty = new Set()
 
     // custom range eliminates blank rows & columns before data starts
-    const items = XLSX.utils.sheet_to_json(ws, { range: 'C4:Z9999' })
+    const items = XLSX.utils.sheet_to_json(ws, { range: 'C5:Z9999' })
 
     const units = items.filter((unit) => unit && unit.Unit).map((unit) => {
       const parsedUnit = {}
-      const communityAmenities = []
-      const apartmentAmenities = []
+      const communityAmenitiesUnit = new Set()
+      const apartmentAmenitiesUnit = new Set()
 
       // convert keys to camelCase & accumulate amenities for easier and more consistent use
       Object.entries(unit).forEach(([key, val]) => {
         if (!key) return
         parsedUnit[toCamelCase(key)] = val
-        if (key.toLowerCase().includes('community')) communityAmenities.push(val)
-        if (key.toLowerCase().includes('apartment')) apartmentAmenities.push(val)
+
+        if (key.toLowerCase().includes('community')) {
+          communityAmenitiesAll.add(val)
+          communityAmenitiesProperty.add(val)
+          communityAmenitiesUnit.add(val)
+        }
+
+        if (key.toLowerCase().includes('apartment')) {
+          apartmentAmenitiesAll.add(val)
+          apartmentAmenitiesProperty.add(val)
+          apartmentAmenitiesUnit.add(val)
+        }
       })
 
-      parsedUnit.communityAmenities = [...new Set(communityAmenities)]
-      parsedUnit.apartmentAmenities = [...new Set(apartmentAmenities)]
+      parsedUnit.communityAmenities = [...communityAmenitiesUnit]
+      parsedUnit.apartmentAmenities = [...apartmentAmenitiesUnit]
 
       // TODO: edge case testing
-      parsedUnit.beds !== null && beds.add(parsedUnit.beds)
-      parsedUnit.baths !== null && baths.add(parsedUnit.baths)
+      if (parsedUnit.beds !== null) {
+        bedsAll.add(parsedUnit.beds)
+        bedsProperty.add(parsedUnit.beds)
+      }
+      if (parsedUnit.baths !== null) {
+        bathsAll.add(parsedUnit.baths)
+        bathsProperty.add(parsedUnit.baths)
+      }
 
       return parsedUnit
     })
@@ -62,11 +95,26 @@ const evaluateSheetURL = async(url) => {
     return {
       name,
       addr,
-      beds: [...beds].sort(),
-      baths: [...baths].sort(),
+      street,
+      city,
+      state,
+      zipcode,
+      beds: [...bedsProperty].sort(),
+      baths: [...bathsProperty].sort(),
+      communityAmenities: [...communityAmenitiesProperty].sort(),
+      apartmentAmenities: [...apartmentAmenitiesProperty].sort(),
       units,
     }
   })
+
+  return {
+    properties: Object.values(sheets),
+    beds: [...bedsAll].sort(),
+    baths: [...bathsAll].sort(),
+    zipcodes: [...zipcodesAll].sort(),
+    communityAmenities: [...communityAmenitiesAll].sort(),
+    apartmentAmenities: [...apartmentAmenitiesAll].sort(),
+  }
 }
 
 exports.onCreateWebpackConfig = ({
@@ -98,16 +146,17 @@ exports.onCreateNode = async({
     return
   }
 
-  const properties = await evaluateSheetURL(node.file.url)
+  const collection = await evaluateSheetURL(node.file.url)
+  console.log('collection', collection)
 
   const xlNode = {
-    properties,
-    id: createNodeId(`${node.id} >>> SHEET`),
+    ...collection,
+    id: createNodeId(`${node.id}>>>SHEET`),
     children: [],
     parent: node.id,
     internal: {
-      contentDigest: createContentDigest(properties),
-      type: 'PropertyJson',
+      contentDigest: createContentDigest(collection),
+      type: 'PropertyCollection',
     },
   }
 

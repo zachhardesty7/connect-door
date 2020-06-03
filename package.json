@@ -7,10 +7,12 @@
     "extends": "hardesty"
   },
   "scripts": {
+    "ls": "scripts/ls.sh",
+    "lsa": "scripts/lsa.sh",
     "clean": "gatsby clean",
-    "clean:full": "yarn clean && rimraf node_modules && yarn",
-    "setup": "sh scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
-    "dev": "sh scripts/develop.sh ../../../programming/repos/semantic-styled-ui",
+    "clean:full": "yarn clean && rimraf node_modules && rimraf yarn.lock && yarn",
+    "setup": "scripts/use-local-library.sh ../../../programming/repos/semantic-styled-ui",
+    "dev": "scripts/develop.sh ../../../programming/repos/semantic-styled-ui",
     "start": "gatsby develop",
     "start:https": "gatsby develop --https",
     "test": "yarn run build && yarn run serve",
