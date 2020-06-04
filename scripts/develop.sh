@@ -12,6 +12,8 @@ cd $1
 export FORCE_COLOR="1"
 # start watcher and send output to stdout and temp file
 (yarn watch 2>&1 | tee "$path") &
+
+# store process ID
 # WATCHER=$!
 
 # continuously read temp file while program is running

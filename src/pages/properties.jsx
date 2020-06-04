@@ -1,8 +1,22 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Card, Image, Select } from 'semantic-styled-ui'
+import { Card, Container, Form, Grid, Image, Input, Segment } from 'semantic-styled-ui'
+import styled from 'styled-components'
 
-const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
+const BaseSegment = styled(Segment)`
+  h3 {
+    font-size: 3em;
+  }
+
+  h4 {
+    font-size: 2em !important;
+  }
+
+  padding-top: 6em;
+  padding-bottom: 6em;
+`
+
+const Properties = ({ data: { allPropertyCollection } }) => {
   console.log('Properties -> allPropertyCollection', allPropertyCollection)
   const [bedsSelected, setBedsSelected] = React.useState([])
   const [bathsSelected, setBathsSelected] = React.useState([])
@@ -43,49 +57,96 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
 
   return (
     <div>
-      <Select
-        multiple
-        closeOnBlur
-        closeOnEscape
-        placeholder='Select # Beds'
-        onChange={(_, { value }) => { setBedsSelected(value) }}
-        value={bedsSelected}
-        options={bedsOptions}
-      />
-      <Select
-        multiple
-        closeOnBlur
-        closeOnEscape
-        placeholder='Select # Baths'
-        onChange={(_, { value }) => { setBathsSelected(value) }}
-        value={bathsSelected}
-        options={bathsOptions}
-      />
-      <Select
-        multiple
-        closeOnBlur
-        closeOnEscape
-        placeholder='Select Zipcodes'
-        onChange={(_, { value }) => { setZipcodesSelected(value) }}
-        value={zipcodesSelected}
-        options={zipcodesOptions}
-      />
-      <Card.Group>
-        {allProperties.map((property) => (
-          <Card>
-            <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
-            <Card.Content>
-              <Card.Header>{property.name}</Card.Header>
-              <Card.Meta>
-                <span className='date'>{property.addr}</span>
-              </Card.Meta>
-            </Card.Content>
-            <Card.Content extra>
-              {`from $${property.units[0].monthlyRentPerBed}/mo`}
-            </Card.Content>
-          </Card>
-        ))}
-      </Card.Group>
+      <Segment as='main' vertical basic>
+        <BaseSegment>
+          <Container text>
+            <Form>
+              <Form.Group widths='equal'>
+                <Form.Select
+                  fluid
+                  multiple
+                  closeOnBlur
+                  closeOnEscape
+                  id='select-beds-filter'
+                  label='Beds'
+                  placeholder='Select # Beds'
+                  onChange={(_, { value }) => { setBedsSelected(value) }}
+                  value={bedsSelected}
+                  options={bedsOptions}
+                />
+                <Form.Select
+                  fluid
+                  multiple
+                  closeOnBlur
+                  closeOnEscape
+                  id='select-baths-filter'
+                  label='Baths'
+                  placeholder='Select # Baths'
+                  onChange={(_, { value }) => { setBathsSelected(value) }}
+                  value={bathsSelected}
+                  options={bathsOptions}
+                />
+                <Form.Select
+                  fluid
+                  multiple
+                  closeOnBlur
+                  closeOnEscape
+                  id='select-zipcodes-filter'
+                  label='Zipcodes'
+                  placeholder='Select Zipcodes'
+                  onChange={(_, { value }) => { setZipcodesSelected(value) }}
+                  value={zipcodesSelected}
+                  options={zipcodesOptions}
+                />
+              </Form.Group>
+              <Form.Group as={Grid} centered inline id='price-range-filter'>
+                <label>Price Range</label>
+                <Form.Field>
+                  <Input
+                    label={{ content: '$' }}
+                    step={100}
+                    min={0}
+                    type='number'
+                    labelPosition='left'
+                    placeholder='min'
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Input
+                    label={{ content: '$' }}
+                    step={100}
+                    min={0}
+                    type='number'
+                    labelPosition='left'
+                    placeholder='max'
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form>
+          </Container>
+        </BaseSegment>
+        <BaseSegment>
+          <Container>
+            <Card.Group centered>
+              {allProperties.map((property) => (
+                <Card>
+                  <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
+                  <Card.Content>
+                    <Card.Header>{property.name}</Card.Header>
+                    <Card.Meta>
+                      <span className='date'>{property.addr}</span>
+                    </Card.Meta>
+                  </Card.Content>
+                  <Card.Content extra>
+                    {`from $${property.units[0].monthlyRentPerBed}/mo`}
+                  </Card.Content>
+                </Card>
+              ))}
+            </Card.Group>
+          </Container>
+        </BaseSegment>
+
+      </Segment>
     </div>
   )
 }

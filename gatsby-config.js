@@ -25,6 +25,12 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: 'gatsby-plugin-layout',
+      options: {
+        component: require.resolve('./src/layouts/index.jsx'),
+      },
+    },
+    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: 'ConnectDoor',
