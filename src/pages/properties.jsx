@@ -141,13 +141,18 @@ const Properties = ({ data: { allPropertyCollection } }) => {
         <BaseSegment>
           <Container>
             <Card.Group centered>
-              {allProperties.map((property) => (
+              {allProperties.map((property) => console.log('Properties -> property', property) || (
                 <Card>
                   <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
                   <Card.Content>
                     <Card.Header>{property.name}</Card.Header>
                     <Card.Meta>
-                      <span className='date'>{property.addr}</span>
+                      <a
+                        href={`https://www.google.com/maps/place/${property.addr.replace(/\s+/g, '+')}`}
+                        className='date'
+                      >
+                        {property.addr}
+                      </a>
                     </Card.Meta>
                   </Card.Content>
                   <Card.Content extra>
