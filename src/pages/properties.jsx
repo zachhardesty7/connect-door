@@ -21,6 +21,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
   const [bedsSelected, setBedsSelected] = React.useState([])
   const [bathsSelected, setBathsSelected] = React.useState([])
   const [zipcodesSelected, setZipcodesSelected] = React.useState([])
+  const [rentMinSelected, setRentMinSelected] = React.useState()
+  const [rentMaxSelected, setRentMaxSelected] = React.useState()
 
   // calculate set of all collections / sheets to display as filter options
   let beds = new Set()
@@ -35,20 +37,27 @@ const Properties = ({ data: { allPropertyCollection } }) => {
   baths = [...baths].sort()
   zipcodes = [...zipcodes].sort()
 
+  // convert to SUI options display objects
   const bedsOptions = beds.map((bed) => ({ key: bed, value: bed, text: bed }))
   const bathsOptions = baths.map((bed) => ({ key: bed, value: bed, text: bed }))
   const zipcodesOptions = zipcodes.map((bed) => ({ key: bed, value: bed, text: bed }))
 
   const allProperties = []
   // NOTE: properties will show if they match anything from the filters (union not
-  // intersection), eg unit: 1 bed, 2 bath matches filter: 1, 2, 3 bed, __ baths
+  // intersection), eg unit: {1 bed, 2 bath} matches filter: {1 or 2 or 3 bed, __ baths}
   allPropertyCollection.nodes.forEach((collection) => {
     collection.properties.forEach((property) => {
       if (
         // show properties that match anything from filter list, auto include if no filter set
         (!bedsSelected.length || property.beds.some((ct) => bedsSelected.includes(ct))) &&
         (!bathsSelected.length || property.baths.some((ct) => bathsSelected.includes(ct))) &&
-        (!zipcodesSelected.length || zipcodesSelected.includes(property.zipcode))
+        (!zipcodesSelected.length || zipcodesSelected.includes(property.zipcode)) &&
+
+        // only 1 unit per property needs to match filter
+        // cheapest unit < maxRentSelection
+        (!rentMaxSelected || property.rents[0] < rentMaxSelected) &&
+        // most expensive unit > minRentSelection
+        (!rentMinSelected || property.rents[property.rents.length - 1] > rentMinSelected)
       ) {
         allProperties.push(property)
       }
@@ -109,6 +118,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                     type='number'
                     labelPosition='left'
                     placeholder='min'
+                    value={rentMinSelected}
+                    onChange={(_, { value }) => { setRentMinSelected(parseInt(value, 10)) }}
                   />
                 </Form.Field>
                 <Form.Field>
@@ -119,6 +130,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                     type='number'
                     labelPosition='left'
                     placeholder='max'
+                    value={rentMaxSelected}
+                    onChange={(_, { value }) => { setRentMaxSelected(parseInt(value, 10)) }}
                   />
                 </Form.Field>
               </Form.Group>
@@ -138,7 +151,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                     </Card.Meta>
                   </Card.Content>
                   <Card.Content extra>
-                    {`from $${property.units[0].monthlyRentPerBed}/mo`}
+                    {/* TODO: show cheapest MATCHING FILTER */}
+                    {`from $${property.rents[0]}/mo`}
                   </Card.Content>
                 </Card>
               ))}
@@ -171,6 +185,7 @@ export const imageQuery = graphql`
         baths
         beds
         zipcodes
+        rents
         apartmentAmenities
         communityAmenities
         properties {
@@ -182,6 +197,7 @@ export const imageQuery = graphql`
           city
           state
           zipcode
+          rents
           apartmentAmenities
           communityAmenities
           units {

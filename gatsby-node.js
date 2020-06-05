@@ -24,11 +24,13 @@ const evaluateSheetURL = async(url) => {
   const int8Arr = new Uint8Array(buffer)
   const wb = XLSX.read(int8Arr, { type: 'array' })
 
+  // make changes to each collection
   const bedsAll = new Set()
   const bathsAll = new Set()
   const zipcodesAll = new Set()
   const communityAmenitiesAll = new Set()
   const apartmentAmenitiesAll = new Set()
+  const rentsAll = new Set()
 
   // process each worksheet, aka set of units at a property
   const sheets = wb.SheetNames.map((sheetName) => {
@@ -44,15 +46,18 @@ const evaluateSheetURL = async(url) => {
 
     zipcodesAll.add(zipcode)
 
+    // make changes to each property
     // calc union of all vals of each unit for entire property
     const bedsProperty = new Set()
     const bathsProperty = new Set()
     const communityAmenitiesProperty = new Set()
     const apartmentAmenitiesProperty = new Set()
+    const rentsProperty = new Set()
 
     // custom range eliminates blank rows & columns before data starts
     const items = XLSX.utils.sheet_to_json(ws, { range: 'C5:Z9999' })
 
+    // make changes to each unit
     const units = items.filter((unit) => unit && unit.Unit).map((unit) => {
       const parsedUnit = {}
       const communityAmenitiesUnit = new Set()
@@ -88,6 +93,10 @@ const evaluateSheetURL = async(url) => {
         bathsAll.add(parsedUnit.baths)
         bathsProperty.add(parsedUnit.baths)
       }
+      if (parsedUnit.monthlyRentPerBed !== null) {
+        rentsAll.add(parsedUnit.monthlyRentPerBed)
+        rentsProperty.add(parsedUnit.monthlyRentPerBed)
+      }
 
       return parsedUnit
     })
@@ -101,6 +110,7 @@ const evaluateSheetURL = async(url) => {
       zipcode,
       beds: [...bedsProperty].sort(),
       baths: [...bathsProperty].sort(),
+      rents: [...rentsProperty].sort(),
       communityAmenities: [...communityAmenitiesProperty].sort(),
       apartmentAmenities: [...apartmentAmenitiesProperty].sort(),
       units,
@@ -112,6 +122,7 @@ const evaluateSheetURL = async(url) => {
     beds: [...bedsAll].sort(),
     baths: [...bathsAll].sort(),
     zipcodes: [...zipcodesAll].sort(),
+    rents: [...rentsAll].sort(),
     communityAmenities: [...communityAmenitiesAll].sort(),
     apartmentAmenities: [...apartmentAmenitiesAll].sort(),
   }
