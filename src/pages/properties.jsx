@@ -67,7 +67,7 @@ const Properties = ({ data: { allPropertyCollection } }) => {
   return (
     <div>
       <Segment as='main' vertical basic>
-        <BaseSegment>
+        <Segment vertical>
           <Container text>
             <Form>
               <Form.Group widths='equal'>
@@ -137,8 +137,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
               </Form.Group>
             </Form>
           </Container>
-        </BaseSegment>
-        <BaseSegment>
+        </Segment>
+        <BaseSegment vertical>
           <Container>
             <Card.Group centered>
               {allProperties.map((property) => console.log('Properties -> property', property) || (
