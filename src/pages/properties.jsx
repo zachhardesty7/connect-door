@@ -1,8 +1,10 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Image as GImage } from 'gatsby-image'
-import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table } from 'semantic-styled-ui'
+import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table, Transition } from 'semantic-styled-ui'
 import styled from 'styled-components'
+
+import { animated, useSpring } from 'react-spring'
 
 import { noPadding } from '../components/S'
 
@@ -71,12 +73,15 @@ const Properties = ({ data: { allPropertyCollection } }) => {
 
   const [detailView, setDetailView] = React.useState()
 
+  const leftColumnAnimation = useSpring({ width: detailView ? '50%' : '100%', config: { tension: 170, friction: 30 } })
+  const rightColumnAnimation = useSpring({ width: !detailView ? '0%' : '50%', config: { tension: 170, friction: 30 } })
+
   return (
     <div>
       {/* FIXME: get rid of bottom padding */}
       <Segment as='main' basic vertical>
-        <Grid columns='equal' relaxed='very' centered padded='horizontally'>
-          <Grid.Column>
+        <Grid columns='equal' relaxed='very' centered padded>
+          <Grid.Column as={animated.div} style={leftColumnAnimation}>
             <Segment vertical>
               <Form>
                 <Form.Group as={Grid} centered>
@@ -149,9 +154,13 @@ const Properties = ({ data: { allPropertyCollection } }) => {
 
             <S.Body vertical>
               <Card.Group centered>
-                {allProperties.map((property) => console.log('Properties -> property', property) || (
-                  <Card link onClick={(e, data) => { setDetailView(property) }}>
-                    <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
+                {allProperties.map((property) => (
+                  <Card link onClick={() => { setDetailView(property) }}>
+                    <Image
+                      ui={false}
+                      wrapped
+                      src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
+                    />
                     <Card.Content>
                       <Card.Header>{property.name}</Card.Header>
                       <Card.Meta>
@@ -175,87 +184,84 @@ const Properties = ({ data: { allPropertyCollection } }) => {
             </S.Body>
           </Grid.Column>
 
-          {detailView && (
-            <Grid.Column stretched className={noPadding(['horizontal', 'top'])}>
-              <Segment secondary className={noPadding('all')}>
-                <Label
-                  size='large'
-                  icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
-                  corner='left'
-                />
-                <Image
-                  centered
-                  src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
-                />
-                <Segment basic padded='very'>
-                  <Header as='h2'>
-                    {detailView.name}
-                    <Header.Subheader>
-                      <a
-                        href={`https://www.google.com/maps/place/${detailView.addr.replace(/\s+/g, '+')}`}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='date'
-                      >
-                        {detailView.addr}
-                      </a>
-                    </Header.Subheader>
-                  </Header>
+          <Grid.Column as={animated.div} style={rightColumnAnimation} className={noPadding(['horizontal', 'top'])}>
+            <Segment secondary className={noPadding('all')}>
+              <Label
+                size='large'
+                icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
+                corner='left'
+              />
+              <Image
+                centered
+                src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
+              />
+              <Segment basic padded='very'>
+                <Header as='h2'>
+                  {detailView?.name}
+                  <Header.Subheader>
+                    <a
+                      href={`https://www.google.com/maps/place/${detailView?.addr.replace(/\s+/g, '+')}`}
+                      target='_blank'
+                      rel='noreferrer'
+                      className='date'
+                    >
+                      {detailView?.addr}
+                    </a>
+                  </Header.Subheader>
+                </Header>
 
-                  <Segment vertical basic padded>
-                    <Header>Available Units</Header>
-                    <Table celled>
-                      <Table.Header>
+                <Segment vertical basic padded>
+                  <Header>Available Units</Header>
+                  <Table celled>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>Unit</Table.HeaderCell>
+                        <Table.HeaderCell>Beds</Table.HeaderCell>
+                        <Table.HeaderCell>Baths</Table.HeaderCell>
+                        <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                      {detailView?.units.map((unit) => (
                         <Table.Row>
-                          <Table.HeaderCell>Unit</Table.HeaderCell>
-                          <Table.HeaderCell>Beds</Table.HeaderCell>
-                          <Table.HeaderCell>Baths</Table.HeaderCell>
-                          <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
+                          <Table.Cell>{unit.unit}</Table.Cell>
+                          <Table.Cell>{unit.beds}</Table.Cell>
+                          <Table.Cell>{unit.baths}</Table.Cell>
+                          <Table.Cell>
+                            $
+                            {unit.monthlyRentPerBed}
+                          </Table.Cell>
                         </Table.Row>
-                      </Table.Header>
-
-                      <Table.Body>
-                        {detailView.units.map((unit) => (
-                          <Table.Row>
-                            <Table.Cell>{unit.unit}</Table.Cell>
-                            <Table.Cell>{unit.beds}</Table.Cell>
-                            <Table.Cell>{unit.baths}</Table.Cell>
-                            <Table.Cell>
-                              $
-                              {unit.monthlyRentPerBed}
-                            </Table.Cell>
-                          </Table.Row>
-                        ))}
-                      </Table.Body>
-                    </Table>
-                  </Segment>
-
-                  <Segment vertical basic padded>
-                    <Grid columns='equal'>
-                      <Grid.Column>
-                        <Header>Apartment Amenities</Header>
-                        <List bulleted>
-                          {detailView.apartmentAmenities.map((amenity) => (
-                            <List.Item>{amenity}</List.Item>
-                          ))}
-                        </List>
-                      </Grid.Column>
-                      <Grid.Column>
-                        <Header>Community Amenities</Header>
-                        <List bulleted>
-                          {detailView.communityAmenities.map((amenity) => (
-                            <List.Item>{amenity}</List.Item>
-                          ))}
-                        </List>
-                      </Grid.Column>
-                    </Grid>
-                  </Segment>
-
+                      ))}
+                    </Table.Body>
+                  </Table>
                 </Segment>
-              </Segment>
-            </Grid.Column>
-          )}
 
+                <Segment vertical basic padded>
+                  <Grid columns='equal'>
+                    <Grid.Column>
+                      <Header>Apartment Amenities</Header>
+                      <List bulleted>
+                        {detailView?.apartmentAmenities.map((amenity) => (
+                          <List.Item>{amenity}</List.Item>
+                        ))}
+                      </List>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header>Community Amenities</Header>
+                      <List bulleted>
+                        {detailView?.communityAmenities.map((amenity) => (
+                          <List.Item>{amenity}</List.Item>
+                        ))}
+                      </List>
+                    </Grid.Column>
+                  </Grid>
+                </Segment>
+
+              </Segment>
+            </Segment>
+          </Grid.Column>
         </Grid>
       </Segment>
     </div>

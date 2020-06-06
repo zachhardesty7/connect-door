@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
     /* stylelint-disable-next-line function-whitespace-after */
     src: url(${SFTextReg}) format('opentype');
     font-display: swap;
+    /* font-display: fallback; <- this can be added to each @font-face definition */
   }
 
   /* body font - p tags */
