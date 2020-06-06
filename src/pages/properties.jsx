@@ -1,9 +1,14 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Card, Container, Form, Grid, Image, Input, Segment } from 'semantic-styled-ui'
+import { Image as GImage } from 'gatsby-image'
+import { Card, Form, Grid, Header, Image, Input, List, Segment, Table } from 'semantic-styled-ui'
 import styled from 'styled-components'
 
-const BaseSegment = styled(Segment)`
+import { WithoutPadding } from '../components/WithoutPadding'
+
+const S = {} // SC namespace
+
+S.Body = styled(Segment)`
   h3 {
     font-size: 3em;
   }
@@ -14,6 +19,12 @@ const BaseSegment = styled(Segment)`
 
   padding-top: 6em;
   padding-bottom: 6em;
+`
+
+S.GridColumn = styled(Grid.Column)`
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
 `
 
 const Properties = ({ data: { allPropertyCollection } }) => {
@@ -64,107 +75,182 @@ const Properties = ({ data: { allPropertyCollection } }) => {
     })
   })
 
+  const [detailView, setDetailView] = React.useState(allProperties[0])
+
   return (
     <div>
-      <Segment as='main' vertical basic>
-        <Segment vertical>
-          <Container text>
-            <Form>
-              <Form.Group widths='equal'>
-                <Form.Select
-                  fluid
-                  multiple
-                  closeOnBlur
-                  closeOnEscape
-                  id='select-beds-filter'
-                  label='Beds'
-                  placeholder='Select # Beds'
-                  onChange={(_, { value }) => { setBedsSelected(value) }}
-                  value={bedsSelected}
-                  options={bedsOptions}
-                />
-                <Form.Select
-                  fluid
-                  multiple
-                  closeOnBlur
-                  closeOnEscape
-                  id='select-baths-filter'
-                  label='Baths'
-                  placeholder='Select # Baths'
-                  onChange={(_, { value }) => { setBathsSelected(value) }}
-                  value={bathsSelected}
-                  options={bathsOptions}
-                />
-                <Form.Select
-                  fluid
-                  multiple
-                  closeOnBlur
-                  closeOnEscape
-                  id='select-zipcodes-filter'
-                  label='Zipcodes'
-                  placeholder='Select Zipcodes'
-                  onChange={(_, { value }) => { setZipcodesSelected(value) }}
-                  value={zipcodesSelected}
-                  options={zipcodesOptions}
-                />
-              </Form.Group>
-              <Form.Group as={Grid} centered inline id='price-range-filter'>
-                <label>Price Range</label>
-                <Form.Field>
-                  <Input
-                    label={{ content: '$' }}
-                    step={100}
-                    min={0}
-                    type='number'
-                    labelPosition='left'
-                    placeholder='min'
-                    value={rentMinSelected}
-                    onChange={(_, { value }) => { setRentMinSelected(parseInt(value, 10)) }}
+      {/* FIXME: get rid of bottom padding */}
+      <Segment as='main' basic vertical>
+        <Grid columns='equal' relaxed='very' centered padded='horizontally'>
+          <Grid.Column>
+            <Segment vertical>
+              <Form>
+                <Form.Group widths='equal'>
+                  <Form.Select
+                    fluid
+                    multiple
+                    closeOnBlur
+                    closeOnEscape
+                    id='select-beds-filter'
+                    label='Beds'
+                    placeholder='Select # Beds'
+                    onChange={(_, { value }) => { setBedsSelected(value) }}
+                    value={bedsSelected}
+                    options={bedsOptions}
                   />
-                </Form.Field>
-                <Form.Field>
-                  <Input
-                    label={{ content: '$' }}
-                    step={100}
-                    min={0}
-                    type='number'
-                    labelPosition='left'
-                    placeholder='max'
-                    value={rentMaxSelected}
-                    onChange={(_, { value }) => { setRentMaxSelected(parseInt(value, 10)) }}
+                  <Form.Select
+                    fluid
+                    multiple
+                    closeOnBlur
+                    closeOnEscape
+                    id='select-baths-filter'
+                    label='Baths'
+                    placeholder='Select # Baths'
+                    onChange={(_, { value }) => { setBathsSelected(value) }}
+                    value={bathsSelected}
+                    options={bathsOptions}
                   />
-                </Form.Field>
-              </Form.Group>
-            </Form>
-          </Container>
-        </Segment>
-        <BaseSegment vertical>
-          <Container>
-            <Card.Group centered>
-              {allProperties.map((property) => console.log('Properties -> property', property) || (
-                <Card>
-                  <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
-                  <Card.Content>
-                    <Card.Header>{property.name}</Card.Header>
-                    <Card.Meta>
+                  <Form.Select
+                    fluid
+                    multiple
+                    closeOnBlur
+                    closeOnEscape
+                    id='select-zipcodes-filter'
+                    label='Zipcodes'
+                    placeholder='Select Zipcodes'
+                    onChange={(_, { value }) => { setZipcodesSelected(value) }}
+                    value={zipcodesSelected}
+                    options={zipcodesOptions}
+                  />
+                </Form.Group>
+                <Form.Group as={Grid} centered inline id='price-range-filter'>
+                  <label>Price Range</label>
+                  <Form.Field>
+                    <Input
+                      label={{ content: '$' }}
+                      step={100}
+                      min={0}
+                      type='number'
+                      labelPosition='left'
+                      placeholder='min'
+                      value={rentMinSelected}
+                      onChange={(_, { value }) => { setRentMinSelected(parseInt(value, 10)) }}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <Input
+                      label={{ content: '$' }}
+                      step={100}
+                      min={0}
+                      type='number'
+                      labelPosition='left'
+                      placeholder='max'
+                      value={rentMaxSelected}
+                      onChange={(_, { value }) => { setRentMaxSelected(parseInt(value, 10)) }}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
+            </Segment>
+
+            <S.Body vertical>
+              <Card.Group centered>
+                {allProperties.map((property) => console.log('Properties -> property', property) || (
+                  <Card link onClick={(e, data) => { setDetailView(property) }}>
+                    <Image src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' wrapped ui={false} />
+                    <Card.Content>
+                      <Card.Header>{property.name}</Card.Header>
+                      <Card.Meta>
+                        <a
+                          href={`https://www.google.com/maps/place/${property.addr.replace(/\s+/g, '+')}`}
+                          className='date'
+                          target='_blank'
+                          rel='noreferrer'
+                        >
+                          {property.addr}
+                        </a>
+                      </Card.Meta>
+                    </Card.Content>
+                    <Card.Content extra>
+                      {/* TODO: show cheapest MATCHING FILTER */}
+                      {`from $${property.rents[0]}/mo`}
+                    </Card.Content>
+                  </Card>
+                ))}
+              </Card.Group>
+            </S.Body>
+          </Grid.Column>
+
+          <S.GridColumn stretched>
+            <WithoutPadding $all>
+              <Segment secondary>
+                <Image centered src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' />
+                <Segment basic padded='very'>
+                  <Header as='h2'>
+                    {detailView.name}
+                    <Header.Subheader>
                       <a
-                        href={`https://www.google.com/maps/place/${property.addr.replace(/\s+/g, '+')}`}
+                        href={`https://www.google.com/maps/place/${detailView.addr.replace(/\s+/g, '+')}`}
+                        target='_blank'
+                        rel='noreferrer'
                         className='date'
                       >
-                        {property.addr}
+                        {detailView.addr}
                       </a>
-                    </Card.Meta>
-                  </Card.Content>
-                  <Card.Content extra>
-                    {/* TODO: show cheapest MATCHING FILTER */}
-                    {`from $${property.rents[0]}/mo`}
-                  </Card.Content>
-                </Card>
-              ))}
-            </Card.Group>
-          </Container>
-        </BaseSegment>
+                    </Header.Subheader>
+                  </Header>
 
+                  <Header>Available Units</Header>
+                  <Table celled>
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>Unit</Table.HeaderCell>
+                        <Table.HeaderCell>Beds</Table.HeaderCell>
+                        <Table.HeaderCell>Baths</Table.HeaderCell>
+                        <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                      {detailView.units.map((unit) => (
+                        <Table.Row>
+                          <Table.Cell>{unit.unit}</Table.Cell>
+                          <Table.Cell>{unit.beds}</Table.Cell>
+                          <Table.Cell>{unit.baths}</Table.Cell>
+                          <Table.Cell>
+                            $
+                            {unit.monthlyRentPerBed}
+                          </Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table>
+
+                  <Grid columns='equal'>
+                    <Grid.Column>
+                      <Header>Apartment Amenities</Header>
+                      <List bulleted>
+                        {detailView.apartmentAmenities.map((amenity) => (
+                          <List.Item>{amenity}</List.Item>
+                        ))}
+                      </List>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <Header>Community Amenities</Header>
+                      <List bulleted>
+                        {detailView.communityAmenities.map((amenity) => (
+                          <List.Item>{amenity}</List.Item>
+                        ))}
+                      </List>
+                    </Grid.Column>
+                  </Grid>
+
+                </Segment>
+              </Segment>
+            </WithoutPadding>
+
+          </S.GridColumn>
+        </Grid>
       </Segment>
     </div>
   )
