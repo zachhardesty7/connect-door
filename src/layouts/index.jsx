@@ -88,6 +88,11 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 
+  /* fix semantic-ui bug to prevent aligning text to center when using 'centered' grid */
+  .ui.centered.grid, .ui.centered.grid>.row, .ui.grid>.centered.row {
+    text-align: left;
+  }
+
   /* conditional helper classes, can't be put in SC due to namespace error */
   .clickable:hover {
     cursor: pointer !important;

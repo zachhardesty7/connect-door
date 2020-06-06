@@ -79,7 +79,7 @@ const Properties = ({ data: { allPropertyCollection } }) => {
           <Grid.Column>
             <Segment vertical>
               <Form>
-                <Form.Group widths='equal'>
+                <Form.Group as={Grid} centered>
                   <Form.Select
                     fluid
                     multiple
