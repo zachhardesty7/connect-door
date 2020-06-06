@@ -1,10 +1,10 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Image as GImage } from 'gatsby-image'
-import { Card, Form, Grid, Header, Image, Input, List, Segment, Table } from 'semantic-styled-ui'
+import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table } from 'semantic-styled-ui'
 import styled from 'styled-components'
 
-import { WithoutPadding } from '../components/WithoutPadding'
+import { noPadding } from '../components/S'
 
 const S = {} // SC namespace
 
@@ -19,12 +19,6 @@ S.Body = styled(Segment)`
 
   padding-top: 6em;
   padding-bottom: 6em;
-`
-
-S.GridColumn = styled(Grid.Column)`
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-bottom: 0 !important;
 `
 
 const Properties = ({ data: { allPropertyCollection } }) => {
@@ -75,7 +69,7 @@ const Properties = ({ data: { allPropertyCollection } }) => {
     })
   })
 
-  const [detailView, setDetailView] = React.useState(allProperties[0])
+  const [detailView, setDetailView] = React.useState()
 
   return (
     <div>
@@ -181,10 +175,18 @@ const Properties = ({ data: { allPropertyCollection } }) => {
             </S.Body>
           </Grid.Column>
 
-          <S.GridColumn stretched>
-            <WithoutPadding $all>
-              <Segment secondary>
-                <Image centered src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg' />
+          {detailView && (
+            <Grid.Column stretched className={noPadding(['horizontal', 'top'])}>
+              <Segment secondary className={noPadding('all')}>
+                <Label
+                  size='large'
+                  icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
+                  corner='left'
+                />
+                <Image
+                  centered
+                  src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
+                />
                 <Segment basic padded='very'>
                   <Header as='h2'>
                     {detailView.name}
@@ -251,9 +253,9 @@ const Properties = ({ data: { allPropertyCollection } }) => {
 
                 </Segment>
               </Segment>
-            </WithoutPadding>
+            </Grid.Column>
+          )}
 
-          </S.GridColumn>
         </Grid>
       </Segment>
     </div>

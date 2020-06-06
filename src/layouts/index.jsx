@@ -82,6 +82,48 @@ const GlobalStyle = createGlobalStyle`
     display: block;
     width: 100%;
   }
+
+  /* fix semantic-ui bug */
+  .ui.corner.label .link.icon {
+    cursor: pointer;
+  }
+
+  /* conditional helper classes, can't be put in SC due to namespace error */
+  .clickable:hover {
+    cursor: pointer !important;
+  }
+
+  .no-padding {
+    width: 100%;
+    height: 100%;
+  }
+
+  .no-padding-left {
+    padding-left: 0 !important;
+  }
+  .no-padding-right {
+    padding-right: 0 !important;
+  }
+  .no-padding-top {
+    padding-top: 0 !important;
+  }
+  .no-padding-bottom {
+    padding-bottom: 0 !important;
+  }
+  .no-padding-horizontal {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .no-padding-vertical {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .no-padding-all {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 `
 
 const NavLogo = styled(GImage).attrs()`

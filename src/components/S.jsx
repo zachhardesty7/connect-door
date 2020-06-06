@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 const S = {} // SC namespace
 
 S.WithoutPadding = styled.span`
-  /* &>*:first-child { */
   width: 100%;
   height: 100%;
 
@@ -29,17 +28,44 @@ S.WithoutPadding = styled.span`
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   `};
-/* } */
-
 `
 
-// export const WithoutPadding = (children, ...rest) => (
-//   React.Children.map(children, (Child) => <S.WithoutPadding as={Child} {...rest} />)
-// )
+S.Clickable = styled.a`
+  :hover {
+    cursor: pointer;
+  }
+`
+
+export const clickable = () => 'clickable'
+
+export const noPadding = (sides) => {
+  let classes = 'no-padding'
+
+  if (sides.includes('left')) classes += ' no-padding-left'
+  if (sides.includes('right')) classes += ' no-padding-right'
+  if (sides.includes('top')) classes += ' no-padding-top'
+  if (sides.includes('bottom')) classes += ' no-padding-bottom'
+
+  if (sides.includes('horizontal')) classes += ' no-padding-horizontal'
+  if (sides.includes('vertical')) classes += ' no-padding-vertical'
+
+  if (sides.includes('all')) classes += ' no-padding-all'
+
+  return classes
+}
+
 export const WithoutPadding = ({ children, ...rest }) => (
   React.Children.map(children, (Child) => (
     <S.WithoutPadding as={Child.type} {...Child.props} {...rest}>
       {Child.props.children}
     </S.WithoutPadding>
+  ))
+)
+
+export const WithClickable = ({ children, ...rest }) => (
+  React.Children.map(children, (Child) => (
+    <S.Clickable as={Child.type} {...Child.props} {...rest}>
+      {Child.props.children}
+    </S.Clickable>
   ))
 )
