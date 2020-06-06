@@ -200,50 +200,54 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                     </Header.Subheader>
                   </Header>
 
-                  <Header>Available Units</Header>
-                  <Table celled>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>Unit</Table.HeaderCell>
-                        <Table.HeaderCell>Beds</Table.HeaderCell>
-                        <Table.HeaderCell>Baths</Table.HeaderCell>
-                        <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                      {detailView.units.map((unit) => (
+                  <Segment vertical basic padded>
+                    <Header>Available Units</Header>
+                    <Table celled>
+                      <Table.Header>
                         <Table.Row>
-                          <Table.Cell>{unit.unit}</Table.Cell>
-                          <Table.Cell>{unit.beds}</Table.Cell>
-                          <Table.Cell>{unit.baths}</Table.Cell>
-                          <Table.Cell>
-                            $
-                            {unit.monthlyRentPerBed}
-                          </Table.Cell>
+                          <Table.HeaderCell>Unit</Table.HeaderCell>
+                          <Table.HeaderCell>Beds</Table.HeaderCell>
+                          <Table.HeaderCell>Baths</Table.HeaderCell>
+                          <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
                         </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
+                      </Table.Header>
 
-                  <Grid columns='equal'>
-                    <Grid.Column>
-                      <Header>Apartment Amenities</Header>
-                      <List bulleted>
-                        {detailView.apartmentAmenities.map((amenity) => (
-                          <List.Item>{amenity}</List.Item>
+                      <Table.Body>
+                        {detailView.units.map((unit) => (
+                          <Table.Row>
+                            <Table.Cell>{unit.unit}</Table.Cell>
+                            <Table.Cell>{unit.beds}</Table.Cell>
+                            <Table.Cell>{unit.baths}</Table.Cell>
+                            <Table.Cell>
+                              $
+                              {unit.monthlyRentPerBed}
+                            </Table.Cell>
+                          </Table.Row>
                         ))}
-                      </List>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Community Amenities</Header>
-                      <List bulleted>
-                        {detailView.communityAmenities.map((amenity) => (
-                          <List.Item>{amenity}</List.Item>
-                        ))}
-                      </List>
-                    </Grid.Column>
-                  </Grid>
+                      </Table.Body>
+                    </Table>
+                  </Segment>
+
+                  <Segment vertical basic padded>
+                    <Grid columns='equal'>
+                      <Grid.Column>
+                        <Header>Apartment Amenities</Header>
+                        <List bulleted>
+                          {detailView.apartmentAmenities.map((amenity) => (
+                            <List.Item>{amenity}</List.Item>
+                          ))}
+                        </List>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <Header>Community Amenities</Header>
+                        <List bulleted>
+                          {detailView.communityAmenities.map((amenity) => (
+                            <List.Item>{amenity}</List.Item>
+                          ))}
+                        </List>
+                      </Grid.Column>
+                    </Grid>
+                  </Segment>
 
                 </Segment>
               </Segment>
