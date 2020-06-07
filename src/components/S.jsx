@@ -30,16 +30,10 @@ S.WithoutPadding = styled.span`
   `};
 `
 
-S.Clickable = styled.a`
-  :hover {
-    cursor: pointer;
-  }
-`
-
-export const clickable = () => ' clickable'
+export const clickable = () => 'clickable'
 
 export const noPadding = (sides) => {
-  let classes = ' no-padding'
+  let classes = 'no-padding'
 
   if (sides.includes('left')) classes += ' no-padding-left'
   if (sides.includes('right')) classes += ' no-padding-right'
@@ -55,9 +49,9 @@ export const noPadding = (sides) => {
 }
 
 export const noOverflow = (dir) => {
-  if (dir === 'x') return ' no-overflow-x'
-  if (dir === 'y') return ' no-overflow-y'
-  return ' no-overflow'
+  if (dir === 'x') return 'no-overflow-x'
+  if (dir === 'y') return 'no-overflow-y'
+  return 'no-overflow'
 }
 
 export const WithoutPadding = ({ children, ...rest }) => (
@@ -65,13 +59,5 @@ export const WithoutPadding = ({ children, ...rest }) => (
     <S.WithoutPadding as={Child.type} {...Child.props} {...rest}>
       {Child.props.children}
     </S.WithoutPadding>
-  ))
-)
-
-export const WithClickable = ({ children, ...rest }) => (
-  React.Children.map(children, (Child) => (
-    <S.Clickable as={Child.type} {...Child.props} {...rest}>
-      {Child.props.children}
-    </S.Clickable>
   ))
 )

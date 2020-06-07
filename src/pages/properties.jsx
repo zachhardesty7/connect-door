@@ -19,7 +19,7 @@ import styled from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
 
-import { noOverflow, noPadding } from '../components/S'
+import { noOverflow, noPadding } from '../components'
 
 const S = {} // SC namespace
 
@@ -91,11 +91,14 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
   })
   const detailViewAnimation = useSpring({
     width: detailView ? '50%' : '0%',
-    height: detailView ? 'auto' : 0, // FIXME: snap disappear
+
+    // REVIEW: fix for snap disappearing...
+    // https://codesandbox.io/s/react-spring-mount-via-resize-rc3v8
+    height: detailView ? 'auto' : 0,
     config: { tension: 170, friction: 30 },
   })
 
-  // hide detail panel view when property is filtered out
+  // hide detail panel view when active property is filtered out
   if (detailView && allProperties.every(({ name }) => name !== detailView.name)) {
     setDetailView()
   }
@@ -209,6 +212,9 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                     </Card.Content>
                   </Card>
                 ))}
+                {!allProperties.length && (
+                  <div>No properties matching filter...</div>
+                )}
               </Card.Group>
             </S.Body>
           </Grid.Column>
@@ -216,7 +222,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
           <Grid.Column
             as={animated.div}
             style={detailViewAnimation}
-            className={noPadding('all') + noOverflow('y')}
+            className={[noPadding('all'), noOverflow('y')]}
           >
             <Segment secondary className={noPadding('all')}>
               <Label
