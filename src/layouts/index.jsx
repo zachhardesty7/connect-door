@@ -99,11 +99,20 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer !important;
   }
 
+  .no-overflow {
+    overflow: hidden !important;
+  }
+  .no-overflow-x {
+    overflow-x: hidden !important;
+  }
+  .no-overflow-y {
+    overflow-y: hidden !important;
+  }
+
   .no-padding {
     width: 100%;
     height: 100%;
   }
-
   .no-padding-left {
     padding-left: 0 !important;
   }

@@ -36,10 +36,10 @@ S.Clickable = styled.a`
   }
 `
 
-export const clickable = () => 'clickable'
+export const clickable = () => ' clickable'
 
 export const noPadding = (sides) => {
-  let classes = 'no-padding'
+  let classes = ' no-padding'
 
   if (sides.includes('left')) classes += ' no-padding-left'
   if (sides.includes('right')) classes += ' no-padding-right'
@@ -52,6 +52,12 @@ export const noPadding = (sides) => {
   if (sides.includes('all')) classes += ' no-padding-all'
 
   return classes
+}
+
+export const noOverflow = (dir) => {
+  if (dir === 'x') return ' no-overflow-x'
+  if (dir === 'y') return ' no-overflow-y'
+  return ' no-overflow'
 }
 
 export const WithoutPadding = ({ children, ...rest }) => (

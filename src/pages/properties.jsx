@@ -1,12 +1,25 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Image as GImage } from 'gatsby-image'
-import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table } from 'semantic-styled-ui'
+
+import {
+  Card,
+  ContactForm,
+  Form,
+  Grid,
+  Header,
+  Image,
+  Input,
+  Label,
+  List,
+  Segment,
+  Table,
+} from 'semantic-styled-ui'
 import styled from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
 
-import { noPadding } from '../components/S'
+import { noOverflow, noPadding } from '../components/S'
 
 const S = {} // SC namespace
 
@@ -23,7 +36,7 @@ S.Body = styled(Segment)`
   padding-bottom: 6em;
 `
 
-const Properties = ({ data: { allPropertyCollection } }) => {
+const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
   const [detailView, setDetailView] = React.useState()
 
   const [bedsSelected, setBedsSelected] = React.useState([])
@@ -73,11 +86,12 @@ const Properties = ({ data: { allPropertyCollection } }) => {
   })
 
   const filterViewAnimation = useSpring({
-    width: detailView ? '50%' : '100%',
+    width: !detailView ? '100%' : '50%',
     config: { tension: 170, friction: 30 },
   })
   const detailViewAnimation = useSpring({
-    width: !detailView ? '0%' : '50%',
+    width: detailView ? '50%' : '0%',
+    height: detailView ? 'auto' : 0,
     config: { tension: 170, friction: 30 },
   })
 
@@ -199,7 +213,11 @@ const Properties = ({ data: { allPropertyCollection } }) => {
             </S.Body>
           </Grid.Column>
 
-          <Grid.Column as={animated.div} style={detailViewAnimation} className={noPadding(['horizontal', 'top'])}>
+          <Grid.Column
+            as={animated.div}
+            style={detailViewAnimation}
+            className={noPadding('all') + noOverflow('y')}
+          >
             <Segment secondary className={noPadding('all')}>
               <Label
                 size='large'
@@ -274,6 +292,15 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                   </Grid>
                 </Segment>
 
+                <Segment vertical basic padded>
+                  <Header>{propertiesPage.contactForm.title}</Header>
+                  <ContactForm
+                    name={propertiesPage.contactForm.form?.name}
+                    fields={propertiesPage.contactForm.form?.contentfulfields}
+                    textArea={propertiesPage.contactForm.form?.textarea}
+                    button={propertiesPage.contactForm.form?.button}
+                  />
+                </Segment>
               </Segment>
             </Segment>
           </Grid.Column>
@@ -290,6 +317,15 @@ export const imageQuery = graphql`
     propertiesPage: contentfulPageProperties(contentful_id: {eq: "5bdotCvkQYqNXaQnhTw6Ys"}) {
       id
       title
+      contactForm {
+        title
+        form {
+          name
+          button
+          contentfulfields
+          textarea
+        }
+      }
       listings {
         description
         file {
@@ -297,7 +333,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    # custom transformed from above result
+    # custom transformed data from above listings > file > url
     allPropertyCollection {
       nodes {
         baths
