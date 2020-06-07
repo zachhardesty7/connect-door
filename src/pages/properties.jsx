@@ -91,7 +91,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
   })
   const detailViewAnimation = useSpring({
     width: detailView ? '50%' : '0%',
-    height: detailView ? 'auto' : 0,
+    height: detailView ? 'auto' : 0, // FIXME: snap disappear
     config: { tension: 170, friction: 30 },
   })
 
