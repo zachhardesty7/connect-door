@@ -169,7 +169,7 @@ const Template = ({ children }) => {
             content={'Progressive Web App to advertise the services of ' +
             'ConnectDoor and contact them on listings'}
           />
-          {/* <meta name='keywords' content='Real Estate, Development, Construction, Property' /> */}
+          {/* <meta name='keywords' content='Real Estate, Development, Construction, Property'/> */}
           <meta name='author' content='Horatio Villarreal' />
           <meta itemProp='name' content='ConnectDoor' />
           <meta itemProp='url' content='https://theconnectdoor.com/' />

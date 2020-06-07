@@ -1,7 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import { Image as GImage } from 'gatsby-image'
-import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table, Transition } from 'semantic-styled-ui'
+import { Card, Form, Grid, Header, Image, Input, Label, List, Segment, Table } from 'semantic-styled-ui'
 import styled from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
@@ -24,7 +24,8 @@ S.Body = styled(Segment)`
 `
 
 const Properties = ({ data: { allPropertyCollection } }) => {
-  console.log('Properties -> allPropertyCollection', allPropertyCollection)
+  const [detailView, setDetailView] = React.useState()
+
   const [bedsSelected, setBedsSelected] = React.useState([])
   const [bathsSelected, setBathsSelected] = React.useState([])
   const [zipcodesSelected, setZipcodesSelected] = React.useState([])
@@ -46,8 +47,8 @@ const Properties = ({ data: { allPropertyCollection } }) => {
 
   // convert to SUI options display objects
   const bedsOptions = beds.map((bed) => ({ key: bed, value: bed, text: bed }))
-  const bathsOptions = baths.map((bed) => ({ key: bed, value: bed, text: bed }))
-  const zipcodesOptions = zipcodes.map((bed) => ({ key: bed, value: bed, text: bed }))
+  const bathsOptions = baths.map((bath) => ({ key: bath, value: bath, text: bath }))
+  const zipcodesOptions = zipcodes.map((zip) => ({ key: zip, value: zip, text: zip }))
 
   const allProperties = []
   // NOTE: properties will show if they match anything from the filters (union not
@@ -71,17 +72,26 @@ const Properties = ({ data: { allPropertyCollection } }) => {
     })
   })
 
-  const [detailView, setDetailView] = React.useState()
+  const filterViewAnimation = useSpring({
+    width: detailView ? '50%' : '100%',
+    config: { tension: 170, friction: 30 },
+  })
+  const detailViewAnimation = useSpring({
+    width: !detailView ? '0%' : '50%',
+    config: { tension: 170, friction: 30 },
+  })
 
-  const leftColumnAnimation = useSpring({ width: detailView ? '50%' : '100%', config: { tension: 170, friction: 30 } })
-  const rightColumnAnimation = useSpring({ width: !detailView ? '0%' : '50%', config: { tension: 170, friction: 30 } })
+  // hide detail panel view when property is filtered out
+  if (detailView && allProperties.every(({ name }) => name !== detailView.name)) {
+    setDetailView()
+  }
 
   return (
     <div>
       {/* FIXME: get rid of bottom padding */}
       <Segment as='main' basic vertical>
         <Grid columns='equal' relaxed='very' centered padded>
-          <Grid.Column as={animated.div} style={leftColumnAnimation}>
+          <Grid.Column as={animated.div} style={filterViewAnimation}>
             <Segment vertical>
               <Form>
                 <Form.Group as={Grid} centered>
@@ -123,6 +133,7 @@ const Properties = ({ data: { allPropertyCollection } }) => {
                   />
                 </Form.Group>
                 <Form.Group as={Grid} centered inline id='price-range-filter'>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label>Price Range</label>
                   <Form.Field>
                     <Input
@@ -155,7 +166,11 @@ const Properties = ({ data: { allPropertyCollection } }) => {
             <S.Body vertical>
               <Card.Group centered>
                 {allProperties.map((property) => (
-                  <Card link onClick={() => { setDetailView(property) }}>
+                  <Card
+                    link
+                    key={property.name}
+                    onClick={() => { setDetailView(property) }}
+                  >
                     <Image
                       ui={false}
                       wrapped
@@ -184,7 +199,7 @@ const Properties = ({ data: { allPropertyCollection } }) => {
             </S.Body>
           </Grid.Column>
 
-          <Grid.Column as={animated.div} style={rightColumnAnimation} className={noPadding(['horizontal', 'top'])}>
+          <Grid.Column as={animated.div} style={detailViewAnimation} className={noPadding(['horizontal', 'top'])}>
             <Segment secondary className={noPadding('all')}>
               <Label
                 size='large'
