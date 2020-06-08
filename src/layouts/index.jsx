@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Link, graphql, useStaticQuery } from 'gatsby'
+import { Link, graphql, navigate, useStaticQuery } from 'gatsby'
 import GImage from 'gatsby-image'
 
 import {
@@ -145,7 +145,7 @@ const NavLogo = styled(GImage).attrs()`
   margin-bottom: -3px;
 `
 
-const Template = ({ children }) => {
+const Template = ({ children, location }) => {
   const data = useStaticQuery(graphql`
     query {
       sectionNav: contentfulNav(contentful_id: {eq: "3oYma487pKEGoceuYc8WCk"}) {
@@ -189,18 +189,28 @@ const Template = ({ children }) => {
         <GlobalStyle />
 
         <Navigation size={sectionNav.size} text pointing>
-          <Navigation.Logo as={Link} to='/'>
+          <Navigation.Logo as={Link} link='/'>
             <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page) => (
-          // last item is a new page link
-            <Navigation.Item
-              key={page}
-              as={page === 'Properties' ? Link : undefined}
-              link={page === 'Properties' ? page.toLowerCase() : `#${page}`}
-            >
-              {page}
-            </Navigation.Item>
+            // last item is a new page link
+            page === 'Properties' ? (
+              <Navigation.Item
+                key={page}
+                as={Link}
+                link={`/${page.toLowerCase()}`}
+              >
+                {page}
+              </Navigation.Item>
+            ) : (
+              <Navigation.Item
+                key={page}
+                onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
+                link={location.pathname !== '/properties' ? `#${page}` : ''}
+              >
+                {page}
+              </Navigation.Item>
+            )
           ))}
         </Navigation>
 

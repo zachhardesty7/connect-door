@@ -141,7 +141,7 @@ const RootIndex = ({
         <Hero.Button
           compact
           as={GLink}
-          // link={sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}
+          link={`/${sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}`}
         >
           {sectionHero.button}
         </Hero.Button>
