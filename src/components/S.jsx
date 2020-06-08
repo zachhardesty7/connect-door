@@ -30,8 +30,17 @@ S.WithoutPadding = styled.span`
   `};
 `
 
+/**
+ * show proper stylistic effects for clickable object
+ *
+ * @returns {string} `className` that should be applied to component
+ */
 export const clickable = () => 'clickable'
 
+/**
+ * @param {'left' | 'right' | 'top' | 'bottom' | 'horizontal' | 'vertical' | 'all'} sides - where to remove padding
+ * @returns {string} `className` that should be applied to component
+ */
 export const noPadding = (sides) => {
   let classes = 'no-padding'
 
@@ -48,6 +57,10 @@ export const noPadding = (sides) => {
   return classes
 }
 
+/**
+ * @param {'x' | 'y'} dir - direction to hide overflow of
+ * @returns {string} `className` that should be applied to component
+ */
 export const noOverflow = (dir) => {
   if (dir === 'x') return 'no-overflow-x'
   if (dir === 'y') return 'no-overflow-y'

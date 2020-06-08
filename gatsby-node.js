@@ -158,7 +158,6 @@ exports.onCreateNode = async({
   }
 
   const collection = await evaluateSheetURL(node.file.url)
-  console.log('collection', collection)
 
   const xlNode = {
     ...collection,
