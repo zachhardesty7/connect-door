@@ -42,8 +42,8 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
   const [bedsSelected, setBedsSelected] = React.useState([])
   const [bathsSelected, setBathsSelected] = React.useState([])
   const [zipcodesSelected, setZipcodesSelected] = React.useState([])
-  const [rentMinSelected, setRentMinSelected] = React.useState()
-  const [rentMaxSelected, setRentMaxSelected] = React.useState()
+  const [rentMinSelected, setRentMinSelected] = React.useState('')
+  const [rentMaxSelected, setRentMaxSelected] = React.useState('')
 
   // calculate set of all collections / sheets to display as filter options
   let beds = new Set()
@@ -160,8 +160,9 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                       type='number'
                       labelPosition='left'
                       placeholder='min'
+                      name='min'
                       value={rentMinSelected}
-                      onChange={(_, { value }) => { setRentMinSelected(parseInt(value, 10)) }}
+                      onChange={({ target }) => { setRentMinSelected(target.value) }}
                     />
                   </Form.Field>
                   <Form.Field>
@@ -172,8 +173,9 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                       type='number'
                       labelPosition='left'
                       placeholder='max'
+                      name='max'
                       value={rentMaxSelected}
-                      onChange={(_, { value }) => { setRentMaxSelected(parseInt(value, 10)) }}
+                      onChange={({ target }) => { setRentMaxSelected(target.value) }}
                     />
                   </Form.Field>
                 </Form.Group>
@@ -185,6 +187,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                 {allProperties.map((property) => (
                   <Card
                     link
+                    as='div'
                     key={property.name}
                     onClick={() => { setDetailView(property) }}
                   >
@@ -222,7 +225,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
           <Grid.Column
             as={animated.div}
             style={detailViewAnimation}
-            className={[noPadding('all'), noOverflow('y')]}
+            className={noPadding('all') + noOverflow('y')}
           >
             <Segment secondary className={noPadding('all')}>
               <Label
@@ -263,7 +266,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
 
                     <Table.Body>
                       {detailView?.units.map((unit) => (
-                        <Table.Row>
+                        <Table.Row key={unit.unit}>
                           <Table.Cell>{unit.unit}</Table.Cell>
                           <Table.Cell>{unit.beds}</Table.Cell>
                           <Table.Cell>{unit.baths}</Table.Cell>
@@ -283,7 +286,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                       <Header>Apartment Amenities</Header>
                       <List bulleted>
                         {detailView?.apartmentAmenities.map((amenity) => (
-                          <List.Item>{amenity}</List.Item>
+                          <List.Item key={amenity}>{amenity}</List.Item>
                         ))}
                       </List>
                     </Grid.Column>
@@ -291,7 +294,7 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                       <Header>Community Amenities</Header>
                       <List bulleted>
                         {detailView?.communityAmenities.map((amenity) => (
-                          <List.Item>{amenity}</List.Item>
+                          <List.Item key={amenity}>{amenity}</List.Item>
                         ))}
                       </List>
                     </Grid.Column>

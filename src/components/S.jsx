@@ -35,14 +35,14 @@ S.WithoutPadding = styled.span`
  *
  * @returns {string} `className` that should be applied to component
  */
-export const clickable = () => 'clickable'
+export const clickable = () => ' clickable'
 
 /**
  * @param {'left' | 'right' | 'top' | 'bottom' | 'horizontal' | 'vertical' | 'all'} sides - where to remove padding
  * @returns {string} `className` that should be applied to component
  */
 export const noPadding = (sides) => {
-  let classes = 'no-padding'
+  let classes = ' no-padding'
 
   if (sides.includes('left')) classes += ' no-padding-left'
   if (sides.includes('right')) classes += ' no-padding-right'
@@ -62,9 +62,9 @@ export const noPadding = (sides) => {
  * @returns {string} `className` that should be applied to component
  */
 export const noOverflow = (dir) => {
-  if (dir === 'x') return 'no-overflow-x'
-  if (dir === 'y') return 'no-overflow-y'
-  return 'no-overflow'
+  if (dir === 'x') return ' no-overflow-x'
+  if (dir === 'y') return ' no-overflow-y'
+  return ' no-overflow'
 }
 
 export const WithoutPadding = ({ children, ...rest }) => (

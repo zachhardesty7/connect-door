@@ -189,7 +189,7 @@ const Template = ({ children, location }) => {
         <GlobalStyle />
 
         <Navigation size={sectionNav.size} text pointing>
-          <Navigation.Logo as={Link} link='/'>
+          <Navigation.Logo as={Link} link='/' activeClassName='active'>
             <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page) => (
@@ -199,6 +199,7 @@ const Template = ({ children, location }) => {
                 key={page}
                 as={Link}
                 link={`/${page.toLowerCase()}`}
+                activeClassName='active'
               >
                 {page}
               </Navigation.Item>
