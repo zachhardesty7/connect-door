@@ -308,7 +308,9 @@ const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
                     fields={propertiesPage.contactForm.form?.contentfulfields}
                     textArea={propertiesPage.contactForm.form?.textarea}
                     button={propertiesPage.contactForm.form?.button}
-                  />
+                  >
+                    <input type='hidden' name='PROPERTY' value={detailView?.name} />
+                  </ContactForm>
                 </Segment>
               </Segment>
             </Segment>
