@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { Image as GImage } from 'gatsby-image'
+import GImage from 'gatsby-image'
 
 import {
   Card,
@@ -41,11 +41,9 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
   let initRentMin = ''
   let initRentMax = ''
 
-  const queries = new URLSearchParams(location.search)
-
-  if (queries.has('zipcode')) initZipcode = [queries.get('zipcode')]
-  if (queries.has('min')) initRentMin = [queries.get('min')]
-  if (queries.has('max')) initRentMax = [queries.get('max')]
+  if (location?.state?.zipcode) initZipcode = [location.state.zipcode]
+  if (location?.state?.min) initRentMin = location.state.min
+  if (location?.state?.max) initRentMax = location.state.max
 
   const [detailView, setDetailView] = React.useState()
 
@@ -63,7 +61,7 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
   allPropertyCollection.nodes.forEach((collection) => {
     collection.beds.forEach((bed) => beds.add(bed))
     collection.baths.forEach((bath) => baths.add(bath))
-    collection.zipcodes.forEach((bath) => zipcodes.add(bath))
+    collection.zipcodes.forEach((zip) => zipcodes.add(zip))
   })
   beds = [...beds].sort()
   baths = [...baths].sort()
@@ -202,11 +200,17 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                     key={property.name}
                     onClick={() => { setDetailView(property) }}
                   >
-                    <Image
-                      ui={false}
-                      wrapped
-                      src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
-                    />
+                    {property?.imageSet?.images[0] && (
+                      <Image ui={false} wrapped>
+                        {property?.imageSet?.images[0] && GImage && (
+                          <GImage
+                            fluid={property?.imageSet?.images[0].fluid}
+                            // fixed={property?.imageSet?.images[0].fixed}
+                            alt={`${property.name} display image`}
+                          />
+                        )}
+                      </Image>
+                    )}
                     <Card.Content>
                       <Card.Header>{property.name}</Card.Header>
                       <Card.Meta>
@@ -373,6 +377,16 @@ export const imageQuery = graphql`
           city
           state
           zipcode
+          imageSet {
+            images {
+              fixed(width: 400) {
+                ...GatsbyContentfulFixed
+              }
+              fluid(maxWidth: 400) {
+                ...GatsbyContentfulFluid
+              }
+            }
+          }
           rents
           apartmentAmenities
           communityAmenities
