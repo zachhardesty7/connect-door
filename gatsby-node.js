@@ -1,6 +1,9 @@
 const XLSX = require('xlsx')
 const fetch = require('node-fetch')
 
+// quick link
+// http://localhost:8000/___graphql
+
 // most of the reference materials are here
 // https://www.gatsbyjs.org/docs/creating-a-transformer-plugin/
 
@@ -36,11 +39,15 @@ const evaluateSheetURL = async(url) => {
   const sheets = wb.SheetNames.map((sheetName) => {
     const ws = wb.Sheets[sheetName]
 
-    const name = ws.C2 ? ws.C2.v : undefined
-    const street = ws.C3 ? ws.C3.v : undefined
-    const city = ws.D3 ? ws.D3.v : undefined
-    const state = ws.E3 ? ws.E3.v : undefined
-    const zipcode = ws.F3 ? ws.F3.v : undefined
+    // simple attributes
+    const name = ws.B3 ? ws.B3.v : undefined
+    const street = ws.B4 ? ws.B4.v : undefined
+    const city = ws.B5 ? ws.B5.v : undefined
+    const state = ws.B6 ? ws.B6.v : undefined
+    const zipcode = ws.B7 ? `${ws.B7.v}` : undefined // enforce string type
+
+    // complex attributes
+    const imageSet = ws.B9 ? ws.B9.v : undefined
 
     const addr = `${street}, ${city}, ${state} ${zipcode}`
 
@@ -55,7 +62,7 @@ const evaluateSheetURL = async(url) => {
     const rentsProperty = new Set()
 
     // custom range eliminates blank rows & columns before data starts
-    const items = XLSX.utils.sheet_to_json(ws, { range: 'C5:Z9999' })
+    const items = XLSX.utils.sheet_to_json(ws, { range: 'D2:Z9999' })
 
     // make changes to each unit
     const units = items.filter((unit) => unit && unit.Unit).map((unit) => {
@@ -108,6 +115,7 @@ const evaluateSheetURL = async(url) => {
       city,
       state,
       zipcode,
+      imageSet,
       beds: [...bedsProperty].sort(),
       baths: [...bathsProperty].sort(),
       rents: [...rentsProperty].sort(),
@@ -129,10 +137,10 @@ const evaluateSheetURL = async(url) => {
 }
 
 exports.onCreateWebpackConfig = ({
-  actions,
+  actions: { setWebpackConfig },
 }) => {
   // changes requested by `sheetJS` aka `xljs`
-  actions.setWebpackConfig({
+  setWebpackConfig({
     node: {
       process: false,
       Buffer: false,
@@ -146,12 +154,13 @@ exports.onCreateWebpackConfig = ({
 // might be possible to use `createRemoteFileNode` from `gatsby-source-filesystem`
 exports.onCreateNode = async({
   node,
-  actions,
+  actions: {
+    createNode,
+    createParentChildLink,
+  },
   createNodeId,
   createContentDigest,
 }) => {
-  const { createNode, createParentChildLink } = actions
-
   // only log for nodes of excel sheets
   if (node.internal.type !== 'ContentfulAsset' || !node.file || node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     return
@@ -172,4 +181,18 @@ exports.onCreateNode = async({
 
   createNode(xlNode)
   createParentChildLink({ parent: node, child: xlNode })
+}
+
+// transform the "Image Set Name" defined in the spreadsheet
+// into a node of contentfulAssets with a matching title
+// @see https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields
+exports.createSchemaCustomization = ({ actions: { createTypes } }) => {
+  const typeDefs = `
+    type PropertyCollectionProperties implements Node {
+      imageSet: ContentfulPropertyImagesSet @link(by: "title")
+    }
+  `
+
+  // https://www.gatsbyjs.org/docs/actions/#createTypes
+  createTypes(typeDefs)
 }
