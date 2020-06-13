@@ -36,14 +36,25 @@ S.Body = styled(Segment)`
   padding-bottom: 6em;
 `
 
-const Properties = ({ data: { propertiesPage, allPropertyCollection } }) => {
+const Properties = ({ location, data: { propertiesPage, allPropertyCollection } }) => {
+  let initZipcode = []
+  let initRentMin = ''
+  let initRentMax = ''
+
+  const queries = new URLSearchParams(location.search)
+
+  if (queries.has('zipcode')) initZipcode = [queries.get('zipcode')]
+  if (queries.has('min')) initRentMin = [queries.get('min')]
+  if (queries.has('max')) initRentMax = [queries.get('max')]
+
   const [detailView, setDetailView] = React.useState()
 
+  // filter form state values
   const [bedsSelected, setBedsSelected] = React.useState([])
   const [bathsSelected, setBathsSelected] = React.useState([])
-  const [zipcodesSelected, setZipcodesSelected] = React.useState([])
-  const [rentMinSelected, setRentMinSelected] = React.useState('')
-  const [rentMaxSelected, setRentMaxSelected] = React.useState('')
+  const [zipcodesSelected, setZipcodesSelected] = React.useState(initZipcode)
+  const [rentMinSelected, setRentMinSelected] = React.useState(initRentMin)
+  const [rentMaxSelected, setRentMaxSelected] = React.useState(initRentMax)
 
   // calculate set of all collections / sheets to display as filter options
   let beds = new Set()
