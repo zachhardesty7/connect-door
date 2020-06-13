@@ -39,10 +39,11 @@ export const clickable = () => ' clickable'
 
 /**
  * @param {'left' | 'right' | 'top' | 'bottom' | 'horizontal' | 'vertical' | 'all'} sides - where to remove padding
+ * @param {bool} inline - prevent block styles from being applied
  * @returns {string} `className` that should be applied to component
  */
-export const noPadding = (sides) => {
-  let classes = ' no-padding'
+export const noPadding = (sides = 'all', inline = false) => {
+  let classes = inline ? ' ' : ' no-padding'
 
   if (sides.includes('left')) classes += ' no-padding-left'
   if (sides.includes('right')) classes += ' no-padding-right'

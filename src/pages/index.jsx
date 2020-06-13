@@ -10,10 +10,13 @@ import {
   Card,
   ContactForm,
   Container,
+  Form,
+  Grid,
   Header,
   Hero,
   Icon,
   IconGroup,
+  Input,
   Item,
   Label,
   Message,
@@ -22,9 +25,12 @@ import {
   getColor,
 } from 'semantic-styled-ui'
 
-import styled, { } from 'styled-components'
+import styled from 'styled-components'
 
 import 'semantic-ui-css/semantic.min.css'
+
+import { noPadding } from '../components/S'
+
 import { defaultColors } from '../constants'
 
 const BaseSegment = styled(Segment)`
@@ -138,13 +144,63 @@ const RootIndex = ({
       title={sectionHero.title}
       subtitle={sectionHero.subtitle}
       button={(
-        <Hero.Button
-          compact
-          as={GLink}
-          link={`/${sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}`}
-        >
-          {sectionHero.button}
-        </Hero.Button>
+        <Form>
+          <Form.Group
+            as={Grid}
+            // css={`
+            //   background-color: white;
+            // `}
+            centered
+            inline
+            id='price-range-filter'
+          >
+            <Form.Field className={noPadding('right', true)}>
+              <Input
+                type='number'
+                labelPosition='left'
+                placeholder='zipcode'
+                name='zipcode'
+                min={0}
+                max={99999}
+                value=''
+              />
+            </Form.Field>
+            <Form.Field className={noPadding('right', true)}>
+              <Input
+                label={{ content: '$' }}
+                step={100}
+                min={0}
+                type='number'
+                labelPosition='left'
+                placeholder='min'
+                name='min'
+                // value={rentMinSelected}
+                // onChange={({ target }) => { setRentMinSelected(target.value) }}
+              />
+            </Form.Field>
+            <Form.Field className={noPadding('right', true)}>
+              <Input
+                // label={{ content: '$' }}
+                step={100}
+                min={0}
+                type='number'
+                labelPosition='left'
+                placeholder='max'
+                name='max'
+                // value={rentMaxSelected}
+                // onChange={({ target }) => { setRentMaxSelected(target.value) }}
+              />
+            </Form.Field>
+            <Hero.Button
+              compact
+              size='big'
+              as={GLink}
+              link={`/${sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}`}
+            >
+              {sectionHero.button}
+            </Hero.Button>
+          </Form.Group>
+        </Form>
       )}
     >
       {sectionHero.backgrounds.map((background) => (
