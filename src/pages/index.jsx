@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link as GLink, graphql } from 'gatsby'
+import { graphql, navigate } from 'gatsby'
 import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
 import GImage from 'gatsby-image'
@@ -133,255 +133,256 @@ const RootIndex = ({
     sectionCareers,
     sectionContact,
   },
-}) => (
-  <div>
-    <Hero
-      logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
-      inlineLogo
-      overlay='darker'
-      baseline='bottom'
-      size='compact'
-      title={sectionHero.title}
-      subtitle={sectionHero.subtitle}
-      button={(
-        <Form>
-          <Form.Group
-            as={Grid}
-            // css={`
-            //   background-color: white;
-            // `}
-            centered
-            inline
-            id='price-range-filter'
-          >
-            <Form.Field className={noPadding('right', true)}>
-              <Input
-                type='number'
-                labelPosition='left'
-                placeholder='zipcode'
-                name='zipcode'
-                min={0}
-                max={99999}
-                value=''
-              />
-            </Form.Field>
-            <Form.Field className={noPadding('right', true)}>
-              <Input
-                label={{ content: '$' }}
-                step={100}
-                min={0}
-                type='number'
-                labelPosition='left'
-                placeholder='min'
-                name='min'
-                // value={rentMinSelected}
-                // onChange={({ target }) => { setRentMinSelected(target.value) }}
-              />
-            </Form.Field>
-            <Form.Field className={noPadding('right', true)}>
-              <Input
+}) => {
+  const handleSubmit = (e) => {
+    const state = {}
+    Array.from(e.target).forEach((input) => {
+      if (input.value) state[input.name] = input.value
+    })
+    navigate(`/${sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}`, { state })
+  }
+
+  return (
+    <div>
+      <Hero
+        logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
+        inlineLogo
+        overlay='darker'
+        baseline='bottom'
+        size='compact'
+        title={sectionHero.title}
+        subtitle={sectionHero.subtitle}
+        button={(
+          <Form onSubmit={handleSubmit}>
+            <Form.Group
+              as={Grid}
+              // css={`
+              //   background-color: white;
+              // `}
+              centered
+              inline
+              id='price-range-filter'
+            >
+              <Form.Field className={noPadding('right', true)}>
+                <Input
+                  type='search'
+                  labelPosition='left'
+                  placeholder='zipcode'
+                  name='zipcode'
+                />
+              </Form.Field>
+              <Form.Field className={noPadding('right', true)}>
+                <Input
+                  label={{ content: '$' }}
+                  min={0}
+                  type='number'
+                  labelPosition='left'
+                  placeholder='min'
+                  name='min'
+                />
+              </Form.Field>
+              <Form.Field className={noPadding('right', true)}>
+                <Input
                 // label={{ content: '$' }}
-                step={100}
-                min={0}
-                type='number'
-                labelPosition='left'
-                placeholder='max'
-                name='max'
-                // value={rentMaxSelected}
-                // onChange={({ target }) => { setRentMaxSelected(target.value) }}
-              />
-            </Form.Field>
-            <Hero.Button
-              compact
-              size='big'
-              as={GLink}
-              link={`/${sectionNav.sections[sectionNav.sections.length - 1].toLowerCase()}`}
-            >
-              {sectionHero.button}
-            </Hero.Button>
-          </Form.Group>
-        </Form>
-      )}
-    >
-      {sectionHero.backgrounds.map((background) => (
-        <GImage fluid={background.fluid} alt={background.title} key={background.title} />
-      ))}
-    </Hero>
-
-    <Segment as='main' vertical basic>
-      <Blurbs
-        as={BaseSegment}
-        id={sectionNav.sections[0]}
-        title={sectionMission.title}
-        content={richTextToJsx(sectionMission.content?.json)}
+                  min={0}
+                  type='number'
+                  labelPosition='left'
+                  placeholder='max'
+                  name='max'
+                />
+              </Form.Field>
+              <Hero.Button
+                as='button'
+                type='submit'
+                compact
+                size='big'
+              >
+                {sectionHero.button}
+              </Hero.Button>
+            </Form.Group>
+          </Form>
+        )}
       >
-        {sectionMission.blurbs.map((blurb) => (
-          <Blurbs.Item
-            key={blurb.title}
-            icon={<Icon name={blurb.icon} inverted size='bigger' />}
-            header={blurb.title}
-          >
-            {richTextToJsx(blurb.content?.json)}
-          </Blurbs.Item>
+        {sectionHero.backgrounds.map((background) => (
+          <GImage fluid={background.fluid} alt={background.title} key={background.title} />
         ))}
-      </Blurbs>
+      </Hero>
 
-      <BaseSegment id={sectionNav.sections[1]} forwardedAs='section' vertical secondary basic>
-        <Container text>
-          <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
-          {sectionTour.icons && (
-            <IconGroup padded='bottom' inverted size='large' justify='center'>
-              <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-              <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-              <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-              <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-            </IconGroup>
-          )}
-          <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
-          <ContactForm
-            name={sectionTour.form?.name}
-            fields={sectionTour.form?.contentfulfields}
-            textArea={sectionTour.form?.textarea}
-            button={sectionTour.form?.button}
-            padded='top'
-          />
-        </Container>
-      </BaseSegment>
-
-      {/* @TODO extract to component (less undefined checking necessary) */}
-      <BaseSegment id={sectionNav.sections[2]} vertical basic>
-        <Container text>
-          <ProcessHeader
-            forwardedAs='h3'
-            textAlign='center'
-          >
-            {sectionItems.title}
-          </ProcessHeader>
-          <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
-          <Item.Group divided relaxed>
-            {sectionItems.steps.map((item, i) => (
-              <Item key={item.title}>
-                <ProcessDarkenedImage size='medium' rounded>
-                  <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
-                  {item.image && (
-                    <GImage
-                      fixed={item.image?.fixed}
-                      $backgroundColor
-                      alt={item.image?.title}
-                    />
-                  )}
-                </ProcessDarkenedImage>
-
-                <Item.Content verticalAlign='middle'>
-                  <Item.Header as='h4'>{item.title}</Item.Header>
-                  <Item.Description>{richTextToJsx(item.content?.json)}</Item.Description>
-                </Item.Content>
-              </Item>
-            ))}
-          </Item.Group>
-        </Container>
-        <ProcessLabelContainer text textAlign='center'>
-          <Message compact floating size='huge'>
-            <Message.Header>
-              <ProcessLabel horizontal size='huge'>
-                {sectionItems.finalStepLabel}
-              </ProcessLabel>
-              {sectionItems.finalStep}
-            </Message.Header>
-          </Message>
-        </ProcessLabelContainer>
-      </BaseSegment>
-
-      {sectionTeam.title !== 'dummy' && (
-        <TeamSegment basic>
-          <Container text className='container-team'>
-            <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
-            {sectionTeam.content && (
-              <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
-            )}
-          </Container>
-          <Container className='cards'>
-            <Card.Group
-              itemsPerRow={sectionTeam.itemsPerRow}
-              stackable
-              doubling
-              className='relaxed'
+      <Segment as='main' vertical basic>
+        <Blurbs
+          as={BaseSegment}
+          id={sectionNav.sections[0]}
+          title={sectionMission.title}
+          content={richTextToJsx(sectionMission.content?.json)}
+        >
+          {sectionMission.blurbs.map((blurb) => (
+            <Blurbs.Item
+              key={blurb.title}
+              icon={<Icon name={blurb.icon} inverted size='bigger' />}
+              header={blurb.title}
             >
-              {sectionTeam.members.map((member) => (
-                <Card centered key={member.name}>
-                  {member.image && (
-                    <GImage
-                      fluid={member.image?.fluid}
-                      $backgroundColor
-                      alt={member.image?.title}
-                    />
-                  )}
-                  <Card.Content>
-                    <Card.Header>{member.name}</Card.Header>
-                    <Card.Description>{member.content}</Card.Description>
-                  </Card.Content>
-                  {/* prevent divider render */}
-                  {(member.number || member.email) && (
-                    <Card.Content extra>
-                      <Card.Meta>{member.number}</Card.Meta>
-                      <Card.Meta>{member.email}</Card.Meta>
-                    </Card.Content>
-                  )}
-                </Card>
-              ))}
-            </Card.Group>
-          </Container>
-        </TeamSegment>
-      )}
+              {richTextToJsx(blurb.content?.json)}
+            </Blurbs.Item>
+          ))}
+        </Blurbs>
 
-      <Blurbs
-        id={sectionNav.sections[3]}
-        title={sectionCareers.title}
-        content={richTextToJsx(sectionCareers.content?.json)}
-        secondary
-      >
-        {sectionCareers.blurbs.map((blurb) => (
-          <Blurbs.Item
-            key={blurb.title}
-            icon={<Icon name={blurb.icon} inverted size='bigger' />}
-            header={blurb.title}
-          >
-            {richTextToJsx(blurb.content?.json)}
-          </Blurbs.Item>
-        ))}
-      </Blurbs>
-
-      <BaseSegment id={sectionNav.sections[4]} vertical basic>
-        <Container text>
+        <BaseSegment id={sectionNav.sections[1]} forwardedAs='section' vertical secondary basic>
           <Container text>
-            <Header as='h3' textAlign='center'>{sectionContact.title}</Header>
-            {sectionContact.icons && (
-              <Container textAlign='center'>
-                <IconGroup padded='bottom' inverted size='large' justify='center'>
-                  <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-                  <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-                  <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-                  <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-                </IconGroup>
-              </Container>
+            <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
+            {sectionTour.icons && (
+              <IconGroup padded='bottom' inverted size='large' justify='center'>
+                <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+                <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+                <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+              </IconGroup>
             )}
-            <Header.Content>
-              {richTextToJsx(sectionContact?.content?.json)}
-            </Header.Content>
+            <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
+            <ContactForm
+              name={sectionTour.form?.name}
+              fields={sectionTour.form?.contentfulfields}
+              textArea={sectionTour.form?.textarea}
+              button={sectionTour.form?.button}
+              padded='top'
+            />
           </Container>
-          <ContactForm
-            name={sectionContact.form?.name}
-            fields={sectionContact.form?.contentfulfields}
-            textArea={sectionContact.form?.textarea}
-            button={sectionContact.form?.button}
-            padded='top'
-          />
-        </Container>
-      </BaseSegment>
+        </BaseSegment>
 
-    </Segment>
-  </div>
-)
+        {/* @TODO extract to component (less undefined checking necessary) */}
+        <BaseSegment id={sectionNav.sections[2]} vertical basic>
+          <Container text>
+            <ProcessHeader
+              forwardedAs='h3'
+              textAlign='center'
+            >
+              {sectionItems.title}
+            </ProcessHeader>
+            <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
+            <Item.Group divided relaxed>
+              {sectionItems.steps.map((item, i) => (
+                <Item key={item.title}>
+                  <ProcessDarkenedImage size='medium' rounded>
+                    <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
+                    {item.image && (
+                      <GImage
+                        fixed={item.image?.fixed}
+                        $backgroundColor
+                        alt={item.image?.title}
+                      />
+                    )}
+                  </ProcessDarkenedImage>
+
+                  <Item.Content verticalAlign='middle'>
+                    <Item.Header as='h4'>{item.title}</Item.Header>
+                    <Item.Description>{richTextToJsx(item.content?.json)}</Item.Description>
+                  </Item.Content>
+                </Item>
+              ))}
+            </Item.Group>
+          </Container>
+          <ProcessLabelContainer text textAlign='center'>
+            <Message compact floating size='huge'>
+              <Message.Header>
+                <ProcessLabel horizontal size='huge'>
+                  {sectionItems.finalStepLabel}
+                </ProcessLabel>
+                {sectionItems.finalStep}
+              </Message.Header>
+            </Message>
+          </ProcessLabelContainer>
+        </BaseSegment>
+
+        {sectionTeam.title !== 'dummy' && (
+          <TeamSegment basic>
+            <Container text className='container-team'>
+              <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
+              {sectionTeam.content && (
+                <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
+              )}
+            </Container>
+            <Container className='cards'>
+              <Card.Group
+                itemsPerRow={sectionTeam.itemsPerRow}
+                stackable
+                doubling
+                className='relaxed'
+              >
+                {sectionTeam.members.map((member) => (
+                  <Card centered key={member.name}>
+                    {member.image && (
+                      <GImage
+                        fluid={member.image?.fluid}
+                        $backgroundColor
+                        alt={member.image?.title}
+                      />
+                    )}
+                    <Card.Content>
+                      <Card.Header>{member.name}</Card.Header>
+                      <Card.Description>{member.content}</Card.Description>
+                    </Card.Content>
+                    {/* prevent divider render */}
+                    {(member.number || member.email) && (
+                      <Card.Content extra>
+                        <Card.Meta>{member.number}</Card.Meta>
+                        <Card.Meta>{member.email}</Card.Meta>
+                      </Card.Content>
+                    )}
+                  </Card>
+                ))}
+              </Card.Group>
+            </Container>
+          </TeamSegment>
+        )}
+
+        <Blurbs
+          id={sectionNav.sections[3]}
+          title={sectionCareers.title}
+          content={richTextToJsx(sectionCareers.content?.json)}
+          secondary
+        >
+          {sectionCareers.blurbs.map((blurb) => (
+            <Blurbs.Item
+              key={blurb.title}
+              icon={<Icon name={blurb.icon} inverted size='bigger' />}
+              header={blurb.title}
+            >
+              {richTextToJsx(blurb.content?.json)}
+            </Blurbs.Item>
+          ))}
+        </Blurbs>
+
+        <BaseSegment id={sectionNav.sections[4]} vertical basic>
+          <Container text>
+            <Container text>
+              <Header as='h3' textAlign='center'>{sectionContact.title}</Header>
+              {sectionContact.icons && (
+                <Container textAlign='center'>
+                  <IconGroup padded='bottom' inverted size='large' justify='center'>
+                    <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                    <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+                    <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+                    <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+                  </IconGroup>
+                </Container>
+              )}
+              <Header.Content>
+                {richTextToJsx(sectionContact?.content?.json)}
+              </Header.Content>
+            </Container>
+            <ContactForm
+              name={sectionContact.form?.name}
+              fields={sectionContact.form?.contentfulfields}
+              textArea={sectionContact.form?.textarea}
+              button={sectionContact.form?.button}
+              padded='top'
+            />
+          </Container>
+        </BaseSegment>
+
+      </Segment>
+    </div>
+  )
+}
 
 export default RootIndex
 
