@@ -3,11 +3,13 @@ import { graphql } from 'gatsby'
 import GImage from 'gatsby-image'
 
 import {
+  Button,
   Card,
   ContactForm,
   Form,
   Grid,
   Header,
+  Icon,
   Image,
   Input,
   Label,
@@ -15,6 +17,18 @@ import {
   Segment,
   Table,
 } from 'semantic-styled-ui'
+
+// https://github.com/express-labs/pure-react-carousel
+// cons: infinite isn't a seamless loop
+import {
+  ButtonBack,
+  ButtonNext,
+  CarouselProvider,
+  Slide,
+  Slider,
+} from 'pure-react-carousel'
+import 'pure-react-carousel/dist/react-carousel.es.css'
+
 import styled from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
@@ -34,6 +48,14 @@ S.Body = styled(Segment)`
 
   padding-top: 6em;
   padding-bottom: 6em;
+`
+
+S.CarouselButton = styled.div`
+  background-color: #e8e8e8df;
+  position: absolute;
+  top: 50%;
+  ${({ $side }) => $side && $side}: 0;
+  transform: translateY(-50%);
 `
 
 const Properties = ({ location, data: { propertiesPage, allPropertyCollection } }) => {
@@ -248,10 +270,41 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                 icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
                 corner='left'
               />
-              <Image
-                centered
-                src='https://housingscout.com/wp-content/uploads/2020/04/1-768x461.jpg'
-              />
+              <CarouselProvider
+                naturalSlideWidth={10}
+                naturalSlideHeight={6}
+                totalSlides={4}
+                visibleSlides={1.2}
+              >
+                <div css='position: relative;'>
+                  <Slider>
+                    {detailView?.imageSet.images.map((image, i) => image && (
+                      <Slide
+                        index={i}
+                        css={`
+                          &:not(:last-child) {
+                            border-right: solid #F3F4F5 1em;
+                          }
+                        `}
+                      >
+                        <GImage
+                          fluid={image?.fluid}
+                          style={{ position: 'unset' }}
+                          alt={image?.title}
+                        />
+                      </Slide>
+                    ))}
+                  </Slider>
+
+                  <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
+                    <Icon fitted size='big' link name='chevron left' />
+                  </S.CarouselButton>
+                  <S.CarouselButton $side='right' icon compact as={Button} forwardedAs={ButtonNext}>
+                    <Icon fitted size='big' link name='chevron right' />
+                  </S.CarouselButton>
+                </div>
+              </CarouselProvider>
+
               <Segment basic padded='very'>
                 <Header as='h2'>
                   {detailView?.name}
