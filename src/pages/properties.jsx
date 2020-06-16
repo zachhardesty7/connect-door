@@ -270,40 +270,49 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                 icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
                 corner='left'
               />
-              <CarouselProvider
-                naturalSlideWidth={10}
-                naturalSlideHeight={6}
-                totalSlides={4}
-                visibleSlides={1.2}
-              >
-                <div css='position: relative;'>
-                  <Slider>
-                    {detailView?.imageSet.images.map((image, i) => image && (
-                      <Slide
-                        index={i}
-                        css={`
+
+              {detailView?.imageSet.images.length && (
+                <CarouselProvider
+                  touchEnabled={detailView?.imageSet.images.length > 1}
+                  dragEnabled={detailView?.imageSet.images.length > 1}
+                  naturalSlideWidth={10}
+                  naturalSlideHeight={6}
+                  totalSlides={detailView?.imageSet.images.length}
+                  visibleSlides={detailView?.imageSet.images.length > 1 ? 1.2 : 1}
+                >
+                  <div css='position: relative;'>
+                    <Slider>
+                      {detailView?.imageSet.images.map((image, i) => image && (
+                        <Slide
+                          index={i}
+                          css={`
                           &:not(:last-child) {
                             border-right: solid #F3F4F5 1em;
                           }
                         `}
-                      >
-                        <GImage
-                          fluid={image?.fluid}
-                          style={{ position: 'unset' }}
-                          alt={image?.title}
-                        />
-                      </Slide>
-                    ))}
-                  </Slider>
+                        >
+                          <GImage
+                            fluid={image?.fluid}
+                            style={{ position: 'unset' }}
+                            alt={image?.title}
+                          />
+                        </Slide>
+                      ))}
+                    </Slider>
 
-                  <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
-                    <Icon fitted size='big' link name='chevron left' />
-                  </S.CarouselButton>
-                  <S.CarouselButton $side='right' icon compact as={Button} forwardedAs={ButtonNext}>
-                    <Icon fitted size='big' link name='chevron right' />
-                  </S.CarouselButton>
-                </div>
-              </CarouselProvider>
+                    {detailView?.imageSet.images.length > 1 && (
+                      <>
+                        <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
+                          <Icon fitted size='big' link name='chevron left' />
+                        </S.CarouselButton>
+                        <S.CarouselButton $side='right' icon compact as={Button} forwardedAs={ButtonNext}>
+                          <Icon fitted size='big' link name='chevron right' />
+                        </S.CarouselButton>
+                      </>
+                    )}
+                  </div>
+                </CarouselProvider>
+              )}
 
               <Segment basic padded='very'>
                 <Header as='h2'>
