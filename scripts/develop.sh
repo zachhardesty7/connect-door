@@ -1,4 +1,4 @@
-sh scripts/use-local-library.sh $1
+# sh scripts/use-local-library.sh $1
 
 export ENV_MODE="local"
 
