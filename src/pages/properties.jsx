@@ -173,8 +173,8 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                     closeOnBlur
                     closeOnEscape
                     id='select-zipcodes-filter'
-                    label='Zipcodes'
-                    placeholder='Select Zipcodes'
+                    label='Zip Code'
+                    placeholder='Select Zip Code'
                     onChange={(_, { value }) => { setZipcodesSelected(value) }}
                     value={zipcodesSelected}
                     options={zipcodesOptions}
@@ -190,7 +190,7 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                       min={0}
                       type='number'
                       labelPosition='left'
-                      placeholder='min'
+                      placeholder='Min'
                       name='min'
                       value={rentMinSelected}
                       onChange={({ target }) => { setRentMinSelected(target.value) }}
@@ -203,7 +203,7 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                       min={0}
                       type='number'
                       labelPosition='left'
-                      placeholder='max'
+                      placeholder='Max'
                       name='max'
                       value={rentMaxSelected}
                       onChange={({ target }) => { setRentMaxSelected(target.value) }}

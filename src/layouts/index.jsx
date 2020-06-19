@@ -147,7 +147,7 @@ const NavLogo = styled(GImage).attrs()`
 
 const Template = ({ children, location }) => {
   const data = useStaticQuery(graphql`
-    query {
+    {
       sectionNav: contentfulNav(contentful_id: {eq: "3oYma487pKEGoceuYc8WCk"}) {
         sections
         size

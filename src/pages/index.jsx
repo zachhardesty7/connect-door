@@ -167,7 +167,7 @@ const RootIndex = ({
                 <Input
                   type='search'
                   labelPosition='left'
-                  placeholder='zipcode'
+                  placeholder='Zip Code'
                   name='zipcode'
                 />
               </Form.Field>
@@ -177,17 +177,16 @@ const RootIndex = ({
                   min={0}
                   type='number'
                   labelPosition='left'
-                  placeholder='min'
+                  placeholder='Min'
                   name='min'
                 />
               </Form.Field>
               <Form.Field className={noPadding('right', true)}>
                 <Input
-                // label={{ content: '$' }}
                   min={0}
                   type='number'
                   labelPosition='left'
-                  placeholder='max'
+                  placeholder='Max'
                   name='max'
                 />
               </Form.Field>
