@@ -14,6 +14,7 @@ import {
   Input,
   Label,
   List,
+  Pagination,
   Segment,
   Table,
 } from 'semantic-styled-ui'
@@ -257,6 +258,19 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
                 )}
               </Card.Group>
             </S.Body>
+
+            <Pagination
+              css={`
+                display: flex;
+                justify-content: center;
+              `}
+              boundaryRange={0}
+              defaultActivePage={1}
+              firstItem={allProperties.length / 12 <= 5 ? null : undefined}
+              lastItem={allProperties.length / 12 <= 5 ? null : undefined}
+              siblingRange={2}
+              totalPages={allProperties.length / 12}
+            />
           </Grid.Column>
 
           <Grid.Column
