@@ -47,8 +47,8 @@ S.Body = styled(Segment)`
     font-size: 2em !important;
   }
 
-  padding-top: 6em;
-  padding-bottom: 6em;
+  padding-top: 5em;
+  padding-bottom: 5em;
 `
 
 S.CarouselButton = styled.div`
@@ -259,18 +259,24 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
               </Card.Group>
             </S.Body>
 
-            <Pagination
-              css={`
+            <Segment vertical>
+              <Pagination
+                css={`
                 display: flex;
-                justify-content: center;
+                width: fit-content;
+                margin: auto;
+                a {
+                  justify-content: center;
+                }
               `}
-              boundaryRange={0}
-              defaultActivePage={1}
-              firstItem={allProperties.length / 12 <= 5 ? null : undefined}
-              lastItem={allProperties.length / 12 <= 5 ? null : undefined}
-              siblingRange={2}
-              totalPages={allProperties.length / 12}
-            />
+                boundaryRange={0}
+                defaultActivePage={1}
+                firstItem={allProperties.length / 12 <= 5 ? null : undefined}
+                lastItem={allProperties.length / 12 <= 5 ? null : undefined}
+                siblingRange={2}
+                totalPages={allProperties.length / 12}
+              />
+            </Segment>
           </Grid.Column>
 
           <Grid.Column
