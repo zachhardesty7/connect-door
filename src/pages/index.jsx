@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql, navigate } from 'gatsby'
+import { Link, graphql, navigate } from 'gatsby'
 import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
 
 import GImage from 'gatsby-image'
@@ -20,6 +20,7 @@ import {
   Item,
   Label,
   Message,
+  Navigation,
   Segment,
   getBackgroundColor,
   getColor,
@@ -32,6 +33,10 @@ import 'semantic-ui-css/semantic.min.css'
 import { noPadding } from '../components/S'
 
 import { defaultColors } from '../constants'
+
+const NavLogo = styled(GImage).attrs()`
+  margin-bottom: -3px;
+`
 
 const BaseSegment = styled(Segment)`
   h3 {
@@ -123,6 +128,7 @@ const TeamSegment = styled(BaseSegment)`
 `
 
 const RootIndex = ({
+  location,
   data: {
     sectionNav,
     sectionHero,
@@ -144,6 +150,44 @@ const RootIndex = ({
 
   return (
     <div>
+      <Navigation
+        size={sectionNav.size}
+        fullWidth
+        relaxed
+        noPointing
+        floating
+        inverted
+      >
+        <Navigation.Left>
+          <Navigation.Logo as={Link} link='/' activeClassName='active'>
+            <NavLogo fixed={sectionNav.logoSecondary?.fixed} alt='logo' />
+          </Navigation.Logo>
+        </Navigation.Left>
+        <Navigation.Right>
+          {sectionNav.sections.map((page) => (
+            // last item is a new page link
+            page === 'Properties' ? (
+              <Navigation.Item
+                key={page}
+                as={Link}
+                link={`/${page.toLowerCase()}`}
+                activeClassName='active'
+              >
+                {page}
+              </Navigation.Item>
+            ) : (
+              <Navigation.Item
+                key={page}
+                onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
+                link={location.pathname !== '/properties' ? `#${page}` : ''}
+              >
+                {page}
+              </Navigation.Item>
+            )
+          ))}
+        </Navigation.Right>
+      </Navigation>
+
       <Hero
         logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
         inlineLogo
@@ -391,6 +435,12 @@ export const query = graphql`
       sections
       size
       logo {
+        title
+        fixed(width: 150) {
+          ...GatsbyContentfulFixed_tracedSVG
+        }
+      }
+      logoSecondary {
         title
         fixed(width: 150) {
           ...GatsbyContentfulFixed_tracedSVG

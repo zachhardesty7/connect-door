@@ -1,5 +1,6 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import { Link, graphql, navigate } from 'gatsby'
+
 import GImage from 'gatsby-image'
 
 import {
@@ -14,6 +15,7 @@ import {
   Input,
   Label,
   List,
+  Navigation,
   Pagination,
   Segment,
   Table,
@@ -38,6 +40,10 @@ import { noOverflow, noPadding } from '../components'
 
 const S = {} // SC namespace
 
+const NavLogo = styled(GImage).attrs()`
+  margin-bottom: -3px;
+`
+
 S.Body = styled(Segment)`
   h3 {
     font-size: 3em;
@@ -59,7 +65,7 @@ S.CarouselButton = styled.div`
   transform: translateY(-50%);
 `
 
-const Properties = ({ location, data: { propertiesPage, allPropertyCollection } }) => {
+const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyCollection } }) => {
   let initZipcode = []
   let initRentMin = ''
   let initRentMax = ''
@@ -137,6 +143,32 @@ const Properties = ({ location, data: { propertiesPage, allPropertyCollection } 
 
   return (
     <div>
+      <Navigation size={sectionNav.size} text>
+        <Navigation.Logo as={Link} link='/' activeClassName='active'>
+          <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
+        </Navigation.Logo>
+        {sectionNav.sections.map((page) => (
+          // last item is a new page link
+          page === 'Properties' ? (
+            <Navigation.Item
+              key={page}
+              as={Link}
+              link={`/${page.toLowerCase()}`}
+              activeClassName='active'
+            >
+              {page}
+            </Navigation.Item>
+          ) : (
+            <Navigation.Item
+              key={page}
+              onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
+              link={location.pathname !== '/properties' ? `#${page}` : ''}
+            >
+              {page}
+            </Navigation.Item>
+          )
+        ))}
+      </Navigation>
       {/* FIXME: get rid of bottom padding */}
       <Segment as='main' basic vertical>
         <Grid columns='equal' relaxed='very' centered padded>
@@ -422,6 +454,22 @@ export default Properties
 
 export const imageQuery = graphql`
   query {
+    sectionNav: contentfulNav(contentful_id: {eq: "3oYma487pKEGoceuYc8WCk"}) {
+      sections
+      size
+      logo {
+        title
+        fixed(width: 150) {
+          ...GatsbyContentfulFixed_tracedSVG
+        }
+      }
+      logoSecondary {
+        title
+        fixed(width: 150) {
+          ...GatsbyContentfulFixed_tracedSVG
+        }
+      }
+    }
     propertiesPage: contentfulPageProperties(contentful_id: {eq: "5bdotCvkQYqNXaQnhTw6Ys"}) {
       id
       title

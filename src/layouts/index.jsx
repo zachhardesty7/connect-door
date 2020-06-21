@@ -1,17 +1,14 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Link, graphql, navigate, useStaticQuery } from 'gatsby'
-import GImage from 'gatsby-image'
 
 import {
   Footer,
   Icon,
   IconGroup,
-  Navigation,
 } from 'semantic-styled-ui'
 
 import 'semantic-ui-css/semantic.min.css'
-import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
+import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { defaultColors } from '../constants'
 
 import brandingMedium from '../assets/branding-medium.otf'
@@ -141,116 +138,50 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const NavLogo = styled(GImage).attrs()`
-  margin-bottom: -3px;
-`
+const Template = ({ children }) => (
+  <ThemeProvider theme={{ ...defaultColors }}>
+    <div id='top' className='root'>
 
-const Template = ({ children, location }) => {
-  const data = useStaticQuery(graphql`
-    {
-      sectionNav: contentfulNav(contentful_id: {eq: "3oYma487pKEGoceuYc8WCk"}) {
-        sections
-        size
-        logo {
-          title
-          fixed(width: 150) {
-            ...GatsbyContentfulFixed_tracedSVG
-          }
-        }
-        logoSecondary {
-          title
-          fixed(width: 150) {
-            ...GatsbyContentfulFixed_tracedSVG
-          }
-        }
-      }
-    }
-  `)
-
-  const { sectionNav } = data
-
-  return (
-    <ThemeProvider theme={{ ...defaultColors }}>
-      <div id='top' className='root'>
-
-        <Helmet
-          defaultTitle='ConnectDoor'
-          titleTemplate='ConnectDoor - %s'
-        >
-          <meta charSet='utf-8' />
-          <html lang='en' />
-          <meta
-            name='Description'
-            content={'Progressive Web App to advertise the services of ' +
-            'ConnectDoor and contact them on listings'}
-          />
-          {/* <meta name='keywords' content='Real Estate, Development, Construction, Property'/> */}
-          <meta name='author' content='Horatio Villarreal' />
-          <meta itemProp='name' content='ConnectDoor' />
-          <meta itemProp='url' content='https://theconnectdoor.com/' />
-          {/* <meta itemProp='telephone' content='469.560.3010' /> */}
-          {/* <meta itemProp='email' content='info@gulfcorpusa.com' /> */}
-        </Helmet>
-
-        <GlobalStyle />
-
-        <Navigation
-          size={sectionNav.size}
-          fullWidth
-          relaxed
-          noPointing
-          floating
-          inverted
-        >
-          <Navigation.Left>
-            <Navigation.Logo as={Link} link='/' activeClassName='active'>
-              <NavLogo fixed={sectionNav.logoSecondary?.fixed} alt='logo' />
-            </Navigation.Logo>
-          </Navigation.Left>
-          <Navigation.Right>
-            {sectionNav.sections.map((page) => (
-            // last item is a new page link
-              page === 'Properties' ? (
-                <Navigation.Item
-                  key={page}
-                  as={Link}
-                  link={`/${page.toLowerCase()}`}
-                  activeClassName='active'
-                >
-                  {page}
-                </Navigation.Item>
-              ) : (
-                <Navigation.Item
-                  key={page}
-                  onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
-                  link={location.pathname !== '/properties' ? `#${page}` : ''}
-                >
-                  {page}
-                </Navigation.Item>
-              )
-            ))}
-          </Navigation.Right>
-        </Navigation>
-
-        {children}
-
-        <Footer
-          inverted
-          icons={(
-            <IconGroup light justify='flex-end'>
-              <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-              <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-              <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-              <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-            </IconGroup>
-          )}
-          copyright='ConnectDoor'
-          developerName='Zach Hardesty'
-          developerLink='https://zachhardesty.com'
+      <Helmet
+        defaultTitle='ConnectDoor'
+        titleTemplate='ConnectDoor - %s'
+      >
+        <meta charSet='utf-8' />
+        <html lang='en' />
+        <meta
+          name='Description'
+          content={'Progressive Web App to advertise the services of ' +
+          'ConnectDoor and contact them on listings'}
         />
-      </div>
-    </ThemeProvider>
-  )
-}
+        {/* <meta name='keywords' content='Real Estate, Development, Construction, Property'/> */}
+        <meta name='author' content='Horatio Villarreal' />
+        <meta itemProp='name' content='ConnectDoor' />
+        <meta itemProp='url' content='https://theconnectdoor.com/' />
+        {/* <meta itemProp='telephone' content='469.560.3010' /> */}
+        {/* <meta itemProp='email' content='info@gulfcorpusa.com' /> */}
+      </Helmet>
+
+      <GlobalStyle />
+
+      {/* nav in each page due to major differences */}
+      {children}
+
+      <Footer
+        inverted
+        icons={(
+          <IconGroup light justify='flex-end'>
+            <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+            <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
+            <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
+            <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+          </IconGroup>
+        )}
+        copyright='ConnectDoor'
+        developerName='Zach Hardesty'
+        developerLink='https://zachhardesty.com'
+      />
+    </div>
+  </ThemeProvider>
+)
 
 export default Template
