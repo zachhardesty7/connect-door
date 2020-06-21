@@ -157,6 +157,12 @@ const Template = ({ children, location }) => {
             ...GatsbyContentfulFixed_tracedSVG
           }
         }
+        logoSecondary {
+          title
+          fixed(width: 150) {
+            ...GatsbyContentfulFixed_tracedSVG
+          }
+        }
       }
     }
   `)
@@ -169,7 +175,7 @@ const Template = ({ children, location }) => {
 
         <Helmet
           defaultTitle='ConnectDoor'
-          titleTemplate='ConnectDoor – %s'
+          titleTemplate='ConnectDoor - %s'
         >
           <meta charSet='utf-8' />
           <html lang='en' />
@@ -188,31 +194,42 @@ const Template = ({ children, location }) => {
 
         <GlobalStyle />
 
-        <Navigation size={sectionNav.size} text pointing>
-          <Navigation.Logo as={Link} link='/' activeClassName='active'>
-            <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
-          </Navigation.Logo>
-          {sectionNav.sections.map((page) => (
+        <Navigation
+          size={sectionNav.size}
+          fullWidth
+          relaxed
+          noPointing
+          floating
+          inverted
+        >
+          <Navigation.Left>
+            <Navigation.Logo as={Link} link='/' activeClassName='active'>
+              <NavLogo fixed={sectionNav.logoSecondary?.fixed} alt='logo' />
+            </Navigation.Logo>
+          </Navigation.Left>
+          <Navigation.Right>
+            {sectionNav.sections.map((page) => (
             // last item is a new page link
-            page === 'Properties' ? (
-              <Navigation.Item
-                key={page}
-                as={Link}
-                link={`/${page.toLowerCase()}`}
-                activeClassName='active'
-              >
-                {page}
-              </Navigation.Item>
-            ) : (
-              <Navigation.Item
-                key={page}
-                onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
-                link={location.pathname !== '/properties' ? `#${page}` : ''}
-              >
-                {page}
-              </Navigation.Item>
-            )
-          ))}
+              page === 'Properties' ? (
+                <Navigation.Item
+                  key={page}
+                  as={Link}
+                  link={`/${page.toLowerCase()}`}
+                  activeClassName='active'
+                >
+                  {page}
+                </Navigation.Item>
+              ) : (
+                <Navigation.Item
+                  key={page}
+                  onClick={() => location.pathname === '/properties' && navigate(`/#${page}`)}
+                  link={location.pathname !== '/properties' ? `#${page}` : ''}
+                >
+                  {page}
+                </Navigation.Item>
+              )
+            ))}
+          </Navigation.Right>
         </Navigation>
 
         {children}

@@ -149,7 +149,7 @@ const RootIndex = ({
         inlineLogo
         overlay='darker'
         baseline='bottom'
-        size='compact'
+        size='relaxed'
         title={sectionHero.title}
         subtitle={sectionHero.subtitle}
         button={(
