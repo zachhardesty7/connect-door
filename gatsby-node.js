@@ -127,12 +127,14 @@ const evaluateSheetURL = async(url) => {
 
   return {
     properties: Object.values(sheets),
-    beds: [...bedsAll].sort(),
-    baths: [...bathsAll].sort(),
-    zipcodes: [...zipcodesAll].sort(),
-    rents: [...rentsAll].sort(),
-    communityAmenities: [...communityAmenitiesAll].sort(),
-    apartmentAmenities: [...apartmentAmenitiesAll].sort(),
+    attributes: {
+      beds: [...bedsAll].sort(),
+      baths: [...bathsAll].sort(),
+      zipcodes: [...zipcodesAll].sort(),
+      rents: [...rentsAll].sort(),
+      communityAmenities: [...communityAmenitiesAll].sort(),
+      apartmentAmenities: [...apartmentAmenitiesAll].sort(),
+    },
   }
 }
 
@@ -161,16 +163,19 @@ exports.onCreateNode = async({
   createNodeId,
   createContentDigest,
 }) => {
-  // only log for nodes of excel sheets
+  // TODO: retrieve all assets from node.internalId === 'page-properties'
+  // and combine into a single query-able node
+
+  // short circuit when not dealing with excel file
   if (node.internal.type !== 'ContentfulAsset' || !node.file || node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     return
   }
 
   const collection = await evaluateSheetURL(node.file.url)
 
-  const xlNode = {
-    ...collection,
-    id: createNodeId(`${node.id}>>>SHEET`),
+  const excelNode = {
+    ...collection.attributes,
+    id: createNodeId(`${node.id}-excel`),
     children: [],
     parent: node.id,
     internal: {
@@ -179,35 +184,24 @@ exports.onCreateNode = async({
     },
   }
 
-exports.setFieldsOnGraphQLNodeType = ({ type }) => {
-  if (type.name === 'PropertyCollection') {
-    return {
-      properties: {
-        type: ['Property'],
-        args: {
-          filter: 'String',
-          limit: 'Int',
-        },
-        resolve(source, args, context, info) {
-          // return info.originalResolver(source, args, context, info)
-          return context.nodeModel.runQuery({
-            // only supports filter and sort
-            query: {
-              // filter: {
-              //   name: { eq: 'Villas on Nueces' },
-              // },
-              // limit: args.limit,
-            },
-            type: 'Property',
-            firstOnly: false,
-          })
-        },
-      },
-    }
-  }
+  createNode(excelNode)
+  createParentChildLink({ parent: node, child: excelNode })
 
-  // by default return empty object
-  return {}
+  const properties = collection.properties.map((property) => ({
+    ...property,
+    id: createNodeId(`${node.id}-property-${toCamelCase(property.addr)}`),
+    children: [],
+    internal: {
+      contentDigest: createContentDigest(property),
+      type: 'Property',
+    },
+  }))
+
+  properties.forEach((property) => { createNode(property) })
+
+  // create PropertyCollection.properties for convenience
+  // NOTE: using this field does not allow limiting, sorting, filtering
+  excelNode.properties___NODE = properties.map((property) => property.id)
 }
 
 // transform the "Image Set Name" defined in the spreadsheet
@@ -215,7 +209,7 @@ exports.setFieldsOnGraphQLNodeType = ({ type }) => {
 // @see https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields
 exports.createSchemaCustomization = ({ actions: { createTypes } }) => {
   const typeDefs = `
-    type PropertyCollectionProperties implements Node {
+    type Property implements Node {
       imageSet: ContentfulPropertyImagesSet @link(by: "title")
     }
   `

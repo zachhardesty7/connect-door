@@ -41,6 +41,8 @@ import { noOverflow, noPadding } from '../components'
 
 import { S } from '../components/S'
 
+const ITEMS_PER_PAGE = 12
+
 const NavLogo = styled(GImage).attrs()`
   margin-bottom: -3px;
 `
@@ -66,7 +68,12 @@ S.CarouselButton = styled.div`
   transform: translateY(-50%);
 `
 
-const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyCollection } }) => {
+const Properties = ({
+  location,
+  data: { sectionNav, propertiesPage, allProperty, allPropertyCollection },
+}) => {
+  const propertyCollectionInfo = allPropertyCollection.nodes[0]
+
   let initZipcode = []
   let initRentMin = ''
   let initRentMax = ''
@@ -77,6 +84,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
 
   const [detailsOpen, setDetailsOpen] = React.useState()
   const [tourModalOpen, setTourModalOpen] = React.useState(false)
+  const [currentPage, setCurrentPage] = React.useState(1)
 
   // filter form state values
   const [bedsSelected, setBedsSelected] = React.useState([])
@@ -85,15 +93,14 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
   const [rentMinSelected, setRentMinSelected] = React.useState(initRentMin)
   const [rentMaxSelected, setRentMaxSelected] = React.useState(initRentMax)
 
-  // calculate set of all collections / sheets to display as filter options
+  // calculate set of all sheets to display as filter options
   let beds = new Set()
   let baths = new Set()
   let zipcodes = new Set()
-  allPropertyCollection.nodes.forEach((collection) => {
-    collection.beds.forEach((bed) => beds.add(bed))
-    collection.baths.forEach((bath) => baths.add(bath))
-    collection.zipcodes.forEach((zip) => zipcodes.add(zip))
-  })
+  // TODO: support multiple spreadsheets, this code does nothing productive for now
+  propertyCollectionInfo.beds.forEach((bed) => beds.add(bed))
+  propertyCollectionInfo.baths.forEach((bath) => baths.add(bath))
+  propertyCollectionInfo.zipcodes.forEach((zip) => zipcodes.add(zip))
   beds = [...beds].sort()
   baths = [...baths].sort()
   zipcodes = [...zipcodes].sort()
@@ -103,14 +110,13 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
   const bathsOptions = baths.map((bath) => ({ key: bath, value: bath, text: bath }))
   const zipcodesOptions = zipcodes.map((zip) => ({ key: zip, value: zip, text: zip }))
 
-  const allProperties = []
+  const selectedProperties = []
   // NOTE: properties will show if they match anything from the filters (union not
   // intersection), eg unit: {1 bed, 2 bath} matches filter: {1 or 2 or 3 bed, __ baths}
-  allPropertyCollection.nodes.forEach((collection) => {
-    collection.properties.forEach((property) => {
-      if (
-        // show properties that match anything from filter list, auto include if no filter set
-        (!bedsSelected.length || property.beds.some((ct) => bedsSelected.includes(ct))) &&
+  allProperty.nodes.forEach((property) => {
+    if (
+      // show properties that match anything from filter list, auto include if no filter set
+      (!bedsSelected.length || property.beds.some((ct) => bedsSelected.includes(ct))) &&
         (!bathsSelected.length || property.baths.some((ct) => bathsSelected.includes(ct))) &&
         (!zipcodesSelected.length || zipcodesSelected.includes(property.zipcode)) &&
 
@@ -119,10 +125,9 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
         (!rentMaxSelected || property.rents[0] < rentMaxSelected) &&
         // most expensive unit > minRentSelection
         (!rentMinSelected || property.rents[property.rents.length - 1] > rentMinSelected)
-      ) {
-        allProperties.push(property)
-      }
-    })
+    ) {
+      selectedProperties.push(property)
+    }
   })
 
   const filterViewAnimation = useSpring({
@@ -139,7 +144,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
   })
 
   // hide detail panel view when active property is filtered out
-  if (detailsOpen && allProperties.every(({ name }) => name !== detailsOpen.name)) {
+  if (detailsOpen && selectedProperties.every(({ name }) => name !== detailsOpen.name)) {
     setDetailsOpen()
   }
 
@@ -250,7 +255,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
 
             <S.Body vertical>
               <Card.Group centered>
-                {allProperties.map((property) => (
+                {selectedProperties.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((property) => (
                   <Card
                     link
                     as='div'
@@ -287,7 +292,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                     </Card.Content>
                   </Card>
                 ))}
-                {!allProperties.length && (
+                {!selectedProperties.length && (
                   <div>No properties matching filter...</div>
                 )}
               </Card.Group>
@@ -296,19 +301,20 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
             <Segment vertical>
               <Pagination
                 css={`
-                display: flex;
-                width: fit-content;
-                margin: auto;
-                a {
-                  justify-content: center;
-                }
-              `}
+                  display: flex;
+                  width: fit-content;
+                  margin: auto;
+                  a {
+                    justify-content: center;
+                  }
+                `}
                 boundaryRange={0}
                 defaultActivePage={1}
-                firstItem={allProperties.length / 12 <= 5 ? null : undefined}
-                lastItem={allProperties.length / 12 <= 5 ? null : undefined}
+                onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+                firstItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
+                lastItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
                 siblingRange={2}
-                totalPages={allProperties.length / 12}
+                totalPages={selectedProperties.length / ITEMS_PER_PAGE}
               />
             </Segment>
           </Grid.Column>
@@ -490,7 +496,7 @@ export const imageQuery = graphql`
         }
       }
     }
-    propertiesPage: contentfulPageProperties(contentful_id: {eq: "5bdotCvkQYqNXaQnhTw6Ys"}) {
+    propertiesPage: contentfulPropertiesPage(contentful_id: {eq: "5bdotCvkQYqNXaQnhTw6Ys"}) {
       id
       title
       contactForm {
@@ -510,6 +516,7 @@ export const imageQuery = graphql`
       }
     }
     # custom transformed data from above listings > file > url
+    # TODO: if multiple, need to know union of all
     allPropertyCollection {
       nodes {
         baths
@@ -518,36 +525,38 @@ export const imageQuery = graphql`
         rents
         apartmentAmenities
         communityAmenities
-        properties {
-          name
-          beds
-          baths
-          addr
-          street
-          city
-          state
-          zipcode
-          imageSet {
-            images {
-              fixed(width: 400) {
-                ...GatsbyContentfulFixed
-              }
-              fluid(maxWidth: 400) {
-                ...GatsbyContentfulFluid
-              }
+      }
+    }
+    allProperty {
+      nodes {
+        name
+        beds
+        baths
+        addr
+        street
+        city
+        state
+        zipcode
+        imageSet {
+          images {
+            fixed(width: 400) {
+              ...GatsbyContentfulFixed
+            }
+            fluid(maxWidth: 400) {
+              ...GatsbyContentfulFluid
             }
           }
-          rents
+        }
+        rents
+        apartmentAmenities
+        communityAmenities
+        units {
+          unit
+          beds
+          baths
+          monthlyRentPerBed
           apartmentAmenities
           communityAmenities
-          units {
-            unit
-            beds
-            baths
-            monthlyRentPerBed
-            apartmentAmenities
-            communityAmenities
-          }
         }
       }
     }
