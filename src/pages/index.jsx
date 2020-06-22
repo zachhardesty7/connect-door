@@ -11,7 +11,6 @@ import {
   ContactForm,
   Container,
   Form,
-  Grid,
   Header,
   Hero,
   Icon,
@@ -127,6 +126,11 @@ const TeamSegment = styled(BaseSegment)`
   }
 `
 
+const SInput = styled.input`
+  border: none;
+  border-radius: 0 !important;
+`
+
 const RootIndex = ({
   location,
   data: {
@@ -196,51 +200,38 @@ const RootIndex = ({
         secondary
         button={(
           <Form onSubmit={handleSubmit}>
-            <Form.Group
-              as={Grid}
-              // css={`
-              //   background-color: white;
-              // `}
-              centered
-              inline
-              id='price-range-filter'
-            >
-              <Form.Field className={noPadding('right', true)}>
-                <Input
+            <Form.Field className={noPadding('right', true)}>
+              <Input>
+                <SInput
                   type='search'
-                  labelPosition='left'
                   placeholder='Zip Code'
                   name='zipcode'
                 />
-              </Form.Field>
-              <Form.Field className={noPadding('right', true)}>
-                <Input
-                  label={{ content: '$' }}
+                <SInput
                   min={0}
                   type='number'
-                  labelPosition='left'
                   placeholder='Min'
                   name='min'
                 />
-              </Form.Field>
-              <Form.Field className={noPadding('right', true)}>
-                <Input
+                <SInput
                   min={0}
                   type='number'
-                  labelPosition='left'
                   placeholder='Max'
                   name='max'
                 />
-              </Form.Field>
-              <Hero.Button
-                as='button'
-                type='submit'
-                compact
-                size='big'
-              >
-                {sectionHero.button}
-              </Hero.Button>
-            </Form.Group>
+                <Hero.Button
+                  css={`
+                    border: none;
+                    border-radius: 0 !important;
+                  `}
+                  forwardedAs='button'
+                  type='submit'
+                  compact
+                >
+                  {sectionHero.button}
+                </Hero.Button>
+              </Input>
+            </Form.Field>
           </Form>
         )}
       >

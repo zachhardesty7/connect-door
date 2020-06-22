@@ -48,7 +48,7 @@ export const clickable = () => ' clickable'
  * @returns {string} `className` that should be applied to component
  */
 export const noPadding = (sides = 'all', inline = false) => {
-  let classes = inline ? ' ' : ' no-padding'
+  let classes = inline ? '' : ' no-padding'
 
   if (sides.includes('left')) classes += ' no-padding-left'
   if (sides.includes('right')) classes += ' no-padding-right'
