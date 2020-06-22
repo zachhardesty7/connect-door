@@ -179,8 +179,35 @@ exports.onCreateNode = async({
     },
   }
 
-  createNode(xlNode)
-  createParentChildLink({ parent: node, child: xlNode })
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  if (type.name === 'PropertyCollection') {
+    return {
+      properties: {
+        type: ['Property'],
+        args: {
+          filter: 'String',
+          limit: 'Int',
+        },
+        resolve(source, args, context, info) {
+          // return info.originalResolver(source, args, context, info)
+          return context.nodeModel.runQuery({
+            // only supports filter and sort
+            query: {
+              // filter: {
+              //   name: { eq: 'Villas on Nueces' },
+              // },
+              // limit: args.limit,
+            },
+            type: 'Property',
+            firstOnly: false,
+          })
+        },
+      },
+    }
+  }
+
+  // by default return empty object
+  return {}
 }
 
 // transform the "Image Set Name" defined in the spreadsheet
