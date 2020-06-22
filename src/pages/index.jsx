@@ -189,13 +189,11 @@ const RootIndex = ({
       </Navigation>
 
       <Hero
-        logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
-        inlineLogo
         overlay='darker'
         baseline='bottom'
         size='relaxed'
-        title={sectionHero.title}
-        subtitle={sectionHero.subtitle}
+        title={sectionHero.subtitle}
+        secondary
         button={(
           <Form onSubmit={handleSubmit}>
             <Form.Group

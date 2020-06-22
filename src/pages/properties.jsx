@@ -15,6 +15,7 @@ import {
   Input,
   Label,
   List,
+  Modal,
   Navigation,
   Pagination,
   Segment,
@@ -38,7 +39,7 @@ import { animated, useSpring } from 'react-spring'
 
 import { noOverflow, noPadding } from '../components'
 
-const S = {} // SC namespace
+import { S } from '../components/S'
 
 const NavLogo = styled(GImage).attrs()`
   margin-bottom: -3px;
@@ -74,7 +75,8 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
   if (location?.state?.min) initRentMin = location.state.min
   if (location?.state?.max) initRentMax = location.state.max
 
-  const [detailView, setDetailView] = React.useState()
+  const [detailsOpen, setDetailsOpen] = React.useState()
+  const [tourModalOpen, setTourModalOpen] = React.useState(false)
 
   // filter form state values
   const [bedsSelected, setBedsSelected] = React.useState([])
@@ -124,21 +126,21 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
   })
 
   const filterViewAnimation = useSpring({
-    width: !detailView ? '100%' : '50%',
+    width: !detailsOpen ? '100%' : '50%',
     config: { tension: 170, friction: 30 },
   })
   const detailViewAnimation = useSpring({
-    width: detailView ? '50%' : '0%',
+    width: detailsOpen ? '50%' : '0%',
 
     // REVIEW: fix for snap disappearing...
     // https://codesandbox.io/s/react-spring-mount-via-resize-rc3v8
-    height: detailView ? 'auto' : 0,
+    height: detailsOpen ? 'auto' : 0,
     config: { tension: 170, friction: 30 },
   })
 
   // hide detail panel view when active property is filtered out
-  if (detailView && allProperties.every(({ name }) => name !== detailView.name)) {
-    setDetailView()
+  if (detailsOpen && allProperties.every(({ name }) => name !== detailsOpen.name)) {
+    setDetailsOpen()
   }
 
   return (
@@ -253,7 +255,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                     link
                     as='div'
                     key={property.name}
-                    onClick={() => { setDetailView(property) }}
+                    onClick={() => { setDetailsOpen(property) }}
                   >
                     {property?.imageSet?.images[0] && (
                       <Image ui={false} wrapped>
@@ -319,22 +321,22 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
             <Segment secondary className={noPadding('all')}>
               <Label
                 size='large'
-                icon={{ link: true, name: 'close', onClick: () => { setDetailView() } }}
+                icon={{ link: true, name: 'close', onClick: () => { setDetailsOpen() } }}
                 corner='left'
               />
 
-              {detailView?.imageSet.images.length && (
+              {detailsOpen?.imageSet.images.length && (
                 <CarouselProvider
-                  touchEnabled={detailView?.imageSet.images.length > 1}
-                  dragEnabled={detailView?.imageSet.images.length > 1}
+                  touchEnabled={detailsOpen?.imageSet.images.length > 1}
+                  dragEnabled={detailsOpen?.imageSet.images.length > 1}
                   naturalSlideWidth={10}
                   naturalSlideHeight={6}
-                  totalSlides={detailView?.imageSet.images.length}
-                  visibleSlides={detailView?.imageSet.images.length > 1 ? 1.2 : 1}
+                  totalSlides={detailsOpen?.imageSet.images.length}
+                  visibleSlides={detailsOpen?.imageSet.images.length > 1 ? 1.2 : 1}
                 >
                   <div css='position: relative;'>
                     <Slider>
-                      {detailView?.imageSet.images.map((image, i) => image && (
+                      {detailsOpen?.imageSet.images.map((image, i) => image && (
                         <Slide
                           index={i}
                           css={`
@@ -352,7 +354,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                       ))}
                     </Slider>
 
-                    {detailView?.imageSet.images.length > 1 && (
+                    {detailsOpen?.imageSet.images.length > 1 && (
                       <>
                         <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
                           <Icon fitted size='big' link name='chevron left' />
@@ -368,17 +370,47 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
 
               <Segment basic padded='very'>
                 <Header as='h2'>
-                  {detailView?.name}
-                  <Header.Subheader>
-                    <a
-                      href={`https://www.google.com/maps/place/${detailView?.addr.replace(/\s+/g, '+')}`}
-                      target='_blank'
-                      rel='noreferrer'
-                      className='date'
+                  <S.FlexSplit>
+                    <div>
+                      {detailsOpen?.name}
+                      <Header.Subheader>
+                        <a
+                          href={`https://www.google.com/maps/place/${detailsOpen?.addr.replace(/\s+/g, '+')}`}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='date'
+                        >
+                          {detailsOpen?.addr}
+                        </a>
+                      </Header.Subheader>
+                    </div>
+
+                    <Modal
+                      closeIcon
+                      onClose={() => setTourModalOpen(false)}
+                      closeOnDocumentClick
+                      size='small'
+                      open={tourModalOpen}
+                      trigger={(
+                        <Button size='large' primary onClick={() => setTourModalOpen(true)}>
+                          {propertiesPage.contactForm.title}
+                        </Button>
+                      )}
                     >
-                      {detailView?.addr}
-                    </a>
-                  </Header.Subheader>
+                      <Modal.Header>{propertiesPage.contactForm.title}</Modal.Header>
+                      <Modal.Content>
+                        <ContactForm
+                          name={propertiesPage.contactForm.form?.name}
+                          fields={propertiesPage.contactForm.form?.contentfulfields}
+                          textArea={propertiesPage.contactForm.form?.textarea}
+                          button={propertiesPage.contactForm.form?.button}
+                          onSubmit={() => setTourModalOpen(false)}
+                        >
+                          <input type='hidden' name='PROPERTY' value={detailsOpen?.name} />
+                        </ContactForm>
+                      </Modal.Content>
+                    </Modal>
+                  </S.FlexSplit>
                 </Header>
 
                 <Segment vertical basic padded>
@@ -394,7 +426,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                     </Table.Header>
 
                     <Table.Body>
-                      {detailView?.units.map((unit) => (
+                      {detailsOpen?.units.map((unit) => (
                         <Table.Row key={unit.unit}>
                           <Table.Cell>{unit.unit}</Table.Cell>
                           <Table.Cell>{unit.beds}</Table.Cell>
@@ -414,7 +446,7 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                     <Grid.Column>
                       <Header>Apartment Amenities</Header>
                       <List bulleted>
-                        {detailView?.apartmentAmenities.map((amenity) => (
+                        {detailsOpen?.apartmentAmenities.map((amenity) => (
                           <List.Item key={amenity}>{amenity}</List.Item>
                         ))}
                       </List>
@@ -422,24 +454,12 @@ const Properties = ({ location, data: { sectionNav, propertiesPage, allPropertyC
                     <Grid.Column>
                       <Header>Community Amenities</Header>
                       <List bulleted>
-                        {detailView?.communityAmenities.map((amenity) => (
+                        {detailsOpen?.communityAmenities.map((amenity) => (
                           <List.Item key={amenity}>{amenity}</List.Item>
                         ))}
                       </List>
                     </Grid.Column>
                   </Grid>
-                </Segment>
-
-                <Segment vertical basic padded>
-                  <Header>{propertiesPage.contactForm.title}</Header>
-                  <ContactForm
-                    name={propertiesPage.contactForm.form?.name}
-                    fields={propertiesPage.contactForm.form?.contentfulfields}
-                    textArea={propertiesPage.contactForm.form?.textarea}
-                    button={propertiesPage.contactForm.form?.button}
-                  >
-                    <input type='hidden' name='PROPERTY' value={detailView?.name} />
-                  </ContactForm>
                 </Segment>
               </Segment>
             </Segment>

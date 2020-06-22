@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 
-const S = {} // SC namespace
+export const S = {} // SC namespace
 
 S.WithoutPadding = styled.span`
   width: 100%;
@@ -28,6 +28,11 @@ S.WithoutPadding = styled.span`
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   `};
+`
+
+S.FlexSplit = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 /**
