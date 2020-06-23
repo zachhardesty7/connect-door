@@ -18,14 +18,15 @@ const toCamelCase = (str) => {
   return s.slice(0, 1).toLowerCase() + s.slice(1)
 }
 
+const setAsSortedArr = (set) => [...set].sort()
+
 // fetch excel file from url and return processed js object
 const evaluateSheetURL = async(url) => {
   const raw = await fetch(`http://${url.slice(2)}`)
   if (raw.statusText !== 'OK') throw new Error('fetch failed')
 
   const buffer = await raw.arrayBuffer()
-  const int8Arr = new Uint8Array(buffer)
-  const wb = XLSX.read(int8Arr, { type: 'array' })
+  const workbook = XLSX.read(new Uint8Array(buffer), { type: 'array' })
 
   // make changes to each collection
   const bedsAll = new Set()
@@ -36,20 +37,18 @@ const evaluateSheetURL = async(url) => {
   const rentsAll = new Set()
 
   // process each worksheet, aka set of units at a property
-  const sheets = wb.SheetNames.map((sheetName) => {
-    const ws = wb.Sheets[sheetName]
+  const sheets = workbook.SheetNames.map((sheetName) => {
+    const worksheet = workbook.Sheets[sheetName]
 
     // simple attributes
-    const name = ws.B3 ? ws.B3.v : undefined
-    const street = ws.B4 ? ws.B4.v : undefined
-    const city = ws.B5 ? ws.B5.v : undefined
-    const state = ws.B6 ? ws.B6.v : undefined
-    const zipcode = ws.B7 ? `${ws.B7.v}` : undefined // enforce string type
+    const name = worksheet.B3 ? worksheet.B3.v : undefined
+    const street = worksheet.B4 ? worksheet.B4.v : undefined
+    const city = worksheet.B5 ? worksheet.B5.v : undefined
+    const state = worksheet.B6 ? worksheet.B6.v : undefined
+    const zipcode = worksheet.B7 ? `${worksheet.B7.v}` : undefined // enforce string type
 
     // complex attributes
-    const imageSet = ws.B9 ? ws.B9.v : undefined
-
-    const addr = `${street}, ${city}, ${state} ${zipcode}`
+    const imageSet = worksheet.B9 ? worksheet.B9.v : undefined
 
     zipcodesAll.add(zipcode)
 
@@ -62,7 +61,7 @@ const evaluateSheetURL = async(url) => {
     const rentsProperty = new Set()
 
     // custom range eliminates blank rows & columns before data starts
-    const items = XLSX.utils.sheet_to_json(ws, { range: 'D2:Z9999' })
+    const items = XLSX.utils.sheet_to_json(worksheet, { range: 'D2:Z9999' })
 
     // make changes to each unit
     const units = items.filter((unit) => unit && unit.Unit).map((unit) => {
@@ -110,17 +109,17 @@ const evaluateSheetURL = async(url) => {
 
     return {
       name,
-      addr,
+      addr: `${street}, ${city}, ${state} ${zipcode}`,
       street,
       city,
       state,
       zipcode,
       imageSet,
-      beds: [...bedsProperty].sort(),
-      baths: [...bathsProperty].sort(),
-      rents: [...rentsProperty].sort(),
-      communityAmenities: [...communityAmenitiesProperty].sort(),
-      apartmentAmenities: [...apartmentAmenitiesProperty].sort(),
+      beds: setAsSortedArr(bedsProperty),
+      baths: setAsSortedArr(bathsProperty),
+      rents: setAsSortedArr(rentsProperty),
+      communityAmenities: setAsSortedArr(communityAmenitiesProperty),
+      apartmentAmenities: setAsSortedArr(apartmentAmenitiesProperty),
       units,
     }
   })
@@ -128,12 +127,12 @@ const evaluateSheetURL = async(url) => {
   return {
     properties: Object.values(sheets),
     attributes: {
-      beds: [...bedsAll].sort(),
-      baths: [...bathsAll].sort(),
-      zipcodes: [...zipcodesAll].sort(),
-      rents: [...rentsAll].sort(),
-      communityAmenities: [...communityAmenitiesAll].sort(),
-      apartmentAmenities: [...apartmentAmenitiesAll].sort(),
+      beds: setAsSortedArr(bedsAll),
+      baths: setAsSortedArr(bathsAll),
+      zipcodes: setAsSortedArr(zipcodesAll),
+      rents: setAsSortedArr(rentsAll),
+      communityAmenities: setAsSortedArr(communityAmenitiesAll),
+      apartmentAmenities: setAsSortedArr(apartmentAmenitiesAll),
     },
   }
 }
@@ -167,7 +166,11 @@ exports.onCreateNode = async({
   // and combine into a single query-able node
 
   // short circuit when not dealing with excel file
-  if (node.internal.type !== 'ContentfulAsset' || !node.file || node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+  if (
+    node.internal.type !== 'ContentfulAsset' ||
+    !node.file ||
+    node.file.contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  ) {
     return
   }
 
@@ -197,7 +200,7 @@ exports.onCreateNode = async({
     },
   }))
 
-  properties.forEach((property) => { createNode(property) })
+  properties.forEach(createNode)
 
   // create PropertyCollection.properties for convenience
   // NOTE: using this field does not allow limiting, sorting, filtering

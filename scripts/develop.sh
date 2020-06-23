@@ -2,7 +2,10 @@
 
 export ENV_MODE="local"
 
-printf "$(tput bold)building library in watch mode (yarn dev)$(tput sgr0)\n\n"
+BOLD="$(tput bold)"
+RESET="$(tput sgr0)"
+
+printf "${BOLD}building library in watch mode (yarn dev)$RESET\n\n"
 
 path=$(mktemp)
 
@@ -13,14 +16,11 @@ export FORCE_COLOR="1"
 # start watcher and send output to stdout and temp file
 (yarn watch 2>&1 | tee "$path") &
 
-# store process ID
-# WATCHER=$!
-
 # continuously read temp file while program is running
 tail -F "$path" | while read line; do
   res=$(printf "$line" | grep -E "created .* in .*")
   if [ -n "$res" ]; then
-    printf "\n$(tput bold)library watcher started successfully, launching gatsby$(tput sgr0)\n\n"
+    printf "\n${BOLD}library watcher started successfully, launching gatsby$RESET\n\n"
     cd -
     gatsby develop
     exit
