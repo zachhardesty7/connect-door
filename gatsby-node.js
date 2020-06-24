@@ -204,7 +204,8 @@ exports.onCreateNode = async({
 
   // create PropertyCollection.properties for convenience
   // NOTE: using this field does not allow limiting, sorting, filtering
-  excelNode.properties___NODE = properties.map(({ id }) => id)
+  // excelNode.properties___NODE = properties.map(({ id }) => id)
+  excelNode.properties = properties.map(({ id }) => id)
 }
 
 // transform the "Image Set Name" defined in the spreadsheet
@@ -214,6 +215,9 @@ exports.createSchemaCustomization = ({ actions: { createTypes } }) => {
   const typeDefs = `
     type Property implements Node {
       imageSet: ContentfulPropertyImagesSet @link(by: "title")
+    }
+    type PropertyCollection implements Node {
+      properties: [Property] @link
     }
   `
 

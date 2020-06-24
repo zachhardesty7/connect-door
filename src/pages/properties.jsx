@@ -358,6 +358,7 @@ const Properties = ({
                       {detailsOpen.imageSet.images.map((image, i) => image && (
                         <S.Slide
                           index={i}
+                          key={image.title}
                         >
                           <GImage
                             fluid={image.fluid}
@@ -547,6 +548,7 @@ export const imageQuery = graphql`
         zipcode
         imageSet {
           images {
+            title
             fixed(width: 400) {
               ...GatsbyContentfulFixed
             }
