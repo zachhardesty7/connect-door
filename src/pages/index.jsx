@@ -23,6 +23,7 @@ import {
   Segment,
   getBackgroundColor,
   getColor,
+  media,
 } from 'semantic-styled-ui'
 
 import styled from 'styled-components'
@@ -126,7 +127,30 @@ const TeamSegment = styled(BaseSegment)`
   }
 `
 
-const SInput = styled.input`
+const SInput = styled(Input)`
+  input {
+    border: none;
+    border-radius: 0 !important;
+  }
+`
+
+const Flexbox = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+
+  @media ${media.mobile} {
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+`
+
+const SHeroButton = styled(Hero.Button)`
+  @media ${media.mobile} {
+    margin-top: 0.5rem;
+  }
+
   border: none;
   border-radius: 0 !important;
 `
@@ -159,6 +183,7 @@ const RootIndex = ({
         fullWidth
         relaxed
         noPointing
+        split
         floating
         inverted
       >
@@ -200,38 +225,32 @@ const RootIndex = ({
         secondary
         button={(
           <Form onSubmit={handleSubmit}>
-            <Form.Field className={noPadding('right', true)}>
-              <Input>
-                <SInput
-                  type='search'
-                  placeholder='Zip Code'
-                  name='zipcode'
-                />
-                <SInput
-                  min={0}
-                  type='number'
-                  placeholder='Min'
-                  name='min'
-                />
-                <SInput
-                  min={0}
-                  type='number'
-                  placeholder='Max'
-                  name='max'
-                />
-                <Hero.Button
-                  css={`
-                    border: none;
-                    border-radius: 0 !important;
-                  `}
-                  forwardedAs='button'
-                  type='submit'
-                  compact
-                >
-                  {sectionHero.button}
-                </Hero.Button>
-              </Input>
-            </Form.Field>
+            <Flexbox align='center'>
+              <SInput
+                type='search'
+                placeholder='Zip Code'
+                name='zipcode'
+              />
+              <SInput
+                min={0}
+                type='number'
+                placeholder='Min Price'
+                name='min'
+              />
+              <SInput
+                min={0}
+                type='number'
+                placeholder='Max Price'
+                name='max'
+              />
+              <SHeroButton
+                forwardedAs='button'
+                type='submit'
+                compact
+              >
+                {sectionHero.button}
+              </SHeroButton>
+            </Flexbox>
           </Form>
         )}
       >
@@ -242,6 +261,7 @@ const RootIndex = ({
 
       <Segment as='main' vertical basic>
         <Blurbs
+          centered
           as={BaseSegment}
           id={sectionNav.sections[0]}
           title={sectionMission.title}
@@ -269,7 +289,9 @@ const RootIndex = ({
                 <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
               </IconGroup>
             )}
-            <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
+            <Header.Content css='text-align: justify;'>
+              {richTextToJsx(sectionTour?.content?.json)}
+            </Header.Content>
             <ContactForm
               name={sectionTour.form?.name}
               fields={sectionTour.form?.contentfulfields}
@@ -329,7 +351,9 @@ const RootIndex = ({
             <Container text className='container-team'>
               <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
               {sectionTeam.content && (
-                <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
+                <Header.Content css='text-align: justify;'>
+                  {richTextToJsx(sectionTeam.content?.json)}
+                </Header.Content>
               )}
             </Container>
             <Container className='cards'>
@@ -397,7 +421,7 @@ const RootIndex = ({
                   </IconGroup>
                 </Container>
               )}
-              <Header.Content>
+              <Header.Content css='text-align: justify;'>
                 {richTextToJsx(sectionContact?.content?.json)}
               </Header.Content>
             </Container>

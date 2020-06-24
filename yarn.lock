@@ -2179,10 +2179,10 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@types/react@^16.9.38":
-  version "16.9.38"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.38.tgz#868405dace93a4095d3e054f4c4a1de7a1ac0680"
-  integrity sha512-pHAeZbjjNRa/hxyNuLrvbxhhnKyKNiLC6I5fRF2Zr/t/S6zS41MiyzH4+c+1I9vVfvuRt1VS2Lodjr4ZWnxrdA==
+"@types/react@^16.9.41":
+  version "16.9.41"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.41.tgz#925137ee4d2ff406a0ecf29e8e9237390844002e"
+  integrity sha512-6cFei7F7L4wwuM+IND/Q2cV1koQUvJ8iSV+Gwn0c3kvABZ691g7sp3hfEQHOUBJtccl1gPi+EyNjMIl9nGA0ug==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -13359,15 +13359,16 @@ selfsigned@^1.10.7:
   dependencies:
     node-forge "0.9.0"
 
-semantic-styled-ui@0.18.1:
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.18.1.tgz#01d234bb7753144ae1762797b7e2f8a1b310dee2"
-  integrity sha512-P3KSjj9ctwIuFsuPfSVMyIicJZOT8UMj2t26G+TroiwNm4hXws18Si67ll+WVJ/u3PO1BmxL5PjzQA23lwPh0g==
+semantic-styled-ui@0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.20.0.tgz#9094f56f56426c6aafa3c66421db59abe8d2373a"
+  integrity sha512-cC/px4ApPpYjymKAigPC0hocHANlq5htzXrywIYMELPjhuxPGxKcp93DudN18jxYjD813u92QdcDejva3yj4Gw==
   dependencies:
-    "@types/react" "^16.9.38"
+    "@types/react" "^16.9.41"
     prop-types "^15.7.2"
     react-scroll "^1.7.16"
     semantic-ui-react "^0.88.2"
+    set-wrapper-display-name "^1.0.1"
 
 semantic-ui-css@^2.4.1:
   version "2.4.1"
@@ -13495,6 +13496,11 @@ set-value@^2.0.0, set-value@^2.0.1:
     is-extendable "^0.1.1"
     is-plain-object "^2.0.3"
     split-string "^3.0.1"
+
+set-wrapper-display-name@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/set-wrapper-display-name/-/set-wrapper-display-name-1.0.1.tgz#26578ec16e7450e629d75cc821254c85997a8649"
+  integrity sha512-FDJGyp2VTayosKMw2gfbHriE3XuMisMARlCW8tELgWb7665q/Z4jXFbhfDCg7DAQXtKNjq0/6IIdIHspIfWVug==
 
 setimmediate@^1.0.4, setimmediate@^1.0.5:
   version "1.0.5"
