@@ -178,7 +178,7 @@ exports.onCreateNode = async({
 
   const excelNode = {
     ...collection.attributes,
-    id: createNodeId(`${node.id}-excel`),
+    id: createNodeId(`${node.id} >>> workbook`),
     children: [],
     parent: node.id,
     internal: {
@@ -192,7 +192,7 @@ exports.onCreateNode = async({
 
   const properties = collection.properties.map((property) => ({
     ...property,
-    id: createNodeId(`${node.id}-property-${toCamelCase(property.addr)}`),
+    id: createNodeId(`${node.id} >>> ${toCamelCase(property.name)}`),
     children: [],
     internal: {
       contentDigest: createContentDigest(property),
@@ -205,6 +205,7 @@ exports.onCreateNode = async({
   // create PropertyCollection.properties for convenience
   // NOTE: using this field does not allow limiting, sorting, filtering
   // excelNode.properties___NODE = properties.map(({ id }) => id)
+  // FIXME: breaks occasionally when restarting server, run `yarn clean`
   excelNode.properties = properties.map(({ id }) => id)
 }
 
