@@ -68,30 +68,30 @@ S.CarouselButton = styled.div`
   transform: translateY(-50%);
 `
 
+S.Pagination = styled(Pagination)`
+  a {
+    justify-content: center;
+  }
+  display: flex;
+  width: fit-content;
+  margin: auto;
+`
+
+S.Slide = styled(Slide)`
+  &:not(:last-child) {
+    border-right: solid #F3F4F5 1em;
+  }
+`
+
+S.RelativeDiv = styled.div`
+  position: relative;
+`
+
 const Properties = ({
   location,
   data: { sectionNav, propertiesPage, allProperty, allPropertyCollection },
 }) => {
   const propertyCollectionInfo = allPropertyCollection.nodes[0]
-
-  let initZipcode = []
-  let initRentMin = ''
-  let initRentMax = ''
-
-  if (location?.state?.zipcode) initZipcode = [location.state.zipcode]
-  if (location?.state?.min) initRentMin = location.state.min
-  if (location?.state?.max) initRentMax = location.state.max
-
-  const [detailsOpen, setDetailsOpen] = React.useState()
-  const [tourModalOpen, setTourModalOpen] = React.useState(false)
-  const [currentPage, setCurrentPage] = React.useState(1)
-
-  // filter form state values
-  const [bedsSelected, setBedsSelected] = React.useState([])
-  const [bathsSelected, setBathsSelected] = React.useState([])
-  const [zipcodesSelected, setZipcodesSelected] = React.useState(initZipcode)
-  const [rentMinSelected, setRentMinSelected] = React.useState(initRentMin)
-  const [rentMaxSelected, setRentMaxSelected] = React.useState(initRentMax)
 
   // calculate set of all sheets to display as filter options
   let beds = new Set()
@@ -109,6 +109,23 @@ const Properties = ({
   const bedsOptions = beds.map((bed) => ({ key: bed, value: bed, text: bed }))
   const bathsOptions = baths.map((bath) => ({ key: bath, value: bath, text: bath }))
   const zipcodesOptions = zipcodes.map((zip) => ({ key: zip, value: zip, text: zip }))
+
+  const initZipcode = zipcodes.includes(location?.state?.zipcode)
+    ? [location.state.zipcode]
+    : []
+  const initRentMin = location?.state?.min ?? ''
+  const initRentMax = location?.state?.max ?? ''
+
+  const [detailsOpen, setDetailsOpen] = React.useState()
+  const [tourModalOpen, setTourModalOpen] = React.useState(false)
+  const [currentPage, setCurrentPage] = React.useState(1)
+
+  // filter form state values
+  const [bedsSelected, setBedsSelected] = React.useState([])
+  const [bathsSelected, setBathsSelected] = React.useState([])
+  const [zipcodesSelected, setZipcodesSelected] = React.useState(initZipcode)
+  const [rentMinSelected, setRentMinSelected] = React.useState(initRentMin)
+  const [rentMaxSelected, setRentMaxSelected] = React.useState(initRentMax)
 
   const selectedProperties = []
   // NOTE: properties will show if they match anything from the filters (union not
@@ -255,43 +272,43 @@ const Properties = ({
 
             <S.Body vertical>
               <Card.Group centered>
-                {selectedProperties.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE).map((property) => (
-                  <Card
-                    link
-                    as='div'
-                    key={property.name}
-                    onClick={() => { setDetailsOpen(property) }}
-                  >
-                    {property?.imageSet?.images[0] && (
-                      <Image ui={false} wrapped>
-                        {property?.imageSet?.images[0] && GImage && (
+                {selectedProperties
+                  .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
+                  .map((property) => (
+                    <Card
+                      link
+                      as='div'
+                      key={property.name}
+                      onClick={() => { setDetailsOpen(property) }}
+                    >
+                      {property?.imageSet?.images[0] && (
+                        <Image ui={false} wrapped>
                           <GImage
-                            fluid={property?.imageSet?.images[0].fluid}
-                            // fixed={property?.imageSet?.images[0].fixed}
+                            fluid={property.imageSet.images[0].fluid}
+                            // fixed={property.imageSet.images[0].fixed}
                             alt={`${property.name} display image`}
                           />
-                        )}
-                      </Image>
-                    )}
-                    <Card.Content>
-                      <Card.Header>{property.name}</Card.Header>
-                      <Card.Meta>
-                        <a
-                          href={`https://www.google.com/maps/place/${property.addr.replace(/\s+/g, '+')}`}
-                          className='date'
-                          target='_blank'
-                          rel='noreferrer'
-                        >
-                          {property.addr}
-                        </a>
-                      </Card.Meta>
-                    </Card.Content>
-                    <Card.Content extra>
-                      {/* TODO: show cheapest MATCHING FILTER */}
-                      {`from $${property.rents[0]}/mo`}
-                    </Card.Content>
-                  </Card>
-                ))}
+                        </Image>
+                      )}
+                      <Card.Content>
+                        <Card.Header>{property.name}</Card.Header>
+                        <Card.Meta>
+                          <a
+                            href={`https://www.google.com/maps/place/${property.addr.replace(/\s+/g, '+')}`}
+                            className='date'
+                            target='_blank'
+                            rel='noreferrer'
+                          >
+                            {property.addr}
+                          </a>
+                        </Card.Meta>
+                      </Card.Content>
+                      <Card.Content extra>
+                        {/* TODO: show cheapest MATCHING FILTER */}
+                        {`from $${property.rents[0]}/mo`}
+                      </Card.Content>
+                    </Card>
+                  ))}
                 {!selectedProperties.length && (
                   <div>No properties matching filter...</div>
                 )}
@@ -299,18 +316,10 @@ const Properties = ({
             </S.Body>
 
             <Segment vertical>
-              <Pagination
-                css={`
-                  display: flex;
-                  width: fit-content;
-                  margin: auto;
-                  a {
-                    justify-content: center;
-                  }
-                `}
+              <S.Pagination
                 boundaryRange={0}
                 defaultActivePage={1}
-                onPageChange={(e, { activePage }) => setCurrentPage(activePage)}
+                onPageChange={(_, { activePage }) => setCurrentPage(activePage)}
                 firstItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
                 lastItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
                 siblingRange={2}
@@ -327,40 +336,39 @@ const Properties = ({
             <Segment secondary className={noPadding('all')}>
               <Label
                 size='large'
-                icon={{ link: true, name: 'close', onClick: () => { setDetailsOpen() } }}
                 corner='left'
+                icon={{
+                  link: true,
+                  name: 'close',
+                  onClick: () => { setDetailsOpen() },
+                }}
               />
 
               {detailsOpen?.imageSet.images.length && (
                 <CarouselProvider
-                  touchEnabled={detailsOpen?.imageSet.images.length > 1}
-                  dragEnabled={detailsOpen?.imageSet.images.length > 1}
+                  touchEnabled={detailsOpen.imageSet.images.length > 1}
+                  dragEnabled={detailsOpen.imageSet.images.length > 1}
                   naturalSlideWidth={10}
                   naturalSlideHeight={6}
-                  totalSlides={detailsOpen?.imageSet.images.length}
-                  visibleSlides={detailsOpen?.imageSet.images.length > 1 ? 1.2 : 1}
+                  totalSlides={detailsOpen.imageSet.images.length}
+                  visibleSlides={detailsOpen.imageSet.images.length > 1 ? 1.2 : 1}
                 >
-                  <div css='position: relative;'>
+                  <S.RelativeDiv>
                     <Slider>
-                      {detailsOpen?.imageSet.images.map((image, i) => image && (
-                        <Slide
+                      {detailsOpen.imageSet.images.map((image, i) => image && (
+                        <S.Slide
                           index={i}
-                          css={`
-                          &:not(:last-child) {
-                            border-right: solid #F3F4F5 1em;
-                          }
-                        `}
                         >
                           <GImage
-                            fluid={image?.fluid}
+                            fluid={image.fluid}
                             style={{ position: 'unset' }}
-                            alt={image?.title}
+                            alt={image.title}
                           />
-                        </Slide>
+                        </S.Slide>
                       ))}
                     </Slider>
 
-                    {detailsOpen?.imageSet.images.length > 1 && (
+                    {detailsOpen.imageSet.images.length > 1 && (
                       <>
                         <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
                           <Icon fitted size='big' link name='chevron left' />
@@ -370,7 +378,7 @@ const Properties = ({
                         </S.CarouselButton>
                       </>
                     )}
-                  </div>
+                  </S.RelativeDiv>
                 </CarouselProvider>
               )}
 

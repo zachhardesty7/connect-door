@@ -297,9 +297,9 @@ const RootIndex = ({
                     <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
                     {item.image && (
                       <GImage
-                        fixed={item.image?.fixed}
+                        fixed={item.image.fixed}
                         $backgroundColor
-                        alt={item.image?.title}
+                        alt={item.image.title}
                       />
                     )}
                   </ProcessDarkenedImage>
@@ -343,9 +343,9 @@ const RootIndex = ({
                   <Card centered key={member.name}>
                     {member.image && (
                       <GImage
-                        fluid={member.image?.fluid}
+                        fluid={member.image.fluid}
                         $backgroundColor
-                        alt={member.image?.title}
+                        alt={member.image.title}
                       />
                     )}
                     <Card.Content>

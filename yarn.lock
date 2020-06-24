@@ -13133,10 +13133,10 @@ selfsigned@^1.10.7:
   dependencies:
     node-forge "0.9.0"
 
-semantic-styled-ui@0.17.1:
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.17.1.tgz#c7e2e73d6c17bf12080cc858d85a0d3aad15a34f"
-  integrity sha512-i1A4iRWX2PIklIkuXd6ktep2ziXct+yOUUXqoSAAygtLRcYYwgPHar6pJTKx29jTRm8zzaO+LVuNsB7tn5IMOQ==
+semantic-styled-ui@0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/semantic-styled-ui/-/semantic-styled-ui-0.18.0.tgz#dfb657ddbc5502bf0a05929caec31d56d4be67be"
+  integrity sha512-RZy0W/jMnLXTaoRj9xfPRxs+Kwp8dB8pfBNNQIY62QyvmkL2sS/g9A4xicdnDrtQci4nQnAhZqHGbGjtpAsQfA==
   dependencies:
     "@types/react" "^16.9.38"
     prop-types "^15.7.2"

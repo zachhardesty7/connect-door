@@ -200,11 +200,11 @@ exports.onCreateNode = async({
     },
   }))
 
-  properties.forEach(createNode)
+  properties.forEach((property) => { createNode(property) })
 
   // create PropertyCollection.properties for convenience
   // NOTE: using this field does not allow limiting, sorting, filtering
-  excelNode.properties___NODE = properties.map((property) => property.id)
+  excelNode.properties___NODE = properties.map(({ id }) => id)
 }
 
 // transform the "Image Set Name" defined in the spreadsheet
