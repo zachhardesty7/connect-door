@@ -37,6 +37,7 @@ import styled from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
 
+import cx from 'classnames'
 import { noOverflow, noPadding } from '../components'
 
 import { S } from '../components/S'
@@ -331,9 +332,9 @@ const Properties = ({
           <Grid.Column
             as={animated.div}
             style={detailViewAnimation}
-            className={noPadding('all') + noOverflow('y')}
+            className={cx([noPadding('all'), noOverflow('y')])}
           >
-            <Segment secondary className={noPadding('all')}>
+            <Segment secondary className={cx(noPadding('all'))}>
               <Label
                 size='large'
                 corner='left'
