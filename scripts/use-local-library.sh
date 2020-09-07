@@ -1,7 +1,6 @@
 reregister() {
-  cd $1
-  yarn unlink
-  yarn link
+  yarn unlink --cwd $1
+  yarn link --cwd $1
 }
 
 # link packages from component library

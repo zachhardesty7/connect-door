@@ -1,4 +1,7 @@
-# sh scripts/use-local-library.sh $1
+# NOTE: this may fail to open in the integrated terminal on Windows
+# this is likely due to using a different shell like git bash
+# it can be fixed by setting Yarn's shell like `yarn config set script-shell /bin/bash`
+# @see https://stackoverflow.com/a/58188828
 
 export ENV_MODE="local"
 
@@ -22,7 +25,7 @@ tail -F "$path" | while read line; do
   if [ -n "$res" ]; then
     printf "\n${BOLD}library watcher started successfully, launching gatsby$RESET\n\n"
     cd -
-    gatsby develop
+    yarn start
     exit
   fi
 done

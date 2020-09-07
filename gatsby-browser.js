@@ -4,11 +4,11 @@ import React from 'react'
 // https://reactjs.org/docs/hooks-reference.html#usedebugvalue
 
 // https://github.com/welldone-software/why-did-you-render
-export const onClientEntry = () => {
-  if (process.env.NODE_ENV !== 'production' || process.env.ENV_MODE === 'local') {
-    const whyDidYouRender = require('@welldone-software/why-did-you-render')
-    whyDidYouRender(React, {
-      trackAllPureComponents: true,
-    })
-  }
-}
+// export const onClientEntry = () => {
+//   if (process.env.NODE_ENV !== 'production' || process.env.ENV_MODE === 'local') {
+//     const whyDidYouRender = require('@welldone-software/why-did-you-render')
+//     whyDidYouRender(React, {
+//       trackAllPureComponents: true,
+//     })
+//   }
+// }

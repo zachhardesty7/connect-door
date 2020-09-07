@@ -13,14 +13,15 @@ import {
   Form,
   Header,
   Hero,
-  Icon,
-  IconGroup,
+  IconLink,
   Input,
   Item,
   Label,
   Message,
   Navigation,
+  PageSegment,
   Segment,
+  Title,
   getBackgroundColor,
   getColor,
   media,
@@ -28,9 +29,10 @@ import {
 
 import styled from 'styled-components'
 
-import 'semantic-ui-css/semantic.min.css'
+import 'fomantic-ui-css/semantic.min.css'
 
 import { noPadding } from '../components/S'
+import { SharedFooter } from '../components'
 
 import { defaultColors } from '../constants'
 
@@ -182,17 +184,14 @@ const RootIndex = ({
         size={sectionNav.size}
         fullWidth
         relaxed
-        noPointing
         split
         floating
         inverted
       >
-        <Navigation.Left>
-          <Navigation.Logo as={Link} link='/' activeClassName='active'>
-            <NavLogo fixed={sectionNav.logoSecondary?.fixed} alt='logo' />
-          </Navigation.Logo>
-        </Navigation.Left>
-        <Navigation.Right>
+        <Navigation.Logo as={Link} link='/' logoSize='large'>
+          <NavLogo fixed={sectionNav.logoSecondary?.fixed} alt='logo' />
+        </Navigation.Logo>
+        <Flexbox>
           {sectionNav.sections.map((page) => (
             // last item is a new page link
             page === 'Properties' ? (
@@ -214,96 +213,98 @@ const RootIndex = ({
               </Navigation.Item>
             )
           ))}
-        </Navigation.Right>
+        </Flexbox>
       </Navigation>
-
+      {/* #region - hero */}
       <Hero
         overlay='darker'
         baseline='bottom'
         size='relaxed'
-        title={sectionHero.subtitle}
         secondary
-        button={(
-          <Form onSubmit={handleSubmit}>
-            <Flexbox align='center'>
-              <SInput
-                type='search'
-                placeholder='Zip Code'
-                name='zipcode'
-              />
-              <SInput
-                min={0}
-                type='number'
-                placeholder='Min Price'
-                name='min'
-              />
-              <SInput
-                min={0}
-                type='number'
-                placeholder='Max Price'
-                name='max'
-              />
-              <SHeroButton
-                forwardedAs='button'
-                type='submit'
-                compact
-              >
-                {sectionHero.button}
-              </SHeroButton>
-            </Flexbox>
-          </Form>
-        )}
-      >
-        {sectionHero.backgrounds.map((background) => (
+        images={sectionHero.backgrounds.map((background) => (
           <GImage fluid={background.fluid} alt={background.title} key={background.title} />
         ))}
+      >
+        <Hero.Title>{sectionHero.subtitle}</Hero.Title>
+        <Form onSubmit={handleSubmit}>
+          <Flexbox align='center'>
+            <SInput
+              type='search'
+              placeholder='Zip Code'
+              name='zipcode'
+            />
+            <SInput
+              min={0}
+              type='number'
+              placeholder='Min Price'
+              name='min'
+            />
+            <SInput
+              min={0}
+              type='number'
+              placeholder='Max Price'
+              name='max'
+            />
+            <SHeroButton
+              forwardedAs='button'
+              type='submit'
+              compact
+            >
+              {sectionHero.button}
+            </SHeroButton>
+          </Flexbox>
+        </Form>
+
       </Hero>
 
-      <Segment as='main' vertical basic>
-        <Blurbs
-          centered
-          as={BaseSegment}
-          id={sectionNav.sections[0]}
-          title={sectionMission.title}
-          content={richTextToJsx(sectionMission.content?.json)}
-        >
-          {sectionMission.blurbs.map((blurb) => (
-            <Blurbs.Item
-              key={blurb.title}
-              icon={<Icon name={blurb.icon} inverted size='bigger' />}
-              header={blurb.title}
-            >
-              {richTextToJsx(blurb.content?.json)}
-            </Blurbs.Item>
-          ))}
-        </Blurbs>
+      <main>
+        {/* #region - About us */}
+        <PageSegment id={sectionNav.sections[0]}>
+          <Title textAlign='center'>{sectionMission.title}</Title>
+          <Blurbs
+            centered
+            content={richTextToJsx(sectionMission.content?.json)}
+          >
+            {sectionMission.blurbs.map((blurb) => (
+              <Blurbs.Item
+                key={blurb.title}
+                icon={<IconLink name={blurb.icon} inverted size='bigger' />}
+                header={blurb.title}
+              >
+                {richTextToJsx(blurb.content?.json)}
+              </Blurbs.Item>
+            ))}
+          </Blurbs>
+        </PageSegment>
 
-        <BaseSegment id={sectionNav.sections[1]} forwardedAs='section' vertical secondary basic>
+        {/* #region - Request tour */}
+        <PageSegment id={sectionNav.sections[1]}>
           <Container text>
             <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
             {sectionTour.icons && (
-              <IconGroup padded='bottom' inverted size='large' justify='center'>
-                <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-                <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-                <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-                <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-              </IconGroup>
+              <IconLink.Group padded='bottom' inverted size='large' justify='center'>
+                <IconLink name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+                <IconLink name='twitter' link='https://twitter.com/ConnectDoor/' />
+                <IconLink name='instagram' link='https://instagram.com/ConnectDoor/' />
+                <IconLink name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+              </IconLink.Group>
             )}
             <Header.Content css='text-align: justify;'>
               {richTextToJsx(sectionTour?.content?.json)}
             </Header.Content>
-            <ContactForm
-              name={sectionTour.form?.name}
-              fields={sectionTour.form?.contentfulfields}
-              textArea={sectionTour.form?.textarea}
-              button={sectionTour.form?.button}
-              padded='top'
-            />
           </Container>
-        </BaseSegment>
+          <ContactForm
+            name={sectionTour.form?.name}
+            fields={sectionTour.form?.contentfulfields}
+            textArea={sectionTour.form?.textarea}
+            button={sectionTour.form?.button}
+            padded='top'
+          />
+        </PageSegment>
 
         {/* @TODO extract to component (less undefined checking necessary) */}
-        <BaseSegment id={sectionNav.sections[2]} vertical basic>
+        {/* #region - Process */}
+        <PageSegment id={sectionNav.sections[2]}>
           <Container text>
             <ProcessHeader
               forwardedAs='h3'
@@ -333,8 +334,6 @@ const RootIndex = ({
                 </Item>
               ))}
             </Item.Group>
-          </Container>
-          <ProcessLabelContainer text textAlign='center'>
             <Message compact floating size='huge'>
               <Message.Header>
                 <ProcessLabel horizontal size='huge'>
@@ -343,99 +342,94 @@ const RootIndex = ({
                 {sectionItems.finalStep}
               </Message.Header>
             </Message>
-          </ProcessLabelContainer>
-        </BaseSegment>
+          </Container>
+        </PageSegment>
 
+        {/* #region - Team */}
         {sectionTeam.title !== 'dummy' && (
           <TeamSegment basic>
-            <Container text className='container-team'>
-              <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
-              {sectionTeam.content && (
-                <Header.Content css='text-align: justify;'>
-                  {richTextToJsx(sectionTeam.content?.json)}
-                </Header.Content>
-              )}
-            </Container>
-            <Container className='cards'>
-              <Card.Group
-                itemsPerRow={sectionTeam.itemsPerRow}
-                stackable
-                doubling
-                className='relaxed'
-              >
-                {sectionTeam.members.map((member) => (
-                  <Card centered key={member.name}>
-                    {member.image && (
-                      <GImage
-                        fluid={member.image.fluid}
-                        $backgroundColor
-                        alt={member.image.title}
-                      />
-                    )}
-                    <Card.Content>
-                      <Card.Header>{member.name}</Card.Header>
-                      <Card.Description>{member.content}</Card.Description>
+            <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
+            {sectionTeam.content && (
+              <Header.Content css='text-align: justify;'>
+                {richTextToJsx(sectionTeam.content?.json)}
+              </Header.Content>
+            )}
+            <Card.Group
+              itemsPerRow={sectionTeam.itemsPerRow}
+              stackable
+              doubling
+              className='relaxed'
+            >
+              {sectionTeam.members.map((member) => (
+                <Card centered key={member.name}>
+                  {member.image && (
+                    <GImage
+                      fluid={member.image.fluid}
+                      $backgroundColor
+                      alt={member.image.title}
+                    />
+                  )}
+                  <Card.Content>
+                    <Card.Header>{member.name}</Card.Header>
+                    <Card.Description>{member.content}</Card.Description>
+                  </Card.Content>
+                  {/* prevent divider render */}
+                  {(member.number || member.email) && (
+                    <Card.Content extra>
+                      <Card.Meta>{member.number}</Card.Meta>
+                      <Card.Meta>{member.email}</Card.Meta>
                     </Card.Content>
-                    {/* prevent divider render */}
-                    {(member.number || member.email) && (
-                      <Card.Content extra>
-                        <Card.Meta>{member.number}</Card.Meta>
-                        <Card.Meta>{member.email}</Card.Meta>
-                      </Card.Content>
-                    )}
-                  </Card>
-                ))}
-              </Card.Group>
-            </Container>
+                  )}
+                </Card>
+              ))}
+            </Card.Group>
           </TeamSegment>
         )}
 
-        <Blurbs
-          id={sectionNav.sections[3]}
-          title={sectionCareers.title}
-          content={richTextToJsx(sectionCareers.content?.json)}
-          secondary
-        >
-          {sectionCareers.blurbs.map((blurb) => (
-            <Blurbs.Item
-              key={blurb.title}
-              icon={<Icon name={blurb.icon} inverted size='bigger' />}
-              header={blurb.title}
-            >
-              {richTextToJsx(blurb.content?.json)}
-            </Blurbs.Item>
-          ))}
-        </Blurbs>
+        {/* #region - Careers */}
+        <PageSegment id={sectionNav.sections[3]} secondary>
+          <Title textAlign='center'>{sectionCareers.title}</Title>
+          <Blurbs
+            content={richTextToJsx(sectionCareers.content?.json)}
+            centered
+          >
+            {sectionCareers.blurbs.map((blurb) => (
+              <Blurbs.Item
+                key={blurb.title}
+                icon={<IconLink name={blurb.icon} inverted size='bigger' />}
+                header={blurb.title}
+              >
+                {richTextToJsx(blurb.content?.json)}
+              </Blurbs.Item>
+            ))}
+          </Blurbs>
+        </PageSegment>
 
-        <BaseSegment id={sectionNav.sections[4]} vertical basic>
+        {/* #region - Contact form */}
+        <PageSegment id={sectionNav.sections[4]}>
+          <Title as='h3' textAlign='center'>{sectionContact.title}</Title>
+          {sectionContact.icons && (
+            <IconLink.Group padded='bottom' inverted size='large' justify='center'>
+              <IconLink name='facebook' link='https://www.facebook.com/theconnectdoor/' />
+              <IconLink name='twitter' link='https://twitter.com/ConnectDoor/' />
+              <IconLink name='instagram' link='https://instagram.com/ConnectDoor/' />
+              <IconLink name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
+            </IconLink.Group>
+          )}
           <Container text>
-            <Container text>
-              <Header as='h3' textAlign='center'>{sectionContact.title}</Header>
-              {sectionContact.icons && (
-                <Container textAlign='center'>
-                  <IconGroup padded='bottom' inverted size='large' justify='center'>
-                    <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-                    <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-                    <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-                    <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-                  </IconGroup>
-                </Container>
-              )}
-              <Header.Content css='text-align: justify;'>
-                {richTextToJsx(sectionContact?.content?.json)}
-              </Header.Content>
-            </Container>
-            <ContactForm
-              name={sectionContact.form?.name}
-              fields={sectionContact.form?.contentfulfields}
-              textArea={sectionContact.form?.textarea}
-              button={sectionContact.form?.button}
-              padded='top'
-            />
+            {richTextToJsx(sectionContact?.content?.json)}
           </Container>
-        </BaseSegment>
+          <ContactForm
+            name={sectionContact.form?.name}
+            fields={sectionContact.form?.contentfulfields}
+            textArea={sectionContact.form?.textarea}
+            button={sectionContact.form?.button}
+            padded='top'
+          />
+        </PageSegment>
 
-      </Segment>
+      </main>
+      <SharedFooter />
     </div>
   )
 }

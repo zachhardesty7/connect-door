@@ -1,13 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 
-import {
-  Footer,
-  Icon,
-  IconGroup,
-} from 'semantic-styled-ui'
-
-import 'semantic-ui-css/semantic.min.css'
+import 'fomantic-ui-css/semantic.min.css'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import { defaultColors } from '../constants'
 
@@ -53,6 +47,10 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
 
+  html {
+    font-size: 18px;
+  }
+
   h1 {
     font-family: 'Branding', Tahoma, Arial, Helvetica, sans-serif !important;
   }
@@ -63,7 +61,6 @@ const GlobalStyle = createGlobalStyle`
 
   p {
     font-family: 'BodyFont', Tahoma, Arial, Helvetica, sans-serif !important;
-    font-size: 1.15em;
     line-height: 1.5;
   }
 
@@ -72,8 +69,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-size: 1em;
     margin: 0;
+    font-size: 18px;
+    line-height: 1.56em;
   }
 
   img {
@@ -166,20 +164,6 @@ const Template = ({ children }) => (
       {/* nav in each page due to major differences */}
       {children}
 
-      <Footer
-        inverted
-        icons={(
-          <IconGroup light justify='flex-end'>
-            <Icon name='facebook' link='https://www.facebook.com/theconnectdoor/' />
-            <Icon name='twitter' link='https://twitter.com/ConnectDoor/' />
-            <Icon name='instagram' link='https://instagram.com/ConnectDoor/' />
-            <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
-          </IconGroup>
-        )}
-        copyright='ConnectDoor'
-        developerName='Zach Hardesty'
-        developerLink='https://zachhardesty.com'
-      />
     </div>
   </ThemeProvider>
 )
