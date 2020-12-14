@@ -196,11 +196,18 @@ const Properties = ({
       </Navigation>
       {/* FIXME: get rid of bottom padding */}
       <Segment as='main' basic vertical>
-        <Grid columns='equal' relaxed='very' centered padded>
+        <Grid columns='equal' relaxed='very' centered padded stackable>
           <Grid.Column as={animated.div} style={filterViewAnimation}>
             <Segment vertical>
               <Form>
-                <Form.Group as={Grid} centered>
+                <Form.Group
+                  inline
+                  css={css`
+                    row-gap: 1em;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                  `}
+                >
                   <Form.Select
                     fluid
                     multiple
@@ -238,11 +245,23 @@ const Properties = ({
                     options={zipcodesOptions}
                   />
                 </Form.Group>
-                <Form.Group as={Grid} centered inline id='price-range-filter'>
-                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                  <label>Price Range</label>
+                <Form.Group
+                  inline
+                  id='price-range-filter'
+                  widths='equal'
+                  css={css`
+                    justify-content: center;
+                    align-items: flex-end;
+                    & > * {
+                      max-width: 15em;
+                    }
+                  `}
+                >
                   <Form.Field>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label>Price Range</label>
                     <Input
+                      fluid
                       label={{ content: '$' }}
                       step={100}
                       min={0}
@@ -256,6 +275,7 @@ const Properties = ({
                   </Form.Field>
                   <Form.Field>
                     <Input
+                      fluid
                       label={{ content: '$' }}
                       step={100}
                       min={0}
