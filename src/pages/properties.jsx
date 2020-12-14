@@ -33,7 +33,7 @@ import {
 } from 'pure-react-carousel'
 import 'pure-react-carousel/dist/react-carousel.es.css'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 import { animated, useSpring } from 'react-spring'
 
@@ -88,11 +88,16 @@ S.RelativeDiv = styled.div`
   position: relative;
 `
 
+const NO_AMENITIES_DATA = '(information unavailable at this time)'
+/**
+ * @param {import("gatsby").PageProps<{sectionNav, propertiesPage, allProperty, allPropertyCollection}>} props - main input
+ * @returns {JSX.Element} page
+ */
 const Properties = ({
   location,
   data: { sectionNav, propertiesPage, allProperty, allPropertyCollection },
 }) => {
-  const propertyCollectionInfo = allPropertyCollection.nodes[0]
+  const [propertyCollectionInfo] = allPropertyCollection.nodes
 
   // calculate set of all sheets to display as filter options
   let beds = new Set()
@@ -300,9 +305,9 @@ const Properties = ({
                       link
                       as='div'
                       key={property.name}
-                      onClick={() => { setDetailsOpen(property) }}
+                      onClick={() => { setDetailsOpen(); setDetailsOpen(property) }}
                     >
-                      {property?.imageSet?.images[0] && (
+                      {property.imageSet?.images[0] && (
                         <Image ui={false} wrapped>
                           <GImage
                             fluid={property.imageSet.images[0].fluid}
@@ -367,7 +372,7 @@ const Properties = ({
                 }}
               />
 
-              {detailsOpen?.imageSet.images.length && (
+              {detailsOpen?.imageSet?.images?.length > 0 && (
                 <CarouselProvider
                   touchEnabled={detailsOpen.imageSet.images.length > 1}
                   dragEnabled={detailsOpen.imageSet.images.length > 1}
@@ -483,19 +488,27 @@ const Properties = ({
                   <Grid columns='equal'>
                     <Grid.Column>
                       <Header>Apartment Amenities</Header>
-                      <List bulleted>
-                        {detailsOpen?.apartmentAmenities.map((amenity) => (
-                          <List.Item key={amenity}>{amenity}</List.Item>
-                        ))}
-                      </List>
+                      {detailsOpen?.apartmentAmenities?.length > 0 ? (
+                        <List bulleted>
+                          {detailsOpen?.apartmentAmenities.map((amenity) => (
+                            <List.Item key={amenity}>{amenity}</List.Item>
+                          ))}
+                        </List>
+                      ) : (
+                        <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
+                      )}
                     </Grid.Column>
                     <Grid.Column>
                       <Header>Community Amenities</Header>
-                      <List bulleted>
-                        {detailsOpen?.communityAmenities.map((amenity) => (
-                          <List.Item key={amenity}>{amenity}</List.Item>
-                        ))}
-                      </List>
+                      {detailsOpen?.communityAmenities?.length > 0 ? (
+                        <List bulleted>
+                          {detailsOpen?.communityAmenities.map((amenity) => (
+                            <List.Item key={amenity}>{amenity}</List.Item>
+                          ))}
+                        </List>
+                      ) : (
+                        <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
+                      )}
                     </Grid.Column>
                   </Grid>
                 </Segment>
