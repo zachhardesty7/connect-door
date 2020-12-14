@@ -122,6 +122,13 @@ const Properties = ({
   const initRentMin = location?.state?.min ?? ''
   const initRentMax = location?.state?.max ?? ''
 
+  const [zipcodeErr, setZipcodeErr] = React.useState(false)
+  React.useEffect(() => {
+    if (location?.state?.zipcode && !zipcodes.includes(location.state.zipcode)) {
+      setZipcodeErr(true)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const [detailsOpen, setDetailsOpen] = React.useState()
   const [tourModalOpen, setTourModalOpen] = React.useState(false)
   const [currentPage, setCurrentPage] = React.useState(1)
@@ -239,13 +246,17 @@ const Properties = ({
                   />
                   <Form.Select
                     fluid
+                    error={zipcodeErr}
                     multiple
                     closeOnBlur
                     closeOnEscape
                     id='select-zipcodes-filter'
                     label='Zip Code'
                     placeholder='Select Zip Code'
-                    onChange={(_, { value }) => { setZipcodesSelected(value) }}
+                    onChange={(_, { value }) => {
+                      setZipcodesSelected(value)
+                      setZipcodeErr(false)
+                    }}
                     value={zipcodesSelected}
                     options={zipcodesOptions}
                   />
@@ -336,7 +347,7 @@ const Properties = ({
                     </Card>
                   ))}
                 {!selectedProperties.length && (
-                  <div>No properties matching filter...</div>
+                  <div>No properties found matching your search filters...</div>
                 )}
               </Card.Group>
             </S.Body>
@@ -361,159 +372,167 @@ const Properties = ({
             style={detailViewAnimation}
             className={cx([noPadding('all'), noOverflow('y')])}
           >
-            <Segment secondary className={cx(noPadding('all'))}>
-              <Label
-                size='large'
-                corner='left'
-                icon={{
-                  link: true,
-                  name: 'close',
-                  onClick: () => { setDetailsOpen() },
-                }}
-              />
+            {detailsOpen && (
+              <Segment secondary className={cx(noPadding('all'))}>
+                <Label
+                  size='large'
+                  corner='left'
+                  icon={{
+                    link: true,
+                    name: 'close',
+                    onClick: () => { setDetailsOpen() },
+                  }}
+                />
 
-              {detailsOpen?.imageSet?.images?.length > 0 && (
-                <CarouselProvider
-                  touchEnabled={detailsOpen.imageSet.images.length > 1}
-                  dragEnabled={detailsOpen.imageSet.images.length > 1}
-                  naturalSlideWidth={10}
-                  naturalSlideHeight={6}
-                  totalSlides={detailsOpen.imageSet.images.length}
-                  visibleSlides={detailsOpen.imageSet.images.length > 1 ? 1.2 : 1}
-                >
-                  <S.RelativeDiv>
-                    <Slider>
-                      {detailsOpen.imageSet.images.map((image, i) => image && (
-                        <S.Slide
-                          index={i}
-                          key={image.title}
-                        >
-                          <GImage
-                            fluid={image.fluid}
-                            style={{ position: 'unset' }}
-                            alt={image.title}
-                          />
-                        </S.Slide>
-                      ))}
-                    </Slider>
+                {detailsOpen.imageSet?.images?.length > 0 && (
+                  <CarouselProvider
+                    touchEnabled={detailsOpen.imageSet.images.length > 1}
+                    dragEnabled={detailsOpen.imageSet.images.length > 1}
+                    naturalSlideWidth={10}
+                    naturalSlideHeight={6}
+                    totalSlides={detailsOpen.imageSet.images.length}
+                    visibleSlides={detailsOpen.imageSet.images.length > 1 ? 1.2 : 1}
+                  >
+                    <S.RelativeDiv>
+                      <Slider>
+                        {detailsOpen.imageSet.images.map((image, i) => image && (
+                          <S.Slide
+                            index={i}
+                            key={image.title}
+                          >
+                            <GImage
+                              fluid={image.fluid}
+                              style={{ position: 'unset' }}
+                              alt={image.title}
+                            />
+                          </S.Slide>
+                        ))}
+                      </Slider>
 
-                    {detailsOpen.imageSet.images.length > 1 && (
-                      <>
-                        <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
-                          <Icon fitted size='big' link name='chevron left' />
-                        </S.CarouselButton>
-                        <S.CarouselButton $side='right' icon compact as={Button} forwardedAs={ButtonNext}>
-                          <Icon fitted size='big' link name='chevron right' />
-                        </S.CarouselButton>
-                      </>
-                    )}
-                  </S.RelativeDiv>
-                </CarouselProvider>
-              )}
+                      {detailsOpen.imageSet.images.length > 1 && (
+                        <>
+                          <S.CarouselButton $side='left' icon compact as={Button} forwardedAs={ButtonBack}>
+                            <Icon fitted size='big' link name='chevron left' />
+                          </S.CarouselButton>
+                          <S.CarouselButton $side='right' icon compact as={Button} forwardedAs={ButtonNext}>
+                            <Icon fitted size='big' link name='chevron right' />
+                          </S.CarouselButton>
+                        </>
+                      )}
+                    </S.RelativeDiv>
+                  </CarouselProvider>
+                )}
+                <Segment basic padded='very'>
+                  <Header as='h2'>
+                    <S.FlexSplit>
+                      <div>
+                        {detailsOpen.name}
+                        <Header.Subheader>
+                          <a
+                            href={`https://www.google.com/maps/place/${detailsOpen.addr.replace(/\s+/g, '+')}`}
+                            target='_blank'
+                            rel='noreferrer'
+                            className='date'
+                          >
+                            {detailsOpen.addr}
+                          </a>
+                        </Header.Subheader>
+                      </div>
 
-              <Segment basic padded='very'>
-                <Header as='h2'>
-                  <S.FlexSplit>
-                    <div>
-                      {detailsOpen?.name}
-                      <Header.Subheader>
-                        <a
-                          href={`https://www.google.com/maps/place/${detailsOpen?.addr.replace(/\s+/g, '+')}`}
-                          target='_blank'
-                          rel='noreferrer'
-                          className='date'
-                        >
-                          {detailsOpen?.addr}
-                        </a>
-                      </Header.Subheader>
-                    </div>
-
-                    <Modal
-                      closeIcon
-                      onClose={() => setTourModalOpen(false)}
-                      closeOnDocumentClick
-                      size='small'
-                      open={tourModalOpen}
-                      trigger={(
-                        <Button size='large' primary onClick={() => setTourModalOpen(true)}>
+                      <Modal
+                        closeIcon
+                        onClose={() => setTourModalOpen(false)}
+                        closeOnDocumentClick
+                        size='small'
+                        open={tourModalOpen}
+                        trigger={(
+                          <Button size='large' primary onClick={() => setTourModalOpen(true)}>
+                            {propertiesPage.contactForm.title}
+                          </Button>
+                        )}
+                      >
+                        <Modal.Header>
                           {propertiesPage.contactForm.title}
-                        </Button>
-                      )}
-                    >
-                      <Modal.Header>{propertiesPage.contactForm.title}</Modal.Header>
-                      <Modal.Content>
-                        <ContactForm
-                          name={propertiesPage.contactForm.form?.name}
-                          fields={propertiesPage.contactForm.form?.contentfulfields}
-                          textArea={propertiesPage.contactForm.form?.textarea}
-                          button={propertiesPage.contactForm.form?.button}
-                          onSubmit={() => setTourModalOpen(false)}
-                        >
-                          <input type='hidden' name='PROPERTY' value={detailsOpen?.name} />
-                        </ContactForm>
-                      </Modal.Content>
-                    </Modal>
-                  </S.FlexSplit>
-                </Header>
+                          {' '}
+                          --
+                          {' '}
+                          {detailsOpen.name}
+                        </Modal.Header>
+                        <Modal.Content>
+                          <ContactForm
+                            name={propertiesPage.contactForm.form?.name}
+                            fields={propertiesPage.contactForm.form?.contentfulfields}
+                            textArea={propertiesPage.contactForm.form?.textarea}
+                            button={propertiesPage.contactForm.form?.button}
+                            onSubmit={() => setTourModalOpen(false)}
+                          >
+                            <input type='hidden' name='PROPERTY' value={detailsOpen.name} />
+                          </ContactForm>
+                        </Modal.Content>
+                      </Modal>
+                    </S.FlexSplit>
+                  </Header>
 
-                <Segment vertical basic padded>
-                  <Header>Available Units</Header>
-                  <Table celled>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>Unit</Table.HeaderCell>
-                        <Table.HeaderCell>Beds</Table.HeaderCell>
-                        <Table.HeaderCell>Baths</Table.HeaderCell>
-                        <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                      {detailsOpen?.units.map((unit) => (
-                        <Table.Row key={unit.unit}>
-                          <Table.Cell>{unit.unit}</Table.Cell>
-                          <Table.Cell>{unit.beds}</Table.Cell>
-                          <Table.Cell>{unit.baths}</Table.Cell>
-                          <Table.Cell>
-                            $
-                            {unit.monthlyRentPerBed}
-                          </Table.Cell>
+                  <Segment vertical basic padded>
+                    <Header>Available Units</Header>
+                    <Table celled>
+                      <Table.Header>
+                        <Table.Row>
+                          <Table.HeaderCell>Unit</Table.HeaderCell>
+                          <Table.HeaderCell>Beds</Table.HeaderCell>
+                          <Table.HeaderCell>Baths</Table.HeaderCell>
+                          <Table.HeaderCell>Monthly Rent (Per Bed)</Table.HeaderCell>
                         </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-                </Segment>
+                      </Table.Header>
 
-                <Segment vertical basic padded>
-                  <Grid columns='equal'>
-                    <Grid.Column>
-                      <Header>Apartment Amenities</Header>
-                      {detailsOpen?.apartmentAmenities?.length > 0 ? (
-                        <List bulleted>
-                          {detailsOpen?.apartmentAmenities.map((amenity) => (
-                            <List.Item key={amenity}>{amenity}</List.Item>
-                          ))}
-                        </List>
-                      ) : (
-                        <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
-                      )}
-                    </Grid.Column>
-                    <Grid.Column>
-                      <Header>Community Amenities</Header>
-                      {detailsOpen?.communityAmenities?.length > 0 ? (
-                        <List bulleted>
-                          {detailsOpen?.communityAmenities.map((amenity) => (
-                            <List.Item key={amenity}>{amenity}</List.Item>
-                          ))}
-                        </List>
-                      ) : (
-                        <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
-                      )}
-                    </Grid.Column>
-                  </Grid>
+                      <Table.Body>
+                        {detailsOpen.units.map((unit) => (
+                          <Table.Row key={unit.unit}>
+                            <Table.Cell>{unit.unit}</Table.Cell>
+                            <Table.Cell>{unit.beds}</Table.Cell>
+                            <Table.Cell>{unit.baths}</Table.Cell>
+                            <Table.Cell>
+                              $
+                              {unit.monthlyRentPerBed}
+                            </Table.Cell>
+                          </Table.Row>
+                        ))}
+                      </Table.Body>
+                    </Table>
+                  </Segment>
+
+                  <Segment vertical basic padded>
+                    <Grid columns='equal'>
+                      <Grid.Column>
+                        <Header>Apartment Amenities</Header>
+                        {detailsOpen.apartmentAmenities?.length > 0 ? (
+                          <List bulleted>
+                            {detailsOpen.apartmentAmenities.map((amenity) => (
+                              <List.Item key={amenity}>{amenity}</List.Item>
+                            ))}
+                          </List>
+                        ) : (
+                          // `List` used to simplify spacing
+                          <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
+                        )}
+                      </Grid.Column>
+                      <Grid.Column>
+                        <Header>Community Amenities</Header>
+                        {detailsOpen.communityAmenities?.length > 0 ? (
+                          <List bulleted>
+                            {detailsOpen.communityAmenities.map((amenity) => (
+                              <List.Item key={amenity}>{amenity}</List.Item>
+                            ))}
+                          </List>
+                        ) : (
+                          <List><List.Content>{NO_AMENITIES_DATA}</List.Content></List>
+                        )}
+                      </Grid.Column>
+                    </Grid>
+                  </Segment>
                 </Segment>
               </Segment>
-            </Segment>
+            )}
           </Grid.Column>
         </Grid>
       </Segment>
