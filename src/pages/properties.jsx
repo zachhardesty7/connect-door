@@ -320,11 +320,13 @@ const Properties = ({
               <S.Pagination
                 boundaryRange={0}
                 defaultActivePage={1}
-                onPageChange={(_, { activePage }) => setCurrentPage(activePage)}
+                onPageChange={(_, { activePage }) => {
+                  setCurrentPage(activePage)
+                }}
                 firstItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
                 lastItem={selectedProperties.length / ITEMS_PER_PAGE <= 5 ? null : undefined}
                 siblingRange={2}
-                totalPages={selectedProperties.length / ITEMS_PER_PAGE}
+                totalPages={Math.ceil(selectedProperties.length / ITEMS_PER_PAGE)}
               />
             </Segment>
           </Grid.Column>
