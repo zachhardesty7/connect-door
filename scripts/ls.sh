@@ -1,4 +1,4 @@
-printf "$(tput bold)currently linked pkgs listed below, run yarn link:lsa for pkg locations:$(tput sgr0)\n"
+printf "$(tput bold)currently linked pkgs listed below, run yarn lsa for pkg locations:$(tput sgr0)\n"
 (
   ls -l node_modules
   ls -l node_modules/@*
