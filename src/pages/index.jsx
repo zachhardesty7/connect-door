@@ -223,6 +223,7 @@ const RootIndex = ({ data }) => {
             as={BaseSegment}
             id={sectionNav.sections[0]}
             title={sectionMission.title}
+            centered
             content={richTextToJsx(sectionMission.content?.json)}
           >
             {sectionMission.blurbs.map((blurb) => (
@@ -347,6 +348,7 @@ const RootIndex = ({ data }) => {
           <Blurbs
             id={sectionNav.sections[3]}
             title={sectionCareers.title}
+            centered
             content={richTextToJsx(sectionCareers.content?.json)}
             secondary
           >
