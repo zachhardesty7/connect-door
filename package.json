@@ -17,7 +17,8 @@
     "start:https": "gatsby develop --https",
     "test": "yarn run build && yarn run serve",
     "serve": "gatsby serve",
-    "build": "gatsby build"
+    "build": "gatsby build",
+    "build-clean": "gatsby clean && gatsby build"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
