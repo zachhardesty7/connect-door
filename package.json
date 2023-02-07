@@ -20,6 +20,7 @@
     "build": "gatsby build"
   },
   "dependencies": {
+    "@babel/core": "^7.20.12",
     "@madebyconnor/rich-text-to-jsx": "^2.1.3",
     "@quickbaseoss/babel-plugin-styled-components-css-namespace": "1.0.1",
     "babel-eslint": "^10.1.0",
