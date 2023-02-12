@@ -45,13 +45,13 @@ module.exports = {
       },
     },
     'gatsby-plugin-sitemap',
-    {
-      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
-      options: {
-        // production: true,
-        openAnalyzer: false,
-      },
-    },
+    // {
+    //   resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+    //   options: {
+    //     // production: true,
+    //     openAnalyzer: false,
+    //   },
+    // },
     'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-styled-components',

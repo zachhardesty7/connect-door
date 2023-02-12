@@ -1,6 +1,6 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
+import { renderRichText } from 'gatsby-source-contentful/rich-text'
 
 import { Link } from 'react-scroll'
 import { Helmet } from 'react-helmet'
@@ -224,7 +224,7 @@ const RootIndex = ({ data }) => {
             id={sectionNav.sections[0]}
             title={sectionMission.title}
             centered
-            content={richTextToJsx(sectionMission.content?.json)}
+            content={sectionMission.content && renderRichText(sectionMission.content)}
           >
             {sectionMission.blurbs.map((blurb) => (
               <Blurbs.Item
@@ -232,7 +232,7 @@ const RootIndex = ({ data }) => {
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {richTextToJsx(blurb.content?.json)}
+                {blurb.content && renderRichText(blurb.content)}
               </Blurbs.Item>
             ))}
           </Blurbs>
@@ -248,7 +248,7 @@ const RootIndex = ({ data }) => {
                   <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
                 </IconGroup>
               )}
-              <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
+              <Header.Content>{sectionTour?.content && renderRichText(sectionTour.content)}</Header.Content>
               <ContactForm
                 name={sectionTour.form?.name}
                 fields={sectionTour.form?.contentfulfields}
@@ -268,7 +268,7 @@ const RootIndex = ({ data }) => {
               >
                 {sectionItems.title}
               </ProcessHeader>
-              <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
+              <Header.Content>{sectionItems.content && renderRichText(sectionItems.content)}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
                   <Item key={item.title}>
@@ -285,7 +285,7 @@ const RootIndex = ({ data }) => {
 
                     <Item.Content verticalAlign='middle'>
                       <Item.Header as='h4'>{item.title}</Item.Header>
-                      <Item.Description>{richTextToJsx(item.content?.json)}</Item.Description>
+                      <Item.Description>{item.content && renderRichText(item.content)}</Item.Description>
                     </Item.Content>
                   </Item>
                 ))}
@@ -308,7 +308,7 @@ const RootIndex = ({ data }) => {
               <Container text className='container-team'>
                 <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
                 {sectionTeam.content && (
-                  <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
+                  <Header.Content>{sectionTeam.content && renderRichText(sectionTeam.content)}</Header.Content>
                 )}
               </Container>
               <Container className='cards'>
@@ -349,7 +349,7 @@ const RootIndex = ({ data }) => {
             id={sectionNav.sections[3]}
             title={sectionCareers.title}
             centered
-            content={richTextToJsx(sectionCareers.content?.json)}
+            content={sectionCareers.content && renderRichText(sectionCareers.content)}
             secondary
           >
             {sectionCareers.blurbs.map((blurb) => (
@@ -358,7 +358,7 @@ const RootIndex = ({ data }) => {
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {richTextToJsx(blurb.content?.json)}
+                {blurb.content && renderRichText(blurb.content)}
               </Blurbs.Item>
             ))}
           </Blurbs>
@@ -378,7 +378,7 @@ const RootIndex = ({ data }) => {
                   </Container>
                 )}
                 <Header.Content>
-                  {richTextToJsx(sectionContact?.content?.json)}
+                  {sectionContact?.content && renderRichText(sectionContact.content)}
                 </Header.Content>
               </Container>
               <ContactForm
@@ -458,7 +458,7 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            json
+            raw
           }
           itemsPerRow
           members {
@@ -470,7 +470,7 @@ export const imageQuery = graphql`
             }
             name
             bio {
-              json
+              raw
             }
             email
             number
@@ -483,13 +483,13 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            json
+            raw
           }
           blurbs {
             icon
             title
             content {
-              json
+              raw
             }
           }
         }
@@ -501,7 +501,7 @@ export const imageQuery = graphql`
           title
           icons
           content {
-            json
+            raw
           }
           form {
             name
@@ -519,7 +519,7 @@ export const imageQuery = graphql`
           steps {
             title
             content {
-              json
+              raw
             }
             image {
               title

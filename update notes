@@ -1,0 +1,9 @@
+update notes
+
+gatsby v3
+contentful - https://github.com/gatsbyjs/gatsby/tree/gatsby-source-contentful%405.15.0/packages/gatsby-source-contentful
+- https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-source-contentful/CHANGELOG.md#300-2020-10-19
+- https://github.com/gatsbyjs/gatsby/pull/25249
+- https://github.com/gatsbyjs/gatsby/pull/29029/files
+- https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/
+- https://www.gatsbyjs.com/docs/reference/release-notes/image-migration-guide/#how-to-migrate
