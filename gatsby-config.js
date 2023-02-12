@@ -8,20 +8,20 @@ try {
 // Overwrite the Contentful config with environment variables if they exist
 contentfulConfig = {
   spaceId: process.env.CONTENTFUL_SPACE_ID || contentfulConfig.spaceId,
-  accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN || contentfulConfig.accessToken
+  accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN || contentfulConfig.accessToken,
 }
 
 const { spaceId, accessToken } = contentfulConfig
 
 if (!spaceId || !accessToken) {
   throw new Error(
-    'Contentful spaceId and the delivery token need to be provided.'
+    'Contentful spaceId and the delivery token need to be provided.',
   )
 }
 
 module.exports = {
   siteMetadata: {
-    siteUrl: 'https://theconnectdoor.com'
+    siteUrl: 'https://theconnectdoor.com',
   },
   plugins: [
     {
@@ -34,39 +34,40 @@ module.exports = {
         theme_color: '#3B5998',
         display: 'standalone',
         icon: './src/assets/cd-logo-icon-blue.svg',
-        include_favicon: true
-      }
+        include_favicon: true,
+      },
     },
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-127721122-1',
-        // Setting this parameter is also optional
-        respectDNT: true
-      }
+        respectDNT: true,
+      },
     },
     'gatsby-plugin-sitemap',
-    {
-      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
-      options: {
-        // production: true,
-        openAnalyzer: false
-      }
-    },
+    // {
+    //   resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+    //   options: {
+    //     // production: true,
+    //     openAnalyzer: false,
+    //   },
+    // },
     'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-styled-components',
       options: {
-        pure: process.env.NODE_ENV === 'production',
-        fileName: process.env.NODE_ENV !== 'production',
-        displayName: process.env.NODE_ENV !== 'production'
-      }
+        minify: process.env.ENV_MODE === 'prod',
+        transpileTemplateLiterals: process.env.ENV_MODE === 'prod',
+        pure: process.env.ENV_MODE === 'prod',
+        fileName: false,
+        displayName: process.env.ENV_MODE === 'local',
+      },
     },
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-source-contentful',
-      options: contentfulConfig
+      options: contentfulConfig,
     },
-    'gatsby-plugin-netlify'
-  ]
+    'gatsby-plugin-netlify',
+  ],
 }

@@ -11,8 +11,8 @@ This repo hosts a SSR app hosted with Netlify that renders data from Contentful.
 Clone this repo and then run the following commands to start the hot module reloading local server:
 
 ``` bash
-npm install
-npm run dev
+yarn install
+yarn run dev
 ```
 
 ## Known Issues
@@ -30,7 +30,7 @@ npm run dev
 
 ## License
 
-Copyright 2018 Zachary Hardesty
+Copyright 2018-2020 Zachary Hardesty
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

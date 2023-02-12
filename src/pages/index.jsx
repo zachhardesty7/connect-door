@@ -1,60 +1,44 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { graphql } from 'gatsby'
-import { richTextToJsx } from '@madebyconnor/rich-text-to-jsx'
+import { renderRichText } from 'gatsby-source-contentful/rich-text'
 
 import { Link } from 'react-scroll'
-import Helmet from 'react-helmet'
+import { Helmet } from 'react-helmet'
 import GImage from 'gatsby-image'
-
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 // ui framework
 import {
+  Blurbs,
   Card,
+  ContactForm,
   Container,
-  Segment,
+  Footer,
   Header,
+  Hero,
+  Icon,
+  IconGroup,
   Item,
   Label,
-  Message
-} from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
-
-// user-defined
-import {
-  Hero,
+  Message,
   Navigation,
-  Blurbs,
-  Footer,
-  Form,
-  IconGroup,
-  Icon,
-  asTag,
+  Segment,
+  getBackgroundColor,
   getColor,
-  getBackgroundColor
 } from 'semantic-styled-ui'
+
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
+
+import 'semantic-ui-css/semantic.min.css'
 
 import brandingMedium from '../assets/branding-medium.otf'
 
-const brandColors = {
-  blue: '#3b5998',
-  orange: '#ca6914',
-  teal: '#749ad3',
-  white: '#ffffff'
-}
-
-const defaultColors = {
-  ...brandColors,
-  primary: brandColors.blue,
-  secondary: brandColors.teal,
-  accent: brandColors.orange
-}
+import { defaultColors } from '../constants'
 
 const GlobalStyle = createGlobalStyle`
   /* logo font */
   @font-face {
     font-family: 'Branding';
+    /* stylelint-disable-next-line function-whitespace-after */
     src: url(${brandingMedium}) format('opentype');
     font-display: swap;
   }
@@ -79,8 +63,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const SegmentTagged = asTag(Segment)
-const BaseSegment = styled(SegmentTagged)`
+const BaseSegment = styled(Segment)`
   h3 {
     font-size: 3em;
   }
@@ -93,8 +76,7 @@ const BaseSegment = styled(SegmentTagged)`
   padding-bottom: 6em;
 `
 
-const HeaderTagged = asTag(Header)
-const ProcessHeader = styled(HeaderTagged)`
+const ProcessHeader = styled(Header)`
   margin-bottom: 1em;
 `
 
@@ -105,7 +87,7 @@ const ProcessLabelContainer = styled(Container)`
 const ProcessLabel = styled(Label)`
   z-index: 1;
   left: calc(.05rem - 1.2em);
-  
+
   ${getColor('white')};
   ${getBackgroundColor('secondary')};
 
@@ -170,6 +152,10 @@ const TeamSegment = styled(BaseSegment)`
   }
 `
 
+const NavLogo = styled(GImage).attrs()`
+  margin-bottom: -3px;
+`
+
 const RootIndex = ({ data }) => {
   const sectionNav = data.allContentfulNav.edges[0].node
   const sectionHero = data.allContentfulHero.edges[0].node
@@ -192,13 +178,16 @@ const RootIndex = ({ data }) => {
           <html lang='en' />
           <meta charSet='utf-8' />
           <title>{sectionHero.title}</title>
-          <meta name='Description' content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings' />
+          <meta
+            name='Description'
+            content='Progressive Web App to advertise the services of ConnectDoor and contact them on listings'
+          />
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
-        <Navigation tag={Link} size={sectionNav.size} text pointing>
+        <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
-            <GImage fixed={sectionNav.logo?.fixed} alt='logo' />
+            <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
             <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
@@ -216,14 +205,14 @@ const RootIndex = ({ data }) => {
           button={(
             <Hero.Button
               compact
-              tag={Link}
+              as={Link}
               link={`#${sectionNav.sections[1]}`}
             >
               {sectionHero.button}
             </Hero.Button>
           )}
         >
-          {sectionHero.backgrounds.map(background => (
+          {sectionHero.backgrounds.map((background) => (
             <GImage fluid={background.fluid} alt={background.title} key={background.title} />
           ))}
         </Hero>
@@ -234,20 +223,21 @@ const RootIndex = ({ data }) => {
             as={BaseSegment}
             id={sectionNav.sections[0]}
             title={sectionMission.title}
-            content={richTextToJsx(sectionMission.content?.json)}
+            centered
+            content={sectionMission.content && renderRichText(sectionMission.content)}
           >
-            {sectionMission.blurbs.map(blurb => (
+            {sectionMission.blurbs.map((blurb) => (
               <Blurbs.Item
                 key={blurb.title}
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {richTextToJsx(blurb.content?.json)}
+                {blurb.content && renderRichText(blurb.content)}
               </Blurbs.Item>
             ))}
           </Blurbs>
 
-          <BaseSegment id={sectionNav.sections[1]} tag='section' vertical secondary basic>
+          <BaseSegment id={sectionNav.sections[1]} forwardedAs='section' vertical secondary basic>
             <Container text>
               <Header as='h3' textAlign='center'>{sectionTour.title}</Header>
               {sectionTour.icons && (
@@ -258,8 +248,8 @@ const RootIndex = ({ data }) => {
                   <Icon name='linkedin' link='https://www.linkedin.com/company/connect-door/' />
                 </IconGroup>
               )}
-              <Header.Content>{richTextToJsx(sectionTour?.content?.json)}</Header.Content>
-              <Form
+              <Header.Content>{sectionTour?.content && renderRichText(sectionTour.content)}</Header.Content>
+              <ContactForm
                 name={sectionTour.form?.name}
                 fields={sectionTour.form?.contentfulfields}
                 textArea={sectionTour.form?.textarea}
@@ -272,21 +262,30 @@ const RootIndex = ({ data }) => {
           {/* @TODO extract to component (less undefined checking necessary) */}
           <BaseSegment id={sectionNav.sections[2]} vertical basic>
             <Container text>
-              <ProcessHeader tag='h3' textAlign='center'>{sectionItems.title}</ProcessHeader>
-              <Header.Content>{richTextToJsx(sectionItems.content?.json)}</Header.Content>
+              <ProcessHeader
+                forwardedAs='h3'
+                textAlign='center'
+              >
+                {sectionItems.title}
+              </ProcessHeader>
+              <Header.Content>{sectionItems.content && renderRichText(sectionItems.content)}</Header.Content>
               <Item.Group divided relaxed>
                 {sectionItems.steps.map((item, i) => (
                   <Item key={item.title}>
                     <ProcessDarkenedImage size='medium' rounded>
                       <ProcessLabel ribbon size='huge'>{`#${i + 1}`}</ProcessLabel>
                       {item.image && (
-                        <GImage fixed={item.image?.fixed} backgroundColor alt={item.image?.title} />
+                        <GImage
+                          fixed={item.image?.fixed}
+                          $backgroundColor
+                          alt={item.image?.title}
+                        />
                       )}
                     </ProcessDarkenedImage>
 
                     <Item.Content verticalAlign='middle'>
                       <Item.Header as='h4'>{item.title}</Item.Header>
-                      <Item.Description>{richTextToJsx(item.content?.json)}</Item.Description>
+                      <Item.Description>{item.content && renderRichText(item.content)}</Item.Description>
                     </Item.Content>
                   </Item>
                 ))}
@@ -309,17 +308,22 @@ const RootIndex = ({ data }) => {
               <Container text className='container-team'>
                 <Header as='h3' textAlign='center'>{sectionTeam.title}</Header>
                 {sectionTeam.content && (
-                  <Header.Content>{richTextToJsx(sectionTeam.content?.json)}</Header.Content>
+                  <Header.Content>{sectionTeam.content && renderRichText(sectionTeam.content)}</Header.Content>
                 )}
               </Container>
               <Container className='cards'>
-                <Card.Group itemsPerRow={sectionTeam.itemsPerRow} stackable doubling className='relaxed'>
+                <Card.Group
+                  itemsPerRow={sectionTeam.itemsPerRow}
+                  stackable
+                  doubling
+                  className='relaxed'
+                >
                   {sectionTeam.members.map((member, i) => (
                     <Card centered key={member.name}>
                       {member.image && (
                         <GImage
                           fluid={member.image?.fluid}
-                          backgroundColor
+                          $backgroundColor
                           alt={member.image?.title}
                         />
                       )}
@@ -344,16 +348,17 @@ const RootIndex = ({ data }) => {
           <Blurbs
             id={sectionNav.sections[3]}
             title={sectionCareers.title}
-            content={richTextToJsx(sectionCareers.content?.json)}
+            centered
+            content={sectionCareers.content && renderRichText(sectionCareers.content)}
             secondary
           >
-            {sectionCareers.blurbs.map(blurb => (
+            {sectionCareers.blurbs.map((blurb) => (
               <Blurbs.Item
                 key={blurb.title}
                 icon={<Icon name={blurb.icon} inverted size='bigger' />}
                 header={blurb.title}
               >
-                {richTextToJsx(blurb.content?.json)}
+                {blurb.content && renderRichText(blurb.content)}
               </Blurbs.Item>
             ))}
           </Blurbs>
@@ -373,10 +378,10 @@ const RootIndex = ({ data }) => {
                   </Container>
                 )}
                 <Header.Content>
-                  {richTextToJsx(sectionContact?.content?.json)}
+                  {sectionContact?.content && renderRichText(sectionContact.content)}
                 </Header.Content>
               </Container>
-              <Form
+              <ContactForm
                 name={sectionContact.form?.name}
                 fields={sectionContact.form?.contentfulfields}
                 textArea={sectionContact.form?.textarea}
@@ -453,7 +458,7 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            json
+            raw
           }
           itemsPerRow
           members {
@@ -465,7 +470,7 @@ export const imageQuery = graphql`
             }
             name
             bio {
-              json
+              raw
             }
             email
             number
@@ -478,13 +483,13 @@ export const imageQuery = graphql`
         node {
           title
           content {
-            json
+            raw
           }
           blurbs {
             icon
             title
             content {
-              json
+              raw
             }
           }
         }
@@ -496,7 +501,7 @@ export const imageQuery = graphql`
           title
           icons
           content {
-            json
+            raw
           }
           form {
             name
@@ -514,7 +519,7 @@ export const imageQuery = graphql`
           steps {
             title
             content {
-              json
+              raw
             }
             image {
               title
