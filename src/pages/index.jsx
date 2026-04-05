@@ -187,7 +187,7 @@ const RootIndex = ({ data }) => {
 
         <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
-            <NavLogo fixed={sectionNav.logo?.fixed} alt='logo' />
+            <NavLogo fixed={sectionNav.logo?.fixed} alt='nav logo' />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
             <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
@@ -195,7 +195,7 @@ const RootIndex = ({ data }) => {
         </Navigation>
 
         <Hero
-          logo={<GImage fixed={sectionHero?.logo?.fixed} alt='logo' />}
+          logo={<GImage fixed={sectionHero?.logo?.fixed} alt='hero logo' />}
           inlineLogo
           overlay='darker'
           baseline='bottom'
