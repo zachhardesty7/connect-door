@@ -187,7 +187,7 @@ const RootIndex = ({ data }) => {
 
         <Navigation as={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
-            <NavLogo fixed={sectionNav.logo?.fixed} alt='nav logo' />
+            <NavLogo fixed={sectionNav.logo?.fixed} alt='nav logo' loading='eager' fadeIn={false} />
           </Navigation.Logo>
           {sectionNav.sections.map((page, i) => (
             <Navigation.Item key={page} link={`#${page}`} tabIndex='0'>{page}</Navigation.Item>
@@ -195,7 +195,7 @@ const RootIndex = ({ data }) => {
         </Navigation>
 
         <Hero
-          logo={<GImage fixed={sectionHero?.logo?.fixed} alt='hero logo' />}
+          logo={<GImage fixed={sectionHero?.logo?.fixed} alt='hero logo' loading='eager' fadeIn={false} />}
           inlineLogo
           overlay='darker'
           baseline='bottom'
@@ -424,7 +424,8 @@ export const imageQuery = graphql`
           logo {
             title
             fixed(width: 150) {
-              ...GatsbyContentfulFixed_tracedSVG
+              # the blurry base64 version looks bad with the wordmark logo
+              ...GatsbyContentfulFixed_withWebp_noBase64
             }
           }
         }
