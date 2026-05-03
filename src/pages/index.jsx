@@ -185,7 +185,7 @@ const RootIndex = ({ data }) => {
           <link rel='canonical' href='https://connectdoor.com' />
         </Helmet>
 
-        <Navigation forwardedAs={Link} size={sectionNav.size} text pointing>
+        <Navigation as={Link} size={sectionNav.size} text pointing>
           <Navigation.Logo link='#top' tabIndex='0'>
             <NavLogo fixed={sectionNav.logo?.fixed} alt='nav logo' />
           </Navigation.Logo>
